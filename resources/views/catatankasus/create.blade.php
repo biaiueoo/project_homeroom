@@ -136,18 +136,19 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        
+
 
                         <div class="form-group">
-                        <label for="user_bk">User Level</label>
-                        <input type="text" class="form-control" id="user_bk" name="user_bk" value="{{ auth()->user()->id }}" readonly>
+                            <label for="user_admin">User Admin</label>
+                            <input type="text" class="form-control" id="user_admin" name="user_admin"
+                                value="{{ old('user_admin') }}">
                         </div>
 
                         {{-- <div class="form-group">
                             <label for="user_name">Nama Pengguna</label>
                             <input type="text" class="form-control" id="user_name" name="user_name" value="{{ auth()->user()->name }}" readonly>
                         </div> --}}
-                        
+
 
 
                     </div>
@@ -204,19 +205,19 @@
         <!-- End Modal -->
     </form>
 
-    @push('js')
-        <script>
-            $('#example2').DataTable({
-                "responsive": true,
-            });
 
-            function pilih(id, nama_lengkap, kdkelas, kdkompetensi) {
-                document.getElementById('kdsiswa').value = id;
-                document.getElementById('nama_lengkap').value = nama_lengkap;
-                document.getElementById('kelas').value = kdkelas;
-                document.getElementById('kompetensi_keahlian').value = kdkompetensi;
-                $('#staticBackdrop').modal('hide');
-            }
-        </script>
-    @endpush
+    <script>
+        $('#example2').DataTable({
+            "responsive": true,
+        });
+
+        function pilih(id, nama_lengkap, kdkelas, kdkompetensi) {
+            document.getElementById('kdsiswa').value = id;
+            document.getElementById('nama_lengkap').value = nama_lengkap;
+            document.getElementById('kelas').value = kdkelas;
+            document.getElementById('kompetensi_keahlian').value = kdkompetensi;
+            $('#staticBackdrop').modal('hide');
+        }
+    </script>
+
 @stop

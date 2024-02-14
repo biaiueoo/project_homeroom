@@ -20,7 +20,7 @@ return new class extends Migration
             ->onDelete('cascade')->onUpdate('cascade');
             $table->date('tanggal');
             $table->string('keterangan',50);
-            $table->string('bukti_ttd',300);
+            $table->text('bukti_ttd');
             $table->string('semester',100);
             $table->string('tahun_ajaran',30);
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\CatatanKasus;
+use App\Models\Lookup;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
@@ -20,10 +21,12 @@ class CatatanKasusController extends Controller
 
     public function create()
     {
+        $semester = Lookup::where('jenis', 'semester')->get();
         return view(
             'catatankasus.create',
             [
-                'siswa' => Siswa::all()
+                'siswa' => Siswa::all(),
+                'semester' => $semester,
             ]
         );
     }
@@ -38,6 +41,7 @@ class CatatanKasusController extends Controller
             'tindak_lanjut' => 'required',
             'status_kasus' => 'required',
             'dampingan_bk' => 'required',
+            'semester' => 'required',
         ]);
 
         $user = Auth::user();
@@ -49,7 +53,8 @@ class CatatanKasusController extends Controller
             'kasus' => $request->kasus,
             'tindak_lanjut' => $request->tindak_lanjut,
             'status_kasus' => $request->status_kasus,
-            'dampingan_bk' => $request->dampingan_bk
+            'dampingan_bk' => $request->dampingan_bk,
+            'semester' => $request->semester,
         ]);
 
         return redirect()->route('catatankasus.index')->with('success_message', 'Berhasil menambah catatan kasus');
