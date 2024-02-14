@@ -2,7 +2,7 @@
 @section('nav')
     @include('dashboard.nav')
 @endsection
-@section('page', 'Kompetensi Keahlian')
+@section('page', 'Kompetensi Keahlian edit')
 @section('main')
     @include('dashboard.main')
     <div class="row">
