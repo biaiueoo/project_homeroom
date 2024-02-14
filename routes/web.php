@@ -18,7 +18,6 @@ Route::get('/', function () {
 });
 
 Route::resource('dashboard', \App\Http\Controllers\DashboardController::class);
-Route::resource('categories', App\Http\Controllers\JenisController::class);
 Route::resource('mapel', \App\Http\Controllers\MapelController::class);
 Route::resource('kompetensi', \App\Http\Controllers\KompetensiController::class);
 Route::resource('guru', \App\Http\Controllers\GuruController::class);
@@ -31,5 +30,8 @@ Route::resource('jadwal', \App\Http\Controllers\JadwalController::class);
 Route::resource('walas', \App\Http\Controllers\WalasController::class);
 Route::resource('kunjunganrumah', \App\Http\Controllers\KunjunganRumahController::class);
 Route::resource('catatankasus', \App\Http\Controllers\CatatanKasusController::class);
+Route::resource('jadwal', \App\Http\Controllers\JadwalController::class);
+Route::resource('jadwalpiket', \App\Http\Controllers\jadwalpiketController::class);
+Route::resource('daftarrapot', \App\Http\Controllers\DaftarrapotController::class);
 
 

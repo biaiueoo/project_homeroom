@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body"> 
                     <a href="{{ route('siswa.create') }}" class="btn 
 btn-primary mb-2">
                         Tambah
