@@ -1,9 +1,10 @@
-@extends('adminlte::page')
-@section('title', 'List Catatan Kasus')
-@section('content_header')
-<h1 class="m-0 text-dark">List Catatan Kasus</h1>
-@stop
-@section('content')
+@extends('dashboard.master')
+@section('nav')
+@include('dashboard.nav')
+@endsection
+@section('page', 'Siswa')
+@section('main')
+@include('dashboard.main')
 <div class="row">
     <div class="col-12">
         <div class="card">
