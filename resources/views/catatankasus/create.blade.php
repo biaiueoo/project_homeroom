@@ -171,7 +171,7 @@
                     </div>
                     <div class="modal-body">
                         <table class="table table-hover table-bordered table-stripped" id="example2">
-                            <thead>
+                            <thead> 
                                 <tr>
                                     <th>No.</th>
                                     <th>Nama Siswa</th>
