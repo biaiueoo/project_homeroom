@@ -12,26 +12,31 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+use App\Http\Controllers\AuthController;
+
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
-Route::resource('dashboard', \App\Http\Controllers\DashboardController::class);
-Route::resource('mapel', \App\Http\Controllers\MapelController::class);
-Route::resource('kompetensi', \App\Http\Controllers\KompetensiController::class);
-Route::resource('guru', \App\Http\Controllers\GuruController::class);
-Route::resource('users', \App\Http\Controllers\UserController::class);
-Route::resource('kelas', \App\Http\Controllers\KelasController::class);
-Route::resource('bukutamu', \App\Http\Controllers\BukutamuController::class);
-Route::resource('siswa', \App\Http\Controllers\SiswaController::class);
-Route::resource('agenda', \App\Http\Controllers\AgendaKegiatanController::class);
-Route::resource('jadwal', \App\Http\Controllers\JadwalController::class);
-Route::resource('walas', \App\Http\Controllers\WalasController::class);
-Route::resource('kunjunganrumah', \App\Http\Controllers\KunjunganRumahController::class);
-Route::resource('catatankasus', \App\Http\Controllers\CatatanKasusController::class);
-Route::resource('jadwal', \App\Http\Controllers\JadwalController::class);
-Route::resource('jadwalpiket', \App\Http\Controllers\jadwalpiketController::class);
-Route::resource('daftarrapot', \App\Http\Controllers\DaftarrapotController::class);
-
-
+Route::middleware(['auth'])->group(function () {
+    // Rute-rute yang ingin Anda lindungi
+    Route::resource('dashboard', \App\Http\Controllers\DashboardController::class);
+    Route::resource('mapel', \App\Http\Controllers\MapelController::class);
+    Route::resource('kompetensi', \App\Http\Controllers\KompetensiController::class);
+    Route::resource('guru', \App\Http\Controllers\GuruController::class);
+    Route::resource('users', \App\Http\Controllers\UserController::class);
+    Route::resource('kelas', \App\Http\Controllers\KelasController::class);
+    Route::resource('bukutamu', \App\Http\Controllers\BukutamuController::class);
+    Route::resource('siswa', \App\Http\Controllers\SiswaController::class);
+    Route::resource('agenda', \App\Http\Controllers\AgendaKegiatanController::class);
+    Route::resource('jadwal', \App\Http\Controllers\JadwalController::class);
+    Route::resource('walas', \App\Http\Controllers\WalasController::class);
+    Route::resource('kunjunganrumah', \App\Http\Controllers\KunjunganRumahController::class);
+    Route::resource('catatankasus', \App\Http\Controllers\CatatanKasusController::class);
+    Route::resource('jadwal', \App\Http\Controllers\JadwalController::class);
+    Route::resource('jadwalpiket', \App\Http\Controllers\jadwalpiketController::class);
+    Route::resource('daftarrapot', \App\Http\Controllers\DaftarrapotController::class);
+});
