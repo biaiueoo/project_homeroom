@@ -1,9 +1,10 @@
-@extends('adminlte::page')
-@section('title', 'Tambah Kunjungan Rumah')
-@section('content_header')
-<h1 class="m-0 text-dark">Tambah Data Kunjungan Rumah</h1>
-@stop
-@section('content')
+@extends('dashboard.master')
+@section('nav')
+@include('dashboard.nav')
+@endsection
+@section('page', 'Siswa')
+@section('main')
+@include('dashboard.main')
 <form action="{{ route('kunjunganrumah.store') }}" method="post">
     @csrf
     <div class="row">
@@ -145,7 +146,6 @@
     <!-- End Modal -->
 </form>
 
-@push('js')
 <script>
     $('#example2').DataTable({
         "responsive": true,
@@ -163,5 +163,5 @@
         $('#staticBackdrop').modal('hide');
     }
 </script>
-@endpush
+
 @stop
