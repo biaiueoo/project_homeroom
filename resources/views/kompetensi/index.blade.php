@@ -45,7 +45,6 @@ table-stripped" id="example2">
         </div>
     </div>
 @stop
-@push('js')
     <form action="" id="delete-form" method="post">
         @method('delete')
         @csrf
@@ -63,4 +62,3 @@ table-stripped" id="example2">
             }
         }
     </script>
-@endpush
