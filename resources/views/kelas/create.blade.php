@@ -19,6 +19,7 @@
                                 <span class="text danger">{{ $message }}</span>
                             @enderror
                         </div>
+
                         <div class="form-group">
                             <label for="kdkompetensi">Kompetensi Keahlian</label>
                             <div class="input-group">
@@ -29,12 +30,17 @@
                                     placeholder="Kompetensi Keahlian" id="kompetensi_keahlian" name="kompetensi_keahlian"
                                     aria-label="Kompetensi Keahlian" value="{{ old('kompetensi_keahlian') }}"
                                     aria-describedby="cari" readonly>
-                                <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal"
-                                    data-bs-target="#staticBackdrop">
-                                    Cari Kompetensi Keahlian
-                                </a>
+                                <div class="input-group-append">
+                                    <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop">
+                                        Cari Kompetensi Keahlian
+                                    </a>
+                                </div>
                             </div>
                         </div>
+
+
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Simpan</button>
