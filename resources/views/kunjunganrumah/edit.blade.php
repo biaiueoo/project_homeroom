@@ -2,7 +2,7 @@
 @section('nav')
 @include('dashboard.nav')
 @endsection
-@section('page', 'Siswa')
+@section('page', 'Kunjungan Rumah')
 @section('main')
 @include('dashboard.main')
 <form action="{{ route('kunjunganrumah.update', $kunjunganrumah->id) }}" method="post">
