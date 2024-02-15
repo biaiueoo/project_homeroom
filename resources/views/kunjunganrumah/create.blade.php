@@ -2,7 +2,7 @@
 @section('nav')
 @include('dashboard.nav')
 @endsection
-@section('page', 'Siswa')
+@section('page', 'Kunjungan Rumah')
 @section('main')
 @include('dashboard.main')
 <form action="{{ route('kunjunganrumah.store') }}" method="post">
@@ -13,13 +13,15 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label for="kdkasus">Kasus</label>
+                        <label for="kasus">Kasus</label>
+                        <input type="hidden" name="kdkasus" id="kdkasus" value="{{ old('kdkasus') }}">
                         <div class="input-group">
-                            <input type="hidden" name="kdkasus" id="kdkasus" value="{{ old('kdkasus') }}">
-                            <input type="text" class="form-control @error('kasus') is-invalid @enderror" placeholder="Kasus" id="kasus" name="kasus" aria-label="Kasus" value="{{ old('kasus') }}" aria-describedby="cari" readonly>
-                            <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                Cari Kasus
-                            </a>
+                            <input type="text" class="form-control @error('kasus') is-invalid @enderror" placeholder="kasus" id="kasus" name="kasus" aria-label="kasus" value="{{ old('kasus') }}" aria-describedby="cari" readonly>
+                            <div class="input-group-append">
+                                <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Cari Kasus
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -82,6 +84,11 @@
                         @error('tahun_ajaran')
                         <span class="text danger">{{ $message }}</span>
                         @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="ttd">Tanda Tangan</label>
+                        <input type="file" name="ttd" class="form-control" accept="image/*,application/pdf">
                     </div>
 
 
