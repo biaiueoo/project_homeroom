@@ -30,21 +30,22 @@ class KunjunganRumahController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kdkasus' => 'required|exists:catatan_kasus,id',
-            'tanggal' => 'required',
-            'solusi' => 'required',
-            'ttd' => 'required|mimes:jpeg,png,jpg,gif,pdf|max:2048', // Sesuaikan dengan kebutuhan Anda
+            // Your other validation rules
+            'ttd' => 'required|mimes:jpeg,png,jpg,gif,pdf|max:2048',
         ]);
 
-        // Mengunggah file tanda tangan ke direktori penyimpanan yang diinginkan
-        $ttdPath = $request->file('ttd')->store('ttd', 'public');
+        // Check if the file exists in the request
+        if ($request->hasFile('ttd')) {
+            // Mengunggah file tanda tangan ke direktori penyimpanan yang diinginkan
+            $ttdPath = $request->file('ttd')->store('ttd', 'storage');
 
-        KunjunganRumah::create([
-            'kdkasus' => $request->kdkasus,
-            'tanggal' => $request->tanggal,
-            'solusi' => $request->solusi,
-            'ttd' => $ttdPath, // Menyimpan path file tanda tangan
-        ]);
+            KunjunganRumah::create([
+                'kdkasus' => $request->kdkasus,
+                'tanggal' => $request->tanggal,
+                'solusi' => $request->solusi,
+                'ttd' => $ttdPath,
+            ]);
+        }
 
         return redirect()->route('kunjunganrumah.index')->with('success_message', 'Berhasil menambah catatan kasus');
     }
