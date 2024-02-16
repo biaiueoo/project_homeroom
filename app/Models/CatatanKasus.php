@@ -14,14 +14,20 @@ class CatatanKasus extends Model
         'semester',
         'tahun_ajaran',
         'kasus',
-        'keterangan',
         'tindak_lanjut',
         'status_kasus',
         'dampingan_bk',
-        
+        'user_walas',
+        'user_kakom',
+        'user_bk',
+        'user_kesiswaan'
     ];
 
-    
+    public function getUserByRole($role)
+    {
+        return $this->belongsTo(User::class, $role, 'id');
+    }
+
     public function fsiswa()
     {
         return $this->belongsTo(Siswa::class, 'id_siswa', 'id');

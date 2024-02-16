@@ -1,10 +1,9 @@
-@extends('dashboard.master')
-@section('nav')
-@include('dashboard.nav')
-@endsection
-@section('page', 'Kunjungan Rumah')
-@section('main')
-@include('dashboard.main')
+@extends('adminlte::page')
+@section('title', 'Edit Kunjungan Rumah')
+@section('content_header')
+<h1 class="m-0 text-dark">Edit Data Kunjungan Rumah</h1>
+@stop
+@section('content')
 <form action="{{ route('kunjunganrumah.update', $kunjunganrumah->id) }}" method="post">
     @csrf
     @method('PUT') <!-- Menambahkan metode PUT untuk update -->
@@ -12,6 +11,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+
                     <div class="form-group">
                         <label for="kdkasus">Kasus</label>
                         <div class="input-group">
@@ -144,6 +144,7 @@
     <!-- End Modal -->
 </form>
 
+@push('js')
 <script>
     $('#example2').DataTable({
         "responsive": true,
@@ -161,4 +162,5 @@
         $('#staticBackdrop').modal('hide');
     }
 </script>
+@endpush
 @stop
