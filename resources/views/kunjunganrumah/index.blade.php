@@ -1,9 +1,10 @@
-@extends('adminlte::page')
-@section('title', 'List Catatan Kasus')
-@section('content_header')
-<h1 class="m-0 text-dark">List Catatan Kasus</h1>
-@stop
-@section('content')
+@extends('dashboard.master')
+@section('nav')
+@include('dashboard.nav')
+@endsection
+@section('page', 'Kunjungan Rumah')
+@section('main')
+@include('dashboard.main')
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -39,7 +40,9 @@
                             <td>{{ $kr->tanggal}}</td>
                             <td>{{ $kr->fkasus->semester }}</td>
                             <td>{{ $kr->fkasus->tahun_ajaran }}</td>
-                            <td>{{ $kr->ttd }}</td>
+                            <td>
+                                <img src="{{ asset('uploads/' . $komp->ttd) }}" alt="Gambar TTD" width="150">
+                            </td>
                             <td>
                                 <a href="{{ route('kunjunganrumah.edit', $kr) }}" class="btn btn-primary btn-xs">
                                     Edit
@@ -57,7 +60,6 @@
     </div>
 </div>
 @stop
-@push('js')
 <form action="" id="delete-form" method="post">
     @method('delete')
     @csrf
@@ -75,4 +77,3 @@
         }
     }
 </script>
-@endpush
