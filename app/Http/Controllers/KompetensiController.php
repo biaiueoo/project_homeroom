@@ -20,16 +20,26 @@ class KompetensiController extends Controller
     {
         return view('kompetensi.create');
     }
+
     public function store(Request $request)
     {
         $request->validate([
-            'kompetensi_keahlian' => 'required|unique:kompetensi_keahlian,kompetensi_keahlian'
+            'file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
         ]);
-        $array = $request->only([
-            'kompetensi_keahlian'
-        ]);
-        $kompetensi = kompetensi::create($array);
-        return redirect()->route('kompetensi.index')->with('success_message', 'Berhasil menambah Kompetensi Keahlian baru');
+
+        // Handle file upload
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads'), $fileName);
+
+            // Simpan nama file ke dalam kolom 'kompetensi_keahlian' di dalam database
+            Kompetensi::create(['kompetensi_keahlian' => $fileName]);
+
+            return redirect()->route('kompetensi.index')->with('success_message', 'File berhasil diunggah.');
+        }
+
+        return redirect()->back()->with('error_message', 'Gagal mengunggah file.');
     }
 
 
@@ -59,9 +69,9 @@ class KompetensiController extends Controller
 
     public function destroy(Request $request, $id)
     {
-       
-       $kompetensi = kompetensi::find($id);
-        if ($kompetensi)$kompetensi->delete();
-        return redirect()->route('kompetensi.index') ->with('success_message', 'Berhasil menghapus Kompetensi Keahlian');
+
+        $kompetensi = kompetensi::find($id);
+        if ($kompetensi) $kompetensi->delete();
+        return redirect()->route('kompetensi.index')->with('success_message', 'Berhasil menghapus Kompetensi Keahlian');
     }
 }

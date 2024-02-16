@@ -29,20 +29,31 @@ class KunjunganRumahController extends Controller
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'kdkasus' => 'required|exists:catatan_kasus,id',
-        //     'tanggal' => 'required',
-        //     'solusi' => 'required',
-        // ]);
-
-        KunjunganRumah::create([
-            'kdkasus' => $request->kdkasus,
-            'tanggal' => $request->tanggal,
-            'solusi' => $request->solusi
+        $request->validate([
+            'file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
+            'kdkasus' => 'required',
+            'tanggal' => 'required',
+            'solusi' => 'required',
         ]);
 
-        return redirect()->route('kunjunganrumah.index')->with('success_message', 'Berhasil menambah catatan kasus');
+        // Check if the file exists in the request
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads'), $fileName);
+
+            // Simpan data ke dalam tabel 'KunjunganRumah'
+            KunjunganRumah::create([
+                'kdkasus' => $request->kdkasus,
+                'tanggal' => $request->tanggal,
+                'solusi' => $request->solusi,
+                'ttd' => $fileName,
+            ]);
+
+            return redirect()->route('kunjunganrumah.index')->with('success_message', 'Berhasil menambah catatan kasus');
+        }
     }
+
 
     public function edit($id)
     {
@@ -57,17 +68,6 @@ class KunjunganRumahController extends Controller
 
     public function update(Request $request, $id)
     {
-        // $request->validate([
-        //     'kdsiswa' => 'required|exists:siswa,id',
-        //     'semester' => 'required',
-        //     'tahun_ajaran' => 'required',
-        //     'kasus' => 'required',
-        //     'keterangan' => 'required',
-        //     'tanggal' => 'required',
-        //     'tindak_lanjut' => 'required',
-        //     'status_kasus' => 'required',
-        //     'dampingan_bk' => 'required',
-        // ]);
 
         $kunjunganrumah = KunjunganRumah::findOrFail($id);
         $kunjunganrumah->update([
