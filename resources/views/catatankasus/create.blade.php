@@ -84,14 +84,14 @@
                             @enderror
                         </div> --}}
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="keterangan">File Upload Keterangan (PDF, DOC, XLS, IMG, PNG, JPG)</label>
                             <input type="file" class="form-control-file @error('keterangan') is-invalid @enderror" 
                                 id="keterangan" name="keterangan" accept=".pdf, .doc, .xls, .jpg, .jpeg, .png">
                             @error('keterangan')
                                 <span class="text danger">{{ $message }}</span>
                             @enderror
-                        </div>
+                        </div> --}}
 
 
                         <div class="form-group">
@@ -138,11 +138,11 @@
                         </div>
 
 
-                        {{-- <div class="form-group">
+                        <div class="form-group">
                             <label for="user_admin">User Admin</label>
                             <input type="text" class="form-control" id="user_admin" name="user_admin"
                                 value="{{ old('user_admin') }}">
-                        </div> --}}
+                        </div>
 
                         {{-- <div class="form-group">
                             <label for="user_name">Nama Pengguna</label>
@@ -171,7 +171,7 @@
                     </div>
                     <div class="modal-body">
                         <table class="table table-hover table-bordered table-stripped" id="example2">
-                            <thead> 
+                            <thead>
                                 <tr>
                                     <th>No.</th>
                                     <th>Nama Siswa</th>

@@ -32,30 +32,29 @@
 
                         <div class="form-group">
                             <label for="kelas">Kelas</label>
-                            <input type="hidden" name="kdkelas" id="kdkelas" value="{{ old('kdkelas') }}">
                             <div class="input-group">
+                                <input type="hidden" name="kdkelas" id="kdkelas" value="{{ old('kdkelas') }}">
                                 <input type="text" class="form-control @error('kelas') is-invalid @enderror"
                                     placeholder="Kelas" id="kelas" name="kelas" aria-label="Kelas"
                                     value="{{ old('kelas') }}" aria-describedby="cari" readonly>
-                                <div class="input-group-append">
-                                    <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdropKelas">
-                                        Cari Kelas
-                                    </a>
-                                </div>
+                                <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdropKelas">
+                                    Cari Kelas
+                                </a>
                             </div>
                         </div>
 
-
                         <div class="form-group">
                             <label for="kdkompetensi">Kompetensi Keahlian</label>
-                            {{-- <div class="input-group"> --}}
-                            <input type="hidden" name="kdkompetensi" id="kdkompetensi" value="{{ old('kdkompetensi') }}">
-                            <input type="text" class="form-control @error('kompetensi_keahlian') is-invalid @enderror"
-                                placeholder="Kompetensi Keahlian" id="kompetensi_keahlian" name="kompetensi_keahlian"
-                                aria-label="Kompetensi Keahlian" value="{{ old('kompetensi_keahlian') }}"
-                                aria-describedby="cari" readonly>
-                            {{-- </div> --}}
+                            <div class="input-group">
+                                <input type="hidden" name="kdkompetensi" id="kdkompetensi"
+                                    value="{{ old('kdkompetensi') }}">
+                                <input type="text"
+                                    class="form-control @error('kompetensi_keahlian') is-invalid @enderror"
+                                    placeholder="Kompetensi Keahlian" id="kompetensi_keahlian" name="kompetensi_keahlian"
+                                    aria-label="Kompetensi Keahlian" value="{{ old('kompetensi_keahlian') }}"
+                                    aria-describedby="cari" readonly>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -341,15 +340,13 @@
             "responsive": true,
         });
 
-        
-
         function pilihKelas(id, kelas, kompetensi_keahlian) {
             document.getElementById('kdkelas').value = id;
             document.getElementById('kelas').value = kelas;
             // Automatically populate Kompetensi Keahlian based on the selected Kelas
             document.getElementById('kdkompetensi').value = id; // Change this line according to your data structure
             document.getElementById('kompetensi_keahlian').value =
-                kompetensi_keahlian; // Change this line according to your data structure
+            kompetensi_keahlian; // Change this line according to your data structure
             $('#staticBackdropKelas').modal('hide');
         }
     </script>

@@ -38,12 +38,10 @@ class CatatanKasusController extends Controller
             'semester' => 'required',
             'tahun_ajaran' => 'required',
             'kasus' => 'required',
-            'keterangan' => 'nullable',
             'tindak_lanjut' => 'required',
             'status_kasus' => 'required',
             'dampingan_bk' => 'required',
             'semester' => 'required',
-            
         ]);
 
         $user = Auth::user();

@@ -1,10 +1,9 @@
-@extends('dashboard.master')
-@section('nav')
-@include('dashboard.nav')
-@endsection
-@section('page', 'Kunjungan Rumah')
-@section('main')
-@include('dashboard.main')
+@extends('adminlte::page')
+@section('title', 'Tambah Kunjungan Rumah')
+@section('content_header')
+<h1 class="m-0 text-dark">Tambah Data Kunjungan Rumah</h1>
+@stop
+@section('content')
 <form action="{{ route('kunjunganrumah.store') }}" method="post">
     @csrf
     <div class="row">
@@ -13,15 +12,13 @@
                 <div class="card-body">
 
                     <div class="form-group">
-                        <label for="kasus">Kasus</label>
-                        <input type="hidden" name="kdkasus" id="kdkasus" value="{{ old('kdkasus') }}">
+                        <label for="kdkasus">Kasus</label>
                         <div class="input-group">
-                            <input type="text" class="form-control @error('kasus') is-invalid @enderror" placeholder="kasus" id="kasus" name="kasus" aria-label="kasus" value="{{ old('kasus') }}" aria-describedby="cari" readonly>
-                            <div class="input-group-append">
-                                <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                    Cari Kasus
-                                </a>
-                            </div>
+                            <input type="hidden" name="kdkasus" id="kdkasus" value="{{ old('kdkasus') }}">
+                            <input type="text" class="form-control @error('kasus') is-invalid @enderror" placeholder="Kasus" id="kasus" name="kasus" aria-label="Kasus" value="{{ old('kasus') }}" aria-describedby="cari" readonly>
+                            <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Cari Kasus
+                            </a>
                         </div>
                     </div>
 
@@ -86,11 +83,6 @@
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="ttd">Tanda Tangan</label>
-                        <input type="file" name="ttd" class="form-control" accept="image/*,application/pdf">
-                    </div>
-
 
 
                 </div>
@@ -153,6 +145,7 @@
     <!-- End Modal -->
 </form>
 
+@push('js')
 <script>
     $('#example2').DataTable({
         "responsive": true,
@@ -170,5 +163,5 @@
         $('#staticBackdrop').modal('hide');
     }
 </script>
-
+@endpush
 @stop
