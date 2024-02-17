@@ -2,7 +2,7 @@
 @section('nav')
 @include('dashboard.nav')
 @endsection
-@section('page', 'Siswa')
+@section('page', 'Kelas')
 @section('main')
 @include('dashboard.main')
 <form action="{{ route('kelas.store') }}" method="post">
