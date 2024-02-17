@@ -115,79 +115,86 @@ class SiswaController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    $siswa = Siswa::find($id);
-    if (!$siswa) {
-        return redirect()->route('siswa.index')->with('error_message', 'Siswa dengan id = ' . $id . ' tidak ditemukan');
+    {
+        $siswa = Siswa::find($id);
+        if (!$siswa) {
+            return redirect()->route('siswa.index')->with('error_message', 'Siswa dengan id = ' . $id . ' tidak ditemukan');
+        }
+
+        $request->validate([
+            'nis' => 'required|unique:siswa,nis,' . $id,
+            'nama_lengkap',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'alamat',
+            'agama',
+            'kewarganegaraan',
+            'no_hp',
+            'email',
+            'nisn',
+            'kdkelas',
+            'kdkompetensi',
+            'tahun_masuk',
+            'nama_ayah',
+            'nama_ibu',
+            'alamat_ortu',
+            'no_ortu',
+            'nama_sekolah_asal',
+            'alamat_sekolah',
+            'tahun_lulus',
+            'riwayat_penyakit',
+            'alergi',
+            'prestasi_akademik',
+            'prestasi_non_akademik',
+            'ekstrakurikuler',
+            'biografi'
+        ]);
+
+        $array = $request->only([
+            'nis',
+            'nama_lengkap',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'alamat',
+            'agama',
+            'kewarganegaraan',
+            'no_hp',
+            'email',
+            'nisn',
+            'kdkelas',
+            'kdkompetensi',
+            'tahun_masuk',
+            'nama_ayah',
+            'nama_ibu',
+            'alamat_ortu',
+            'no_ortu',
+            'nama_sekolah_asal',
+            'alamat_sekolah',
+            'tahun_lulus',
+            'riwayat_penyakit',
+            'alergi',
+            'prestasi_akademik',
+            'prestasi_non_akademik',
+            'ekstrakurikuler',
+            'biografi'
+        ]);
+
+        $siswa->update($array);
+
+        // Associate the student with the class and competency
+        $siswa->fkelas()->associate($request->input('kdkelas'));
+        $siswa->fkompetensi()->associate($request->input('kdkompetensi'));
+
+        $siswa->save();
+
+        return redirect()->route('siswa.index')->with('success_message', 'Data siswa berhasil diperbarui');
     }
 
-    $request->validate([
-        'nis' => 'required|unique:siswa,nis,' . $id,
-        'nama_lengkap',
-        'tempat_lahir',
-        'tanggal_lahir',
-        'alamat',
-        'agama',
-        'kewarganegaraan',
-        'no_hp',
-        'email',
-        'nisn',
-        'kdkelas',
-        'kdkompetensi',
-        'tahun_masuk',
-        'nama_ayah',
-        'nama_ibu',
-        'alamat_ortu',
-        'no_ortu',
-        'nama_sekolah_asal',
-        'alamat_sekolah',
-        'tahun_lulus',
-        'riwayat_penyakit',
-        'alergi',
-        'prestasi_akademik',
-        'prestasi_non_akademik',
-        'ekstrakurikuler',
-        'biografi'
-    ]);
+    public function destroy(Request $request, $id)
+    {
 
-    $array = $request->only([
-        'nis',
-        'nama_lengkap',
-        'tempat_lahir',
-        'tanggal_lahir',
-        'alamat',
-        'agama',
-        'kewarganegaraan',
-        'no_hp',
-        'email',
-        'nisn',
-        'kdkelas',
-        'kdkompetensi',
-        'tahun_masuk',
-        'nama_ayah',
-        'nama_ibu',
-        'alamat_ortu',
-        'no_ortu',
-        'nama_sekolah_asal',
-        'alamat_sekolah',
-        'tahun_lulus',
-        'riwayat_penyakit',
-        'alergi',
-        'prestasi_akademik',
-        'prestasi_non_akademik',
-        'ekstrakurikuler',
-        'biografi'
-    ]);
-    
-    $siswa->update($array);
-
-    // Associate the student with the class and competency
-    $siswa->fkelas()->associate($request->input('kdkelas'));
-    $siswa->fkompetensi()->associate($request->input('kdkompetensi'));
-
-    $siswa->save();
-
-    return redirect()->route('siswa.index')->with('success_message', 'Data siswa berhasil diperbarui');
-}
-
+        $siswa = siswa::find($id);
+        if ($siswa) $siswa->delete();
+        return redirect()->route('siswa.index')->with('success_message', 'Berhasil menghapus siswa');
+    }
 }
