@@ -1,9 +1,10 @@
-@extends('adminlte::page')
-@section('title', 'Tambah daftarrapot')
-@section('content_header')
-<h1 class="m-0 text-dark">Tambah daftarrapot</h1>
-@stop
-@section('content')
+@extends('dashboard.master')
+@section('nav')
+@include('dashboard.nav')
+@endsection
+@section('page', 'Daftar Rapot')
+@section('main')
+@include('dashboard.main')
 <form action="{{route('daftarrapot.store')}}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="row">
@@ -46,17 +47,17 @@
 
 
                         <div class="form-group">
-    <label for="bukti_ttd">TTD</label>
-    <input type="file" class="form-control-file @error('bukti_ttd') is-invalid @enderror" id="bukti_ttd" name="bukti_ttd" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.heic">
-    @error('bukti_ttd')
-        <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
-    @enderror
-</div>
+                            <label for="bukti_ttd">TTD</label>
+                            <input type="file" class="form-control-file @error('bukti_ttd') is-invalid @enderror" id="bukti_ttd" name="bukti_ttd" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.heic">
+                            @error('bukti_ttd')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
 
 
-                        
+
 
 
                         <div class="form-group">
@@ -128,23 +129,23 @@
         </div>
     </div>
     @stop
-    @push('js')
-    <script>
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#tampil').attr('src', e.target.result);
-                $('#tampil').show(); // Menampilkan elemen gambar setelah berhasil memuat gambar
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
 
-    $("#bukti_ttd").change(function () {
-        readURL(this);
-    });
-</script>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#tampil').attr('src', e.target.result);
+                    $('#tampil').show(); // Menampilkan elemen gambar setelah berhasil memuat gambar
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#bukti_ttd").change(function() {
+            readURL(this);
+        });
+    </script>
     <script>
         $('#example2').DataTable({
             "responsive": true,
@@ -159,5 +160,3 @@
 
         }
     </script>
-
-    @endpush

@@ -1,9 +1,10 @@
-@extends('adminlte::page')
-@section('title', 'List Jadwal')
-@section('content_header')
-<h1 class="m-0 text-dark">Daftar Rapot </h1>
-@stop
-@section('content')
+@extends('dashboard.master')
+@section('nav')
+@include('dashboard.nav')
+@endsection
+@section('page', 'Daftar Rapot')
+@section('main')
+@include('dashboard.main')
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -71,7 +72,7 @@ table-stripped" id="example2">
     </div>
 </div>
 @stop
-@push('js')
+
 <form action="" id="delete-form" method="post">
     @method('delete')
     @csrf
@@ -89,4 +90,3 @@ table-stripped" id="example2">
         }
     }
 </script>
-@endpush
