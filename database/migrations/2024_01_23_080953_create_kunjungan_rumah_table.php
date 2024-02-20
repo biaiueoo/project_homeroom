@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('kunjungan_rumah', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kdkasus');
-            $table->foreign('kdkasus')->references('id')->on('catatan_kasus') 
-            ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('kdkasus')->references('id')->on('catatan_kasus')
+                ->onDelete('cascade')->onUpdate('cascade');
             $table->date('tanggal');
-            $table->string('solusi',50);
-            $table->string('ttd',50);
+            $table->string('solusi', 50);
+            $table->binary('surat')->length('longBlob');
+            $table->binary('dokumentasi')->length('longBlob');
             $table->timestamps();
         });
     }
