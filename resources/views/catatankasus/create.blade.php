@@ -2,7 +2,7 @@
 @section('nav')
     @include('dashboard.nav')
 @endsection
-@section('page', 'Catatan Kasus')
+@section('page', 'Kelas')
 @section('main')
     @include('dashboard.main')
     <form action="{{ route('catatankasus.store') }}" method="post" enctype="multipart/form-data">
@@ -93,6 +93,14 @@
                             @enderror
                         </div> --}}
 
+                        <div class="form-group">
+                            <label for="file">Upload File (jpg, jpeg, png, pdf)</label>
+                            <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file">
+                            @error('file')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
 
                         <div class="form-group">
                             <label for="tanggal">Tanggal</label>
@@ -104,16 +112,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="tindak_lanjut">Tindak Lanjut</label>
-                            <input type="text" class="form-control @error('tindak_lanjut') is-invalid @enderror"
-                                id="tindak_lanjut" placeholder="Tindak Lanjut" name="tindak_lanjut"
-                                value="{{ old('tindak_lanjut') }}">
-                            @error('tindak_lanjut')
+                            <label for="tidak_lanjut">Tindak Lanjut</label>
+                            <input type="text" class="form-control @error('tidak_lanjut') is-invalid @enderror"
+                                id="tidak_lanjut" placeholder="Tindak Lanjut" name="tidak_lanjut"
+                                value="{{ old('tidak_lanjut') }}">
+                            @error('tidak_lanjut')
                                 <span class="text danger">{{ $message }}</span>
                             @enderror
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="status_kasus">Status Kasus</label>
                             <input type="text" class="form-control @error('status_kasus') is-invalid @enderror"
                                 id="status_kasus" placeholder="Status Kasus" name="status_kasus"
@@ -121,7 +129,7 @@
                             @error('status_kasus')
                                 <span class="text danger">{{ $message }}</span>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label for="dampingan_bk">Dampingan BK</label>
@@ -138,11 +146,11 @@
                         </div>
 
 
-                        <div class="form-group">
-                            <label for="user_admin">User Admin</label>
-                            <input type="text" class="form-control" id="user_admin" name="user_admin"
-                                value="{{ old('user_admin') }}">
-                        </div>
+                        {{-- <div class="form-group">
+                            <label for="user_bk">User Level</label>
+                            <input type="text" class="form-control" id="user_bk" name="user_bk"
+                                value="{{ auth()->user()->id }}" readonly>
+                        </div> --}}
 
                         {{-- <div class="form-group">
                             <label for="user_name">Nama Pengguna</label>

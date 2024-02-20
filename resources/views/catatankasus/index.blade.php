@@ -54,6 +54,33 @@ table-stripped" id="example2">
                                         <td>{{ $ck->semester }}</td>
                                         <td>{{ $ck->tahun_ajaran }}</td>
                                         <td>{{ $ck->kasus }}</td>
+                                        {{-- <td>
+                                            @if ($ck->keterangan)
+                                                @php
+                                                    $extension = pathinfo($ck->keterangan, PATHINFO_EXTENSION);
+                                                    $imageExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+                                                @endphp
+
+                                                @if (in_array($extension, $imageExtensions))
+                                                    <img src="{{ asset('uploads/' . $ck->keterangan) }}"
+                                                        alt="File Image" style="max-width: 100px; max-height: 100px;">
+                                                @else
+                                                    <a href="{{ asset('uploads/' . $ck->keterangan) }}"
+                                                        target="_blank">
+                                                        Tampilkan File
+                                                    </a>
+                                                @endif
+                                            @endif
+                                            <form action="{{ route('catatankasus.store') }}" method="post"
+                                                enctype="multipart/form-data">
+                                                @csrf
+                                                <input type="hidden" name="kdsiswa" value="{{ old('kdsiswa') }}">
+                                                <input type="file" name="keterangan"
+                                                    accept=".pdf, .doc, .docx, .xls, .xlsx, .jpg, .jpeg, .png">
+                                                <button type="submit" class="btn btn-primary">Upload Keterangan</button>
+                                            </form>
+                                        </td> --}}
+
                                         <td>
                                             @if ($ck->keterangan)
                                                 @php
@@ -62,29 +89,20 @@ table-stripped" id="example2">
                                                 @endphp
 
                                                 @if (in_array($extension, $imageExtensions))
-                                                    <img src="{{ asset('storage/uploads/' . $ck->keterangan) }}"
-                                                        alt="File Image" style="max-width: 100px; max-height: 100px;">
+                                                    <img src="{{ asset('uploads/' . $ck->keterangan) }}" alt="File Image"
+                                                        style="max-width: 100px; max-height: 100px;">
                                                 @else
-                                                    <a href="{{ asset('storage/uploads/' . $ck->keterangan) }}"
-                                                        target="_blank">
-                                                        Tampilkan File
+                                                    <a href="{{ asset('uploads/' . $ck->keterangan) }}" target="_blank">
+                                                        {{ $ck->keterangan }}
                                                     </a>
                                                 @endif
                                             @endif
                                         </td>
-                                        <form action="{{ route('catatankasus.upload') }}" method="post"
-                                            enctype="multipart/form-data">
-                                            @csrf
-                                            <input type="hidden" name="kdsiswa" value="{{ old('kdsiswa') }}">
-                                            <input type="file" name="keterangan"
-                                                accept=".pdf, .doc, .docx, .xls, .xlsx, .jpg, .jpeg, .png">
-                                            <button type="submit" class="btn btn-primary">Upload Keterangan</button>
-                                        </form>
+
                                         <td>{{ $ck->tanggal }}</td>
                                         <td>{{ $ck->tindak_lanjut }}</td>
                                         <td>{{ $ck->status_kasus }}</td>
                                         <td>{{ $ck->dampingan_bk }}</td>
-                                        <td>{{ $ck->user_admin }}</td>
                                         {{-- @if (Auth::user()->level == 'admin')
                                             <td>{{ $ck->user_admin }}</td>
                                         @elseif(Auth::user()->level == 'walas')
@@ -115,22 +133,21 @@ table-stripped" id="example2">
         </div>
     </div>
 @stop
-@push('js')
-    <form action="" id="delete-form" method="post">
-        @method('delete')
-        @csrf
-    </form>
-    <script>
-        $('#example2').DataTable({
-            "responsive": true,
-        });
 
-        function notificationBeforeDelete(event, el) {
-            event.preventDefault();
-            if (confirm('Apakah anda yakin akan menghapus data ? ')) {
-                $("#delete-form").attr('action', $(el).attr('href'));
-                $("#delete-form").submit();
-            }
+<form action="" id="delete-form" method="post">
+    @method('delete')
+    @csrf
+</form>
+<script>
+    $('#example2').DataTable({
+        "responsive": true,
+    });
+
+    function notificationBeforeDelete(event, el) {
+        event.preventDefault();
+        if (confirm('Apakah anda yakin akan menghapus data ? ')) {
+            $("#delete-form").attr('action', $(el).attr('href'));
+            $("#delete-form").submit();
         }
-    </script>
-@endpush
+    }
+</script>
