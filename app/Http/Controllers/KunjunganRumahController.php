@@ -29,29 +29,32 @@ class KunjunganRumahController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
+            'surat' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
+            'dokumentasi' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
             'kdkasus' => 'required',
             'tanggal' => 'required',
             'solusi' => 'required',
         ]);
 
-        // Check if the file exists in the request
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads'), $fileName);
+        // Pengolahan file
+        $suratFile = $request->file('surat');
+        $suratContents = file_get_contents($suratFile->getRealPath());
 
-            // Simpan data ke dalam tabel 'KunjunganRumah'
-            KunjunganRumah::create([
-                'kdkasus' => $request->kdkasus,
-                'tanggal' => $request->tanggal,
-                'solusi' => $request->solusi,
-                'ttd' => $fileName,
-            ]);
+        $dokumentasiFile = $request->file('dokumentasi');
+        $dokumentasiContents = file_get_contents($dokumentasiFile->getRealPath());
 
-            return redirect()->route('kunjunganrumah.index')->with('success_message', 'Berhasil menambah catatan kasus');
-        }
+        // Simpan data ke dalam tabel 'KunjunganRumah'
+        KunjunganRumah::create([
+            'kdkasus' => $request->kdkasus,
+            'tanggal' => $request->tanggal,
+            'solusi' => $request->solusi,
+            'surat' => $suratContents,
+            'dokumentasi' => $dokumentasiContents,
+        ]);
+
+        return redirect()->route('kunjunganrumah.index')->with('success_message', 'Berhasil menambah catatan kasus');
     }
 
 

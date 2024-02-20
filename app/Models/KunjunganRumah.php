@@ -13,7 +13,8 @@ class KunjunganRumah extends Model
         'kdkasus',
         'tanggal',
         'solusi',
-        'ttd',
+        'surat',
+        'dokumentasi'
     ];
 
     public function fkasus()

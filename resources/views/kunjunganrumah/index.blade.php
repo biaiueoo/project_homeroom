@@ -25,7 +25,8 @@
                                 <th>Tanggal</th>
                                 <th>Semester</th>
                                 <th>Tahun Ajaran</th>
-                                <th>TTD</th>
+                                <th>Surat</th>
+                                <th>Dokumentasi</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -42,7 +43,18 @@
                                 <td>{{ $kr->fkasus->semester }}</td>
                                 <td>{{ $kr->fkasus->tahun_ajaran }}</td>
                                 <td>
-                                    <img src="{{ asset('uploads/' . $komp->ttd) }}" alt="Gambar TTD" width="150">
+                                    @if($kr->surat)
+                                    <a href="data:application/pdf;base64,{{ base64_encode($kr->surat) }}" target="_blank">Lihat Dokumen</a>
+                                    @else
+                                    <span>Tidak ada dokumen</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($kr->dokumentasi)
+                                    <img src="data:image/jpeg;base64,{{ base64_encode($kr->dokumentasi) }}" alt="Gambar Dokumentasi" width="150">
+                                    @else
+                                    <span>Tidak ada gambar</span>
+                                    @endif
                                 </td>
                                 <td>
                                     <a href="{{ route('kunjunganrumah.edit', $kr) }}" class="btn btn-primary btn-xs">
