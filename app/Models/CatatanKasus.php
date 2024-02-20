@@ -10,26 +10,23 @@ class CatatanKasus extends Model
     use HasFactory;
     protected $table = 'catatan_kasus';
     protected $fillable = [
-        'id_siswa',
+        'kdsiswa',
         'semester',
         'tahun_ajaran',
+        'tanggal',
         'kasus',
-        'tindak_lanjut',
-        'status_kasus',
+        'keterangan',
+        'tidak_lanjut',
+        // 'status_kasus',
         'dampingan_bk',
-        'user_walas',
-        'user_kakom',
-        'user_bk',
-        'user_kesiswaan'
+        // 'user_admin',
+        // 'user_walas',
+        // 'user_bk',
+        // 'user_kakom',
     ];
-
-    public function getUserByRole($role)
-    {
-        return $this->belongsTo(User::class, $role, 'id');
-    }
 
     public function fsiswa()
     {
-        return $this->belongsTo(Siswa::class, 'id_siswa', 'id');
+        return $this->belongsTo(Siswa::class, 'kdsiswa', 'id');
     }
 }
