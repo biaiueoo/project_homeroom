@@ -38,6 +38,7 @@
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Login</button>
+                                    <p class="text-secondary">Don't have an account? <a href="{{ route('register') }}" class="text-primary">Register here</a></p>
                                 </div>
                             </form>
                             <!-- End of login form -->

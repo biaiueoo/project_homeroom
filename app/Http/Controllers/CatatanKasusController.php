@@ -33,60 +33,58 @@ class CatatanKasusController extends Controller
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //     'kdsiswa' => 'required',
-        //     'semester' => 'required',
-        //     'tahun_ajaran' => 'required',
-        //     'kasus' => 'required',
-        //     'file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
-        //     'tanggal' => 'required',
-        //     'tidak_lanjut' => 'required',
-        //     // 'status_kasus' => 'required',
-        //     'dampingan_bk' => 'required',
-        //     // 'user_bk' => 'required',
+        $request->validate([
+            'kdsiswa' => 'required',
+            'semester' => 'required',
+            'tahun_ajaran' => 'required',
+            'kasus' => 'required',
+            'keterangan' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
+            'tanggal' => 'required',
+            'tidak_lanjut' => 'required',
+            'status_kasus' => 'required',
+            'dampingan_bk' => 'required',
+            // 'user_bk' => 'required',
 
-        // ]);
+        ]);
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads'), $fileName);
+        $keteranganFile = $request->file('keterangan');
+        $keteranganContents = file_get_contents($keteranganFile->getRealPath());    
 
             CatatanKasus::create([
                 'kdsiswa' => $request->kdsiswa,
                 'semester' => $request->semester,
                 'tahun_ajaran' => $request->tahun_ajaran,
                 'kasus' => $request->kasus,
-                'keterangan' => $fileName,
+                'keterangan' => $keteranganContents,
                 'tanggal' => $request->tanggal,
                 'tidak_lanjut' => $request->tidak_lanjut,
-                // 'status_kasus' => $request->status_kasus,
+                'status_kasus' => $request->status_kasus,
                 'dampingan_bk' => $request->dampingan_bk,
                 // 'user_bk' => $request->user_bk,
             ]);
 
             return redirect()->route('catatankasus.index')->with('success_message', 'Berhasil menambah catatan kasus baru');
-        }
+        
     }
 
 
-    public function upload(Request $request)
-    {
-        $request->validate([
-            'kdsiswa' => 'required',
-            'keterangan' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:2048',
-        ]);
+    // public function upload(Request $request)
+    // {
+    //     $request->validate([
+    //         'kdsiswa' => 'required',
+    //         'keterangan' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,jpg,jpeg,png|max:2048',
+    //     ]);
 
-        $file = $request->file('keterangan');
+    //     $file = $request->file('keterangan');
 
-        // Menyimpan file ke dalam folder storage/app/public
-        $filePath = $file->store('uploads');
+    //     // Menyimpan file ke dalam folder storage/app/public
+    //     $filePath = $file->store('uploads');
 
-        // Mengambil nama file dari path yang disimpan di storage
-        $fileName = basename($filePath);
+    //     // Mengambil nama file dari path yang disimpan di storage
+    //     $fileName = basename($filePath);
 
-        return back()->with('success_message', 'File Keterangan berhasil diupload')->with('file_name', $fileName);
-    }
+    //     return back()->with('success_message', 'File Keterangan berhasil diupload')->with('file_name', $fileName);
+    // }
 
 
 
@@ -126,7 +124,7 @@ class CatatanKasusController extends Controller
             'kasus' => $request->kasus,
             'keterangan' => $request->keterangan,
             'tanggal' => $request->tanggal,
-            'tidak_lanjut' => $request->tidak_lanjut,
+            // 'tidak_lanjut' => $request->tidak_lanjut,
             // 'status_kasus' => $request->status_kasus,
             'dampingan_bk' => $request->dampingan_bk,
         ]);

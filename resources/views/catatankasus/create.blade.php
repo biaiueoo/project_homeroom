@@ -93,13 +93,14 @@
                             @enderror
                         </div> --}}
 
-                        <div class="form-group">
-                            <label for="file">Upload File (jpg, jpeg, png, pdf)</label>
-                            <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file">
-                            @error('file')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        <!-- Form untuk upload Surat -->
+                    <div class="form-group">
+                        <label for="keterangan">Upload keterangan (pdf)</label>
+                        <input type="file" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" name="keterangan">
+                        @error('keterangan')
+                        <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
 
 
                         <div class="form-group">

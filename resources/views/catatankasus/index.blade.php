@@ -81,7 +81,7 @@ table-stripped" id="example2">
                                             </form>
                                         </td> --}}
 
-                                        <td>
+                                        {{-- <td>
                                             @if ($ck->keterangan)
                                                 @php
                                                     $extension = pathinfo($ck->keterangan, PATHINFO_EXTENSION);
@@ -96,6 +96,14 @@ table-stripped" id="example2">
                                                         {{ $ck->keterangan }}
                                                     </a>
                                                 @endif
+                                            @endif
+                                        </td> --}}
+                                        
+                                        <td>
+                                            @if($ck->keterangan)
+                                            <a href="data:application/pdf;base64,{{ base64_encode($ck->keterangan) }}" target="_blank">Lihat Dokumen</a>
+                                            @else
+                                            <span>Tidak ada dokumen</span>
                                             @endif
                                         </td>
 
