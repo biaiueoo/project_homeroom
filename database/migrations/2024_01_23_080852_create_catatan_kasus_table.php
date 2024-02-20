@@ -16,15 +16,16 @@ return new class extends Migration
         Schema::create('catatan_kasus', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kdsiswa');
-            $table->foreign('kdsiswa')->references('id')->on('siswa') 
-            ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('kdsiswa')->references('id')->on('siswa')
+                ->onDelete('cascade')->onUpdate('cascade');
             $table->date('tanggal');
-            $table->string('kasus',50);
-            $table->string('keterangan',50);
-            $table->string('tidak_lanjut',50);
+            $table->string('kasus', 50);
+            $table->binary('keterangan')->length('longBlob');
+            $table->string('tidak_lanjut', 50);
+            $table->string('status_kasus', 50);
             $table->enum('dampingan_bk', ['Ya', 'Tidak']);
-            $table->string('semester',100);
-            $table->string('tahun_ajaran',30);
+            $table->string('semester', 100);
+            $table->string('tahun_ajaran', 30);
             $table->timestamps();
         });
     }

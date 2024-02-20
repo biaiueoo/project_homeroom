@@ -104,7 +104,7 @@
                             @enderror
                         </div>
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="tindak_lanjut">Tindak Lanjut</label>
                             <input type="text" class="form-control @error('tindak_lanjut') is-invalid @enderror"
                                 id="tindak_lanjut" placeholder="Tindak Lanjut" name="tindak_lanjut"
@@ -122,7 +122,7 @@
                             @error('status_kasus')
                                 <span class="text danger">{{ $message }}</span>
                             @enderror
-                        </div>
+                        </div> --}}
 
                         <div class="form-group">
                             <label for="dampingan_bk">Dampingan BK</label>

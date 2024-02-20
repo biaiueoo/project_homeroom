@@ -40,9 +40,9 @@ class UserController extends Controller
     {
         //Menyimpan Data User Baru 
         $request->validate([
-            'nip' => 'required|unique:users,nip',
+            'nip' => 'unique:users,nip',
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'email|unique:users,email',
             'password' => 'required|confirmed',
             'level' => 'required'
         ]);
@@ -95,9 +95,9 @@ ditemukan');
     {
         //Mengedit Data User 
         $request->validate([
-            'nip' => 'required|unique:users,nip,' . $id,
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
+            'nip' => 'unique:users,nip,',
+            'name' => 'required' . $id,
+            'email' => 'email|unique:users,email,' . $id,
             'password' => 'sometimes|nullable|confirmed',
             'level' => 'required',
             'aktif' => 'required'
