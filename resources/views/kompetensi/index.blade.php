@@ -16,7 +16,7 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Gambar</th>
+                                <th>Kompetensi Keahlian</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -24,10 +24,9 @@
                             @foreach ($kompetensi as $key => $komp)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
+                                    <td>{{$komp->kompetensi_keahlian}}</td>
+
                                     {{-- <td>
-                                <img src="{{ asset('uploads/' . $komp->kompetensi_keahlian) }}" alt="Gambar Kompetensi" width="150">
-                            </td> --}}
-                                    <td>
                                         @if ($komp->kompetensi_keahlian)
                                             @php
                                                 $extension = pathinfo($komp->kompetensi_keahlian, PATHINFO_EXTENSION);
@@ -44,7 +43,8 @@
                                                 </a>
                                             @endif
                                         @endif
-                                    </td>
+                                    </td> --}}
+                                    
                                     <td>
                                         <a href="{{ route('kompetensi.edit', $komp) }}" class="btn btn-primary btn-xs">
                                             Edit

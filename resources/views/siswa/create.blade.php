@@ -343,10 +343,9 @@
         function pilihKelas(id, kelas, kompetensi_keahlian) {
             document.getElementById('kdkelas').value = id;
             document.getElementById('kelas').value = kelas;
-            // Automatically populate Kompetensi Keahlian based on the selected Kelas
             document.getElementById('kdkompetensi').value = id; // Change this line according to your data structure
             document.getElementById('kompetensi_keahlian').value =
-            kompetensi_keahlian; // Change this line according to your data structure
+                kompetensi_keahlian; // Change this line according to your data structure
             $('#staticBackdropKelas').modal('hide');
         }
     </script>

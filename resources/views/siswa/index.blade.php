@@ -96,6 +96,7 @@ table-stripped" id="example2">
     </div>
 </div>
 @stop
+
 <form action="" id="delete-form" method="post">
     @method('delete')
     @csrf

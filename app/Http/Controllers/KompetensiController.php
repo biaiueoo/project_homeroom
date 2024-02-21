@@ -21,25 +21,37 @@ class KompetensiController extends Controller
         return view('kompetensi.create');
     }
 
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
+    //     ]);
+
+    //     // Handle file upload
+    //     if ($request->hasFile('file')) {
+    //         $file = $request->file('file');
+    //         $fileName = time() . '_' . $file->getClientOriginalName();
+    //         $file->move(public_path('uploads'), $fileName);
+
+    //         // Simpan nama file ke dalam kolom 'kompetensi_keahlian' di dalam database
+    //         Kompetensi::create(['kompetensi_keahlian' => $fileName]);
+
+    //         return redirect()->route('kompetensi.index')->with('success_message', 'File berhasil diunggah.');
+    //     }
+
+    //     return redirect()->back()->with('error_message', 'Gagal mengunggah file.');
+    // }
+
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
+            'kompetensi_keahlian' => 'required|unique:kompetensi_keahlian,kompetensi_keahlian'
         ]);
-
-        // Handle file upload
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads'), $fileName);
-
-            // Simpan nama file ke dalam kolom 'kompetensi_keahlian' di dalam database
-            Kompetensi::create(['kompetensi_keahlian' => $fileName]);
-
-            return redirect()->route('kompetensi.index')->with('success_message', 'File berhasil diunggah.');
-        }
-
-        return redirect()->back()->with('error_message', 'Gagal mengunggah file.');
+        $array = $request->only([
+            'kompetensi_keahlian'
+        ]);
+        $kompetensi = kompetensi::create($array);
+        return redirect()->route('kompetensi.index')->with('success_message', 'Berhasil menambah Kompetensi Keahlian baru');
     }
 
 
