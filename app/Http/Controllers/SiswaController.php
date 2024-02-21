@@ -181,7 +181,6 @@ class SiswaController extends Controller
 
         $siswa->update($array);
 
-        // Associate the student with the class and competency
         $siswa->fkelas()->associate($request->input('kdkelas'));
         $siswa->fkompetensi()->associate($request->input('kdkompetensi'));
 

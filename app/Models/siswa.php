@@ -43,6 +43,7 @@ class Siswa extends Model
         return $this->belongsTo(Kelas::class, 'kdkelas', 'id');
     }
 
+
     public function fkompetensi()
     {
         return $this->belongsTo(Kompetensi::class, 'kdkompetensi', 'id');
