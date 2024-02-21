@@ -11,7 +11,7 @@
             <div class="card-body">
                 <h6>FILTER DATA</h6>
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <form action="{{ route('siswakes.index') }}" method="get" id="filter-form">
                             <div class="form-group">
                                 <select name="kompetensi_keahlian" id="kompetensi_keahlian" class="form-control">

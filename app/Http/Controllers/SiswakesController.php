@@ -15,21 +15,19 @@ class SiswakesController extends Controller
         $siswa = Siswa::query();
         $kompetensiKeahlianOptions = Kompetensi::all();
 
-        // Filter berdasarkan kompetensi_keahlian jika diberikan
         if ($request->has('kompetensi_keahlian') && $request->kompetensi_keahlian !== '') {
             $siswa->where('kdkompetensi', $request->kompetensi_keahlian);
+        } else {
+            $siswa->where('kdkompetensi', '');
         }
 
         $filteredSiswa = $siswa->get();
-
-        // Mengembalikan view dengan data siswa dan opsi filter
+        
         return view('siswakes.index', [
             'siswa' => $filteredSiswa,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
         ]);
     }
-
-
 
     public function store(Request $request)
     {
