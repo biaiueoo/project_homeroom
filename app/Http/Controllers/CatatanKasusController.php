@@ -124,7 +124,7 @@ class CatatanKasusController extends Controller
             'kasus' => $request->kasus,
             'keterangan' => $request->keterangan,
             'tanggal' => $request->tanggal,
-            // 'tidak_lanjut' => $request->tidak_lanjut,
+            'tidak_lanjut' => $request->tidak_lanjut,
             // 'status_kasus' => $request->status_kasus,
             'dampingan_bk' => $request->dampingan_bk,
         ]);

@@ -93,7 +93,7 @@
                             @enderror
                         </div> --}}
 
-                        <!-- Form untuk upload Surat -->
+                        <!-- Form untuk upload keterangan -->
                     <div class="form-group">
                         <label for="keterangan">Upload keterangan (pdf)</label>
                         <input type="file" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" name="keterangan">
@@ -122,7 +122,7 @@
                             @enderror
                         </div>
 
-                        {{-- <div class="form-group">
+                        <div class="form-group">
                             <label for="status_kasus">Status Kasus</label>
                             <input type="text" class="form-control @error('status_kasus') is-invalid @enderror"
                                 id="status_kasus" placeholder="Status Kasus" name="status_kasus"
@@ -130,7 +130,7 @@
                             @error('status_kasus')
                                 <span class="text danger">{{ $message }}</span>
                             @enderror
-                        </div> --}}
+                        </div>
 
                         <div class="form-group">
                             <label for="dampingan_bk">Dampingan BK</label>
