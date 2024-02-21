@@ -16,6 +16,7 @@ use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CatatanKasusController;
 use App\Http\Controllers\JadwalpiketController;
 use App\Http\Controllers\DaftarrapotController;
+use App\Http\Controllers\SiswakesController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,4 +56,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::resource('jadwalpiket', JadwalpiketController::class);
     Route::resource('daftarrapot', DaftarrapotController::class);
+    Route::resource('siswakes', SiswakesController::class);
 });
