@@ -59,4 +59,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('daftarrapot', DaftarrapotController::class);
     Route::resource('siswakes', SiswakesController::class);
     Route::resource('laporankasus', LaporankasusController::class);
+    
 });
