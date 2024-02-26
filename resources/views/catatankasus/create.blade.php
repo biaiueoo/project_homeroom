@@ -113,11 +113,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="tidak_lanjut">Tindak Lanjut</label>
-                            <input type="text" class="form-control @error('tidak_lanjut') is-invalid @enderror"
-                                id="tidak_lanjut" placeholder="Tindak Lanjut" name="tidak_lanjut"
-                                value="{{ old('tidak_lanjut') }}">
-                            @error('tidak_lanjut')
+                            <label for="tindak_lanjut">Tindak Lanjut</label>
+                            <input type="text" class="form-control @error('tindak_lanjut') is-invalid @enderror"
+                                id="tindak_lanjut" placeholder="Tindak Lanjut" name="tindak_lanjut"
+                                value="{{ old('tindak_lanjut') }}">
+                            @error('tindak_lanjut')
                                 <span class="text danger">{{ $message }}</span>
                             @enderror
                         </div>

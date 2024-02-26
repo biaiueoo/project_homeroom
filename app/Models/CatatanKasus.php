@@ -16,7 +16,7 @@ class CatatanKasus extends Model
         'tanggal',
         'kasus',
         'keterangan',
-        'tidak_lanjut',
+        'tindak_lanjut',
         'status_kasus',
         'dampingan_bk',
         // 'user_admin',
