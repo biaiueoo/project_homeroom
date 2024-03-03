@@ -35,48 +35,38 @@ class AgendaKegiatanController extends Controller
             ]
         );
     }
+   
     public function store(Request $request)
     {
-        try {
-            // Menyimpan Data bukutamu Baru
-            $request->validate([
-                'kdkelas' => 'required',
-                'kdkompetensi' => 'required',
-                'tanggal' => 'required',
-                'semester' => 'required',
-                'keterangan' => 'required',
-                'tahun_ajaran' => 'required',
-                'hasil' => 'image|file|max:2048',
-            ]);
-    
-            $array = $request->only([
-                'kdkelas',
-                'kdkompetensi',
-                'tanggal',
-                'semester',
-                'keterangan',
-                'tahun_ajaran',
-                'hasil',
-               
-            ]);
-    
-            $array['hasil'] = $request->file('hasil')->store('Foto agenda');
-    
-            $tambah = AgendaKegiatan::create($array);
-    
-            if ($tambah) {
-                $request->file('hasil')->store('Foto agenda');
-                return redirect()->route('agenda.index')
-                    ->with('success_message', 'Berhasil menambah agenda baru');
-            } else {
-                throw new \Exception('Gagal menambah agenda baru.');
-            }
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error_message', 'Gagal menambah agenda baru. Error: ' . $e->getMessage())
-                ->withInput(); // Retain the input data on redirect
+        $request->validate([
+            'kdkelas' => 'required',
+            'kdkompetensi' => 'required',
+            'tanggal' => 'required',
+            'semester' => 'required',
+            'keterangan' => 'required',
+            'tahun_ajaran' => 'required',
+            'nama_kegiatan' => 'required',
+            'dokumentasi' => 'image|file|max:2048',
+        ]);
+
+        $array = $request->only([
+            'kdkelas',
+            'kdkompetensi',
+            'tanggal',
+            'semester',
+            'keterangan',
+            'tahun_ajaran',
+            'nama_kegiatan',
+            'dokumentasi',
+           
+        ]);
+        if ($request->hasFile('dokumentasi')) {
+            $array['dokumentasi'] = $request->file('dokumentasi')->store('dokumentasi_agenda', 'public');
         }
-    }
+    
+        AgendaKegiatan::create($array);
+    
+        return redirect()->route('agenda.index')->with('success_message', 'Berhasil menambah data agenda kegiatan baru');    }
     
 }
 

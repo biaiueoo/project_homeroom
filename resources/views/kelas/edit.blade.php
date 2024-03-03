@@ -1,12 +1,13 @@
-@extends('adminlte::page')
-@section('title', 'Edit Kelas')
-@section('content_header')
-    <h1 class="m-0 text-dark">Edit Kelas</h1>
-@stop
-@section('content')
-    <form action="{{ route('kelas.update', $kelas->id) }}" method="post">
-        @csrf
-        @method('PUT') <!-- Menambahkan metode PUT untuk update -->
+@extends('dashboard.master')
+@section('nav')
+    @include('dashboard.nav')
+@endsection
+@section('page', 'Siswa')
+@section('main')
+    @include('dashboard.main')
+    <form action="{{ route('kelas.update', $kelas) }}" method="post">
+        @method('PUT')
+        @csrf <!-- Menambahkan metode PUT untuk update -->
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -84,7 +85,7 @@
         <!-- End Modal -->
     </form>
 
-    @push('js')
+
         <script>
             $('#example2').DataTable({
                 "responsive": true,
@@ -96,5 +97,5 @@
                 $('#staticBackdrop').modal('hide');
             }
         </script>
-    @endpush
+    
 @stop

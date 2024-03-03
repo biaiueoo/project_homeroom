@@ -12,11 +12,12 @@ class AgendaKegiatan extends Model
     protected $fillable = [
         'kdkelas',
         'kdkompetensi',
-        'hasil',
+        'dokumentasi',
         'keterangan',
         'tanggal',
         'waktu',
         'hari',
+        'nama_kegiatan',
         'semester',
         'tahun_ajaran'
     ];
