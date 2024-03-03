@@ -21,10 +21,11 @@ return new class extends Migration
             $table->unsignedBigInteger('kdkompetensi');
             $table->foreign('kdkompetensi')->references('id')->on('kompetensi_keahlian') 
             ->onDelete('cascade')->onUpdate('cascade');
-            $table->string('hasil',50);
+            $table->string('dokumentasi',50);
             $table->string('keterangan',50);
             $table->date('tanggal');
-            $table->time('waktu');
+            $table->string('waktu', 20);
+            $table->string('nama_kegiatan', 20);
             $table->string('hari',11);
             $table->string('semester',50);
             $table->string('tahun_ajaran',30);
