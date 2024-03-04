@@ -122,7 +122,7 @@
     <!-- End Modal -->
 </form>
 
-@push('js')
+
 <script>
     function readURL(input) {
         if (input.files && input.files[0]) {
@@ -137,20 +137,7 @@
         readURL(this);
     });
 </script>
-<script>
-    function readURL2(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                $('#tampil2').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    $("#ttd").change(function() {
-        readURL2(this);
-    });
-</script>
+
 <script>
     $('#example2').DataTable({
         "responsive": true,
@@ -165,5 +152,5 @@
 
     }
 </script>
-@endpush
+
 @stop
