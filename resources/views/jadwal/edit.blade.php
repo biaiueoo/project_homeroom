@@ -174,7 +174,7 @@
                                 <th>Kompetensi Keahlian</th>
                                 <th>Opsi</th>
                             </tr>
-                        </thead>
+                        </thead> 
                         <tbody>
                             @foreach ($kelas as $key => $kelasItem)
                             <tr>
