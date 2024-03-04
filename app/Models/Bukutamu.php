@@ -14,7 +14,6 @@ class Bukutamu extends Model
         'tanggal',
         'keperluan',
         'hasil',
-        'ttd',
         'semester',
         'tahun_ajaran'
     ];

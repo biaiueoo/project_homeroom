@@ -31,38 +31,43 @@ class BukutamuController extends Controller
         ]);
     }
     public function store(Request $request)
-    {
-        // Menyimpan Data bukutamu Baru
-        $request->validate([
-            'kdsiswa' => 'required',
-            'tanggal' => 'required',
-            'semester' => 'required',
-            'keperluan' => 'required',
-            'tahun_ajaran' => 'required',
-            'hasil' => 'image|file|max:2048',
-            'ttd' => 'image|file|max:2048',
+{
+    // Menyimpan Data bukutamu Baru
+    $request->validate([
+        'kdsiswa' => 'required',
+        'tanggal' => 'required',
+        'semester' => 'required',
+        'keperluan' => 'required',
+        'tahun_ajaran' => 'required',
+        'hasil' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+       
+    ]);
 
+    $array = $request->only([
+        'kdsiswa',
+        'tanggal',
+        'semester',
+        'keperluan',
+        'tahun_ajaran',
+    ]);
 
-        ]);
-        $array = $request->only([
-            'kdsiswa',
-            'tanggal',
-            'semester',
-            'keperluan',
-            'tahun_ajaran',
-            'hasil',
-            'ttd',
-
-        ]);
+    if ($request->hasFile('hasil')) {
         $array['hasil'] = $request->file('hasil')->store('Foto bukutamu');
-        $array['ttd'] = $request->file('ttd')->store('Foto bukutamu');
+    }
 
-        $tambah = Bukutamu::create($array);
-        if ($tambah) $request->file('hasil')->store('Foto bukutamu');
-        if ($tambah) $request->file('ttd')->store('Foto bukutamu');
+   
+
+    $tambah = Bukutamu::create($array);
+
+    if ($tambah) {
         return redirect()->route('bukutamu.index')
             ->with('success_message', 'Berhasil menambah bukutamu baru');
+    } else {
+        return redirect()->back()
+            ->with('error_message', 'Gagal menambah bukutamu baru');
     }
+}
+
 
     public function edit($id)
     {
@@ -92,8 +97,8 @@ class BukutamuController extends Controller
             'keperluan' => 'required',
             'semester' => 'required',
             'tahun_ajaran' => 'required',
-            'hasil' => 'nullable|image|file|max:2048',
-            'ttd' => 'nullable|image|file|max:2048',
+           
+            
             
         ]);
         $bukutamu = Bukutamu::find($id);
@@ -102,13 +107,6 @@ class BukutamuController extends Controller
         $bukutamu->keperluan = $request->keperluan;
         $bukutamu->semester = $request->semester;
         $bukutamu->tahun_ajaran = $request->tahun_ajaran;
-        if ($request->file('hasil')) {
-            $bukutamu['hasil'] = $request->file('hasil')->store('Foto Wisata');
-        }
-        if ($request->file('ttd')) {
-            $bukutamu['ttd'] = $request->file('ttd')->store('Foto Wisata');
-        }
-      
         $bukutamu->save();
         return redirect()->route('bukutamu.index')
             ->with('success_message', 'Berhasil mengubah bukutamu');

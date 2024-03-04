@@ -29,7 +29,7 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kelas' => 'required|unique:kelas,kelas',
+            'kelas' => 'required',
             'kdkompetensi' => 'required'
         ]);
 

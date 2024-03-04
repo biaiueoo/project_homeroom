@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label for="semester">Semester</label>
                         <select name="semester" id="semester" class="form-control">
-                            @foreach($semesters as $semester)
+                            @foreach($semester as $semester)
                             <option value="{{ $semester->keterangan }}" {{ old('semester', $dataEdit->semester) == $semester->keterangan ? 'selected' : '' }}>
                                 {{ $semester->keterangan }}
                             </option>
@@ -53,20 +53,9 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="hasil" class="formlabel">Hasil</label>
-                        <img src="{{ asset('storage/' . $bukutamu->hasil) }}" class="imgthumbnail d-block" name="tampil" alt="..." width="15%" id="tampil">
-                        <input class="form-control @error('hasil') isinvalid @enderror" type="file" id="hasil" name="hasil" value="{{$bukutamu->hasil ?? old('hasil')}}">
-                        @error('hasil') <span class="textdanger">{{$message}}</span> @enderror
-                    </div>
+    
 
-                    <div class="form-group">
-                        <label for="ttd" class="formlabel">TTD</label>
-                        <img src="{{ asset('storage/' . $bukutamu->ttd) }}" class="imgthumbnail d-block" name="tampil" alt="..." width="15%" id="tampil">
-                        <input class="form-control @error('ttd') isinvalid @enderror" type="file" id="ttd" name="ttd" value="{{$bukutamu->ttd ?? old('ttd')}}">
-                        @error('ttd') <span class="textdanger">{{$message}}</span> @enderror
-                    </div>
-
+                
                     <div class="form-group">
                         <label for="tahun_ajaran">tahun_ajaran</label>
                         <input type="text" class="form-control @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran" placeholder="tahun_ajaran" name="tahun_ajaran" value="{{ old('tahun_ajaran', $bukutamu->tahun_ajaran) }}">
