@@ -18,7 +18,7 @@ table-stripped" id="example2">
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Id Kelas</th>
+                            
                             <th>Kelas</th>
                             <th>Kompetensi Keahlian</th>
                             <th>Opsi</th>
@@ -28,7 +28,7 @@ table-stripped" id="example2">
                         @foreach ($kelas as $key => $k)
                         <tr>
                             <td>{{ $key + 1 }}</td>
-                            <td>{{ $k->id }}</td>
+                            
                             <td>{{ $k->kelas }}</td>
                             <td>{{ $k->fkompetensi->kompetensi_keahlian }}</td>
                             <td>

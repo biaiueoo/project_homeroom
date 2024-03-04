@@ -21,7 +21,6 @@ return new class extends Migration
             $table->date('tanggal');
             $table->string('keperluan',100);
             $table->text('hasil');
-            $table->text('ttd');
             $table->string('semester',100);
             $table->string('tahun_ajaran',30);
             $table->timestamps();

@@ -1,19 +1,22 @@
 @extends('dashboard.master')
 @section('nav')
-    @include('dashboard.nav')
+@include('dashboard.nav')
 @endsection
 @section('page', 'Buku Tamu')
 @section('main')
-    @include('dashboard.main')
+@include('dashboard.main')
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <a href="{{ route('bukutamu.create') }}" class="btn btn-primary mb-2">
+                <a href="{{ route('bukutamu.create') }}" class="btn 
+btn-primary mb-2">
                     Tambah
                 </a>
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered table-stripped" id="example2">
+
+                    <table class="table table-hover table-bordered 
+table-stripped" id="example2">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -22,9 +25,7 @@
                                 <th>Keperluan</th>
                                 <th>Semester</th>
                                 <th>Tahun Ajaran</th>
-                                <th>Hasil</th>
-                                <th>ttd</th>
-
+                                <th>Dokumentasi</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -42,11 +43,6 @@
                                     <img src="{{ asset("storage/{$bt->hasil}") }}" alt="{{ $bt->hasil }} tidak tampil" class="img-thumbnail" width="200">
                                 </td>
                                 <td>
-                                    <img src="{{ asset("storage/{$bt->ttd}") }}" alt="{{ $bt->ttd }} tidak tampil" class="img-thumbnail" width="200">
-                                </td>
-
-                                <td>
-
                                     <a href="{{ route('bukutamu.edit', $bt) }}" class="btn btn-primary btn-xs">
                                         Edit
                                     </a>
@@ -58,6 +54,7 @@
                             @endforeach
                         </tbody>
 
+
                     </table>
                 </div>
             </div>
@@ -65,7 +62,6 @@
     </div>
 </div>
 @stop
-@push('js')
 <form action="" id="delete-form" method="post">
     @method('delete')
     @csrf
@@ -77,10 +73,9 @@
 
     function notificationBeforeDelete(event, el) {
         event.preventDefault();
-        if (confirm('Apakah anda yakin akan menghapus data?')) {
+        if (confirm('Apakah anda yakin akan menghapus data ? ')) {
             $("#delete-form").attr('action', $(el).attr('href'));
             $("#delete-form").submit();
         }
     }
 </script>
-@endpush
