@@ -84,16 +84,13 @@
                         @error('waktu') <span class="text-danger">{{$message}}</span> @enderror
                     </div>
 
-
-
-
-
                     <div class="form-group">
-                        <label for="dokumentasi" class="formlabel">Dokumentasi</label>
-                        <img src="{{ asset('/img/no-image.png') }}" class="img-thumbnail d-block" id="tampil" alt="Preview" width="15%">
+                        <label for="dokumentasi" class="form-label">Dokumentasi</label>
+                        <img src="/img/no-image.png" class="img-thumbnail d-block" id="tampil" alt="..." width="15%">
                         <input class="form-control @error('dokumentasi') is-invalid @enderror" type="file" id="dokumentasi" name="dokumentasi">
                         @error('dokumentasi') <span class="text-danger">{{ $message }}</span> @enderror
                     </div>
+
 
                     <div class="form-group">
                         <label for="keterangan">Keterangan</label>
@@ -160,7 +157,7 @@
 
 </form>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
     $('#exampleKelas').DataTable({
         "responsive": true,
@@ -186,11 +183,8 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    $(document).ready(function() {
-        $("#dokumentasi").change(function() {
-            readURL(this);
-        });
+    $("#dokumentasi").change(function() {
+        readURL(this);
     });
 </script>
 
