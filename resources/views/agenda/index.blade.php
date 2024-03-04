@@ -46,7 +46,9 @@ table-stripped" id="example2">
                                     <td>{{ $a->tahun_ajaran }}</td>
                                     <td>{{ $a->keterangan }}</td>
                                     <td>
-                                    <img src="{{ asset("storage/{$bt->hasil}") }}" alt="{{ $bt->hasil }} tidak tampil" class="img-thumbnail" width="200">
+                                    <td>
+                                <img src="storage/{{$data->foto1}}" alt="{{$a->dokumentasi}} tidak tampil" class="img-thumbnail">
+                            </td>
                                 </td>
                                     <td>
                                         <a href="{{ route('agenda.edit', $a) }}" class="btn btn-primary btn-xs">
