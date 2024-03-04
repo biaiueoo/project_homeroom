@@ -40,23 +40,7 @@
 
 
                     {{-- Edit Kompetensi --}}
-                    <!-- <div class="form-group">
-                            <label for="kdkompetensi">Kompetensi Keahlian</label>
-                            <div class="input-group">
-                                <input type="hidden" name="kdkompetensi" id="kdkompetensi"
-                                    value="{{ old('kdkompetensi', $jadwal->kdkompetensi) }}">
-                                <input type="text" class="form-control @error('kompetensi_keahlian') is-invalid @enderror"
-                                    placeholder="Kompetensi Keahlian" id="kompetensi_keahlian" name="kompetensi_keahlian"
-                                    aria-label="Kompetensi Keahlian"
-                                    value="{{ old('kompetensi_keahlian', $jadwal->fkompetensi->kompetensi_keahlian) }}"
-                                    aria-describedby="cari" readonly>
-                                <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal"
-                                      data-bs-target="#staticBackdropKompetensi">
-                                    Cari Kompetensi Keahlian
-                                </a>
-                            </div>
-                        </div> -->
-
+                    
                     <div class="form-group">
                         <label for="kdkompetensi">Kompetensi Keahlian</label>
                         <div class="input-group">
