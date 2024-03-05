@@ -39,54 +39,53 @@ class AgendaKegiatanController extends Controller
 
     public function store(Request $request)
     {
-        
-            $request->validate([
-                'kdkelas' => 'required',
-                'kdkompetensi' => 'required',
-                'tanggal' => 'required',
-                'hari' => 'required',
-                'semester' => 'required',
-                'keterangan' => 'required',
-                'tahun_ajaran' => 'required',
-                'waktu' => 'required',
-                'nama_kegiatan' => 'required',
-                'dokumentasi' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            ]);
-    
-            $array = $request->only([
-                'kdkelas',
-                'kdkompetensi',
-                'tanggal',
-                'waktu',
-                'semester',
-                'keterangan',
-                'tahun_ajaran',
-                'nama_kegiatan',
-                'hari',
 
-            ]);
-    
-            if ($request->hasFile('dokumentasi')) {
-                $array['dokumentasi'] = $request->file('dokumentasi')->store('Dokumentasi Agenda Kegiatan');
-            }
+        $request->validate([
+            'kdkelas' => 'required',
+            'kdkompetensi' => 'required',
+            'tanggal' => 'required',
+            'hari' => 'required',
+            'semester' => 'required',
+            'keterangan' => 'required',
+            'tahun_ajaran' => 'required',
+            'waktu' => 'required',
+            'nama_kegiatan' => 'required',
+            'dokumentasi' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-            $tambah = AgendaKegiatan::create($array);
+        $array = $request->only([
+            'kdkelas',
+            'kdkompetensi',
+            'tanggal',
+            'waktu',
+            'semester',
+            'keterangan',
+            'tahun_ajaran',
+            'nama_kegiatan',
+            'hari',
 
-            if ($tambah) {
-                return redirect()->route('agenda.index')
-                    ->with('success_message', 'Berhasil menambah Agenda Kegiatan baru');
-            } else {
-                return redirect()->back()
-                    ->with('error_message', 'Gagal menambah Agenda Kegiatan baru');
-            }          
+        ]);
+
+        if ($request->hasFile('dokumentasi')) {
+            $array['dokumentasi'] = $request->file('dokumentasi')->store('Dokumentasi Agenda Kegiatan');
+        }
+
+        $tambah = AgendaKegiatan::create($array);
+
+        if ($tambah) {
+            return redirect()->route('agenda.index')
+                ->with('success_message', 'Berhasil menambah Agenda Kegiatan baru');
+        } else {
+            return redirect()->back()
+                ->with('error_message', 'Gagal menambah Agenda Kegiatan baru');
+        }
     }
 
     public function edit($id)
     {
-    
+
         $semester = Lookup::where('jenis', 'semester')->get();
-        $hari = Lookup::where('jenis', 'hari')->get(); 
-        $agenda = AgendaKegiatan::with('semesterLookup')->get();
+        $hari = Lookup::where('jenis', 'hari')->get();
 
         //Menampilkan Form Edit
         $agenda = AgendaKegiatan::find($id);
@@ -97,7 +96,9 @@ class AgendaKegiatanController extends Controller
             'agenda' => $agenda,
             'dataEdit' => $agenda,
             'hari' => $hari,
-            
+            'kelas' => Kelas::all(),
+            'kompetensi' => Kompetensi::all(),
+
         ]);
     }
 
@@ -105,18 +106,18 @@ class AgendaKegiatanController extends Controller
     {
         //Menyimpan Data agenda
         $request->validate([
-        'kdkelas' => 'required',
-        'kdkompetensi' => 'required',
-        'tanggal' => 'required',
-        'hari' => 'required',
-        'semester' => 'required',
-        'keterangan' => 'required',
-        'tahun_ajaran' => 'required',
-        'waktu' => 'required',
-        'nama_kegiatan' => 'required',
-           
-            
-            
+            'kdkelas' => 'required',
+            'kdkompetensi' => 'required',
+            'tanggal' => 'required',
+            'hari' => 'required',
+            'semester' => 'required',
+            'keterangan' => 'required',
+            'tahun_ajaran' => 'required',
+            'waktu' => 'required',
+            'nama_kegiatan' => 'required',
+
+
+
         ]);
         $agenda = AgendaKegiatan::find($id);
         $agenda->kdkelas = $request->kdkelas;
@@ -143,6 +144,4 @@ class AgendaKegiatanController extends Controller
         return redirect()->route('agenda.index')
             ->with('success_message', 'Berhasil menghapus Agenda Kegiatan');
     }
-    
-
 }

@@ -343,7 +343,7 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="nav-link-text ms-1">Daftar Rapot</span>
+                    <span class="nav-link-text ms-1">Daftar  Rapor</span>
                 </a>
             </li>
 
