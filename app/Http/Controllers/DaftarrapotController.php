@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AgendaKegiatan;
 use Illuminate\Http\Request;
 use App\Models\Daftarrapot;
 use App\Models\Lookup;
@@ -27,12 +28,17 @@ class DaftarrapotController extends Controller
     public function create()
     {
         $semester = Lookup::where('jenis', 'semester')->get();
+        $rapor = Lookup::where('jenis', 'rapor')->get();
+        
         //Menampilkan Form tambah daftarrapot
         return view('daftarrapot.create', [
             'siswa' => Siswa::all(),
-            'semester' => $semester
+            'semester' => $semester,
+            'rapor' => $rapor
+
         ]);
     }
+    
     public function store(Request $request)
     {
         // Validate input
@@ -41,49 +47,42 @@ class DaftarrapotController extends Controller
             'tanggal' => 'required',
             'semester' => 'required',
             'tahun_ajaran' => 'required',
-            'keterangan' => 'required',
-            'bukti_ttd' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png,heic|max:2048',
+            'rapor' => 'required',
+            'dokumentasi' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+        if ($request->hasFile('dokumentasi')) {
+            $array['dokumentasi'] = $request->file('dokumentasi')->store('Daftar rapor');
+        }
     
-        // Save the file to storage
-        $file_path = $request->file('bukti_ttd')->store('Foto daftarrapot');
+       
     
-        // Get the original file name
-        $original_file_name = $request->file('bukti_ttd')->getClientOriginalName();
+        $tambah = Daftarrapot::create($array);
     
-        // Save data to the database
-        $tambah = Daftarrapot::create([
-            'kdsiswa' => $request->input('kdsiswa'),
-            'tanggal' => $request->input('tanggal'),
-            'semester' => $request->input('semester'),
-            'tahun_ajaran' => $request->input('tahun_ajaran'),
-            'keterangan' => $request->input('keterangan'),
-            'bukti_ttd' => $file_path,
-            'original_file_name' => $original_file_name,
-        ]);
-    
-        // Redirect with success message
-        return redirect()->route('daftarrapot.index')
-            ->with('success_message', 'Berhasil menambah daftarrapot baru');
+        if ($tambah) {
+            return redirect()->route('daftarrapot.index')
+                ->with('success_message', 'Berhasil menambah Daftar rapor baru');
+        } else {
+            return redirect()->back()
+                ->with('error_message', 'Gagal menambah daftarrapot baru');
+        }
     }
     
-
-
-
 
 public function edit($id)
     {
 
         //Menampilkan Form Edit
         $semester = Lookup::where('jenis', 'semester')->get();
+        $rapor = Lookup::where('jenis', 'rapor')->get();
 
         $daftarrapot = daftarrapot::find($id);
-        if (!$daftarrapot) return redirect()->route('daftarrapots.index')
+        if (!$daftarrapot) return redirect()->route('daftarrapot.index')
             ->with('error_message', 'daftarrapot dengan id' . $id . ' tidak ditemukan');
         return view('daftarrapot.edit', [
             'daftarrapot' => $daftarrapot,
             'dataEdit' => $daftarrapot,
             'semester' => $semester,
+            'rapor' => $rapor,
             'siswa' => Siswa::all()
         ]);
     }
@@ -95,70 +94,31 @@ public function edit($id)
             'tanggal' => 'required',
             'semester' => 'required',
             'tahun_ajaran' => 'required',
-            'keterangan' => 'required',
-            'bukti_ttd' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png,heic|max:2048',
-        ]);
+            'rapor' => 'required'
+         ]);
     
         // Get the existing record
-        $daftarrapot = Daftarrapot::findOrFail($id);
-    
-        // Handle file update
-        if ($request->hasFile('bukti_ttd')) {
-            // Delete the existing file
-            Storage::delete($daftarrapot->bukti_ttd);
-    
-            // Save the new file to storage
-            $file_path = $request->file('bukti_ttd')->store('Foto daftarrapot');
-    
-            // Get the original file name
-            $original_file_name = $request->file('bukti_ttd')->getClientOriginalName();
-    
-            // Update the record with the new file information
-            $daftarrapot->update([
-                'kdsiswa' => $request->input('kdsiswa'),
-                'tanggal' => $request->input('tanggal'),
-                'semester' => $request->input('semester'),
-                'tahun_ajaran' => $request->input('tahun_ajaran'),
-                'keterangan' => $request->input('keterangan'),
-                'bukti_ttd' => $file_path,
-                'original_file_name' => $original_file_name,
-            ]);
-        } else {
-            // Update the record without changing the file
-            $daftarrapot->update([
-                'kdsiswa' => $request->input('kdsiswa'),
-                'tanggal' => $request->input('tanggal'),
-                'semester' => $request->input('semester'),
-                'tahun_ajaran' => $request->input('tahun_ajaran'),
-                'keterangan' => $request->input('keterangan'),
-            ]);
-        }
-    
-        // Redirect with success message
+        $daftarrapot = Daftarrapot::find($id);
+        $daftarrapot->kdsiswa = $request->kdsiswa;
+        $daftarrapot->tanggal = $request->tanggal;
+        $daftarrapot->rapor = $request->semester;
+        $daftarrapot->tahun_ajaran = $request->tahun_ajaran;
+        $daftarrapot->save();
         return redirect()->route('daftarrapot.index')
-            ->with('success_message', 'Berhasil memperbarui daftarrapot');
+            ->with('success_message', 'Berhasil mengubah daftar rapot');
     }
-    
-    
 
-      
-       
-
-
-
-    
     public function destroy(Request $request, $id)
     {
-        //Menghapus 
-        $daftarrapot = daftarrapot::find($id);
+        $daftarrapot = Daftarrapot::find($id);
         if ($daftarrapot) {
             $hapus = $daftarrapot->delete();
-            if ($hapus) unlink("storage/" . $daftarrapot->bukti_ttd);
-           
+            if ($hapus) unlink("storage/" . $daftarrapot->dokumentasi);
         }
         return redirect()->route('daftarrapot.index')
-            ->with('success_message', 'Berhasil menghapus Paket daftarrapot');
+            ->with('success_message', 'Berhasil menghapus daftar rapot');
     }
+
 
    
     

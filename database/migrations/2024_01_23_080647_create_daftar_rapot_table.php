@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreign('kdsiswa')->references('id')->on('siswa') 
             ->onDelete('cascade')->onUpdate('cascade');
             $table->date('tanggal');
-            $table->string('keterangan',50);
-            $table->text('bukti_ttd');
+            $table->string('rapor', 100);
+            $table->text('Dokumentasi');
             $table->string('semester',100);
             $table->string('tahun_ajaran',30);
 

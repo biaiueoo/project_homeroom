@@ -33,25 +33,29 @@
                     </div>
 
                     <!-- Kelas -->
-                    <div class="form-group">
-                        <label for="kelas">Kelas</label>
-                        <div class="input-group">
-                            <input type="hidden" name="kdkelas" id="kdkelas" value="{{ $siswa['kdkelas'] }}">
-                            <input type="text" class="form-control @error('kelas') is-invalid @enderror" placeholder="Kelas" id="kelas" name="kelas" aria-label="Kelas" value="{{ old('kelas', $siswa['kelas']) }}" aria-describedby="cari" readonly>
-                            <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropKelas">
-                                Cari Kelas
-                            </a>
-                        </div>
-                    </div>
+                    {{-- Edit Kelas --}}
 
-                    <div class="form-group">
-                        <label for="kdkompetensi">Kompetensi Keahlian</label>
-                        <div class="input-group">
-                            <input type="hidden" name="kdkompetensi" id="kdkompetensi" value="{{ $siswa['kdkompetensi'] }}">
-                            <input type="text" class="form-control @error('kompetensi_keahlian') is-invalid @enderror" placeholder="Kompetensi Keahlian" id="kompetensi_keahlian" name="kompetensi_keahlian" aria-label="Kompetensi Keahlian" value="{{ old('kompetensi_keahlian', $siswa['kompetensi_keahlian']) }}" aria-describedby="cari" readonly>
-                        </div>
-                    </div>
 
+<div class="form-group">
+    <label for="kelas">Kelas</label>
+    <div class="input-group">
+        <input type="hidden" name="kdkelas" id="kdkelas" value="{{ old('kdkelas', $siswa->kdkelas) }}">
+        <input type="text" class="form-control @error('kelas') is-invalid @enderror" placeholder="Kelas" id="kelas" name="kelas" aria-label="Kelas" value="{{ old('kelas', $siswa->fkelas->kelas) }}" aria-describedby="cari" readonly> <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropKelas">
+            Cari Kelas
+        </a>
+    </div>
+</div>
+
+
+{{-- Edit Kompetensi --}}
+
+<div class="form-group">
+    <label for="kdkompetensi">Kompetensi Keahlian</label>
+    <div class="input-group">
+        <input type="hidden" name="kdkompetensi" id="kdkompetensi" value="{{ old('kdkompetensi', $siswa->kdkompetensi) }}">
+        <input type="text" class="form-control @error('kompetensi_keahlian') is-invalid @enderror" placeholder="Kompetensi Keahlian" id="kompetensi_keahlian" name="kompetensi_keahlian" aria-label="Kompetensi Keahlian" value="{{ old('kompetensi_keahlian', $siswa->fkompetensi->kompetensi_keahlian) }}" aria-describedby="cari" readonly>
+    </div>
+</div>
 
                     <!-- Tempat Lahir -->
                     <div class="form-group">

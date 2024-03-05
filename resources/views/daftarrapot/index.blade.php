@@ -20,11 +20,12 @@ table-stripped" id="example2">
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Siswa</th>
+                                <th>Nama Orang tua</th>
+                                <th>Laporan</th>
                                 <th>tanggal</th>
                                 <th>Semester</th>
                                 <th>Tahun Ajaran</th>
-                                <th>TTD</th>
-                                <th>keterangan</th>
+                                <th>Dokumentasi</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -33,26 +34,20 @@ table-stripped" id="example2">
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $dr->fsiswa->nama_lengkap }}</td>
+                                <td>{{ $dr->fsiswa->nama_ayah }}</td>
+                                <td>{{ $dr->rapor }}</td>
+
                                 <td>{{ $dr->tanggal }}</td>
                                 <td>{{ $dr->semester }}</td>
 
                                 <td>{{ $dr->tahun_ajaran }}</td>
+
                                 <td>
-                                    <div>
-                                        @if (Str::endsWith($dr->original_file_name, ['.pdf', '.doc', '.docx']))
-                                        <i class="fas fa-file-alt fa-2x"></i>
-                                        <p>{{ $dr->original_file_name }}</p>
-                                        @else
-                                        <img src="{{ asset("storage/{$dr->bukti_ttd}") }}" alt="{{ $dr->original_file_name }} tidak tampil" class="img-thumbnail" style="max-width: 100px;">
-                                        @endif
-
-
-                                    </div>
-
-
+                                    <img src="{{ asset("storage/{$dr->dokumentasi}") }}" alt="{{ $dr->dokumentasi }} tidak tampil" class="img-thumbnail" width="200">
                                 </td>
 
-                                <td>{{ $dr->keterangan }}</td>
+
+
 
                                 <td>
                                     <a href="{{ route('daftarrapot.edit', $dr) }}" class="btn btn-primary btn-xs">

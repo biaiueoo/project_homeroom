@@ -14,9 +14,9 @@ class Daftarrapot extends Model
         'tanggal',
         'semester',
         'tahun_ajaran',
-        'bukti_ttd',
-        'keterangan',
-        'original_file_name',
+        'dokumentasi',
+        'rapor'
+       
     ];
 
     public function fsiswa()
@@ -24,10 +24,7 @@ class Daftarrapot extends Model
         return $this->belongsTo(Siswa::class, 'kdsiswa', 'id');
     }
 
-    public function getOriginalFileNameAttribute()
-{
-    return $this->attributes['original_file_name'];
-}
+ 
 
 
 }
