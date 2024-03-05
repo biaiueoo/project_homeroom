@@ -2,10 +2,10 @@
 @section('nav')
 @include('dashboard.nav')
 @endsection
-@section('page', 'Agenda')
+@section('page', 'Agenda Kegiatan')
 @section('main')
 @include('dashboard.main')
-<form action="{{ route('agenda.store') }}" method="post">
+<form action="{{ route('agenda.store') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -73,7 +73,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="nama_kegiatan">nama_kegiatan</label>
+                        <label for="nama_kegiatan">Nama Kegiatan</label>
                         <input type="text" class="form-control  @error('nama_kegiatan') is-invalid @enderror" id="nama_kegiatan" placeholder="Nama Kegiatan" name="nama_kegiatan" value="{{old('nama_kegiatan')}}">
                         @error('nama_kegiatan') <span class="text-danger">{{$message}}</span> @enderror
                     </div>
@@ -85,10 +85,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="dokumentasi" class="form-label">Dokumentasi</label>
-                        <img src="/img/no-image.png" class="img-thumbnail d-block" id="tampil" alt="..." width="15%">
-                        <input class="form-control @error('dokumentasi') is-invalid @enderror" type="file" id="dokumentasi" name="dokumentasi">
-                        @error('dokumentasi') <span class="text-danger">{{ $message }}</span> @enderror
+                        <label for="dokumentasi" class="formlabel">Dokumentasi</label>
+                        <img src="/img/no-image.png" class="imgthumbnail d-block" name="tampil" alt="..." width="15%" id="tampil">
+                        <input class="form-control @error('dokumentasi') isinvalid @enderror" type="file" id="dokumentasi" name="dokumentasi">
+                        @error('dokumentasi') <span class="textdanger">{{$message}}</span> @enderror
                     </div>
 
 
@@ -174,6 +174,7 @@
 
 
 
+
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -186,6 +187,7 @@
     $("#dokumentasi").change(function() {
         readURL(this);
     });
+</script>
 </script>
 
 @stop
