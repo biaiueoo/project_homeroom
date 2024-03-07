@@ -8,12 +8,12 @@ use App\Models\Lookup;
 
 use Illuminate\Http\Request;
 
-class CatatanKasusController extends Controller
+class BKController extends Controller
 {
     public function index()
     {
-        $catatankasus = CatatanKasus::all();
-        return view('catatankasus.index', [
+        $catatankasus = CatatanKasus::where('dampingan_bk', 'Ya')->get();
+        return view('bk.index', [
             'catatankasus' => $catatankasus
         ]);
     }
@@ -33,20 +33,20 @@ class CatatanKasusController extends Controller
 
     public function store(Request $request)
     {
-        // Pada metode store untuk validasi file
         $request->validate([
             'kdsiswa' => 'required',
             'semester' => 'required',
             'tahun_ajaran' => 'required',
             'kasus' => 'required',
-            'keterangan' => 'required|file|mimes:pdf|max:5120', // Sesuaikan dengan tipe file yang diizinkan
+            'keterangan' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
             'tanggal' => 'required',
-            'tindak_lanjut' => 'required',
+            'tidak_lanjut' => 'required',
             'status_kasus' => 'required',
             'dampingan_bk' => 'required',
+            // 'user_bk' => 'required',
+
         ]);
 
-        // Simpan file keterangan
         $keteranganFile = $request->file('keterangan');
         $keteranganContents = file_get_contents($keteranganFile->getRealPath());
 
@@ -57,7 +57,7 @@ class CatatanKasusController extends Controller
             'kasus' => $request->kasus,
             'keterangan' => $keteranganContents,
             'tanggal' => $request->tanggal,
-            'tindak_lanjut' => $request->tindak_lanjut,
+            'tidak_lanjut' => $request->tidak_lanjut,
             'status_kasus' => $request->status_kasus,
             'dampingan_bk' => $request->dampingan_bk,
             // 'user_bk' => $request->user_bk,
@@ -65,8 +65,6 @@ class CatatanKasusController extends Controller
 
         return redirect()->route('catatankasus.index')->with('success_message', 'Berhasil menambah catatan kasus baru');
     }
-
-
 
 
     // public function upload(Request $request)
@@ -125,8 +123,8 @@ class CatatanKasusController extends Controller
             'kasus' => $request->kasus,
             'keterangan' => $request->keterangan,
             'tanggal' => $request->tanggal,
-            'tindak_lanjut' => $request->tindak_lanjut,
-            'status_kasus' => $request->status_kasus,
+            // 'tidak_lanjut' => $request->tidak_lanjut,
+            // 'status_kasus' => $request->status_kasus,
             'dampingan_bk' => $request->dampingan_bk,
         ]);
 

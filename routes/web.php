@@ -10,6 +10,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\BukutamuController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\AgendaKegiatanController;
+use App\Http\Controllers\BKController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\WalasController;
 use App\Http\Controllers\KunjunganRumahController;
@@ -59,5 +60,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('daftarrapot', DaftarrapotController::class);
     Route::resource('siswakes', SiswakesController::class);
     Route::resource('laporankasus', LaporankasusController::class);
+    Route::resource('bk', BKController::class);
     
 });
