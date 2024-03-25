@@ -14,17 +14,13 @@ class Daftarrapot extends Model
         'tanggal',
         'semester',
         'tahun_ajaran',
-        'dokumentasi',
+        'Dokumentasi',
         'rapor'
-       
+
     ];
 
     public function fsiswa()
     {
         return $this->belongsTo(Siswa::class, 'kdsiswa', 'id');
     }
-
- 
-
-
 }

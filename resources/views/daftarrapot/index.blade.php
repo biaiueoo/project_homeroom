@@ -43,7 +43,7 @@ table-stripped" id="example2">
                                 <td>{{ $dr->tahun_ajaran }}</td>
 
                                 <td>
-                                    <img src="{{ asset("storage/{$dr->dokumentasi}") }}" alt="{{ $dr->dokumentasi }} tidak tampil" class="img-thumbnail" width="200">
+                                    <img src="{{ asset("storage/{$dr->Dokumentasi}") }}" alt="{{ $dr->Dokumentasi }} tidak tampil" class="img-thumbnail" width="200">
                                 </td>
 
 
