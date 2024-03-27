@@ -13,6 +13,10 @@
 btn-primary mb-2">
                     Tambah
                 </a>
+                 <!-- Tombol download PDF -->
+                 <a href="{{ route('jadwal.pdf') }}" class="btn btn-secondary mb-2">
+                    Download PDF
+                </a>
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered 
 table-stripped" id="example2">
