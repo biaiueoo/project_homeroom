@@ -9,6 +9,8 @@ use App\Models\Kelas;
 use App\Models\Guru;
 use App\Models\Kompetensi;
 use App\Models\Mapel;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 class JadwalController extends Controller
@@ -53,7 +55,7 @@ class JadwalController extends Controller
             'hari' => 'required',
         ]);
 
-        $array = $request->only(['kdguru', 'kdkelas', 'kdkompetensi','kdmapel','tahun_ajaran', 'semester', 'jam', 'hari']);
+        $array = $request->only(['kdguru', 'kdkelas', 'kdkompetensi', 'kdmapel', 'tahun_ajaran', 'semester', 'jam', 'hari']);
         Jadwal::create($array);
 
         return redirect()->route('jadwal.index')->with('success_message', 'Berhasil menambah data Jadwal baru');
@@ -75,7 +77,7 @@ class JadwalController extends Controller
             'mapel' => Mapel::all(),
             'jadwal' => $jadwal,
             'dataEdit' => $jadwal,
-             'hari' => $hari,
+            'hari' => $hari,
             'semester' => $semester
 
         ]);
@@ -111,4 +113,30 @@ class JadwalController extends Controller
         return redirect()->route('jadwal.index')
             ->with('success_message', 'Berhasil menghapus Jadwal KBM "' . $jadwal->fkelas->kelas . '" !');
     }
+
+    public function downloadPDF()
+    {
+        // Ambil data yang diperlukan untuk PDF
+        $jadwal = Jadwal::all(); // Atur ini sesuai dengan cara Anda mendapatkan data jadwal
+    
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+    
+        // Render view ke PDF
+        $html = view('pdf.jadwal', compact('jadwal'))->render();
+        $dompdf->loadHtml($html);
+    
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+    
+        // Render PDF
+        $dompdf->render();
+    
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream('jadwal_KBM.pdf');
+    }
+    
 }
