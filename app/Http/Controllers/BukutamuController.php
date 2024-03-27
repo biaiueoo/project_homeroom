@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Bukutamu;
 use App\Models\Siswa;
 use App\Models\Lookup;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 use Illuminate\Http\Request;
 
@@ -31,47 +33,47 @@ class BukutamuController extends Controller
         ]);
     }
     public function store(Request $request)
-{
-    // Menyimpan Data bukutamu Baru
-    $request->validate([
-        'kdsiswa' => 'required',
-        'tanggal' => 'required',
-        'semester' => 'required',
-        'keperluan' => 'required',
-        'tahun_ajaran' => 'required',
-        'hasil' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-       
-    ]);
+    {
+        // Menyimpan Data bukutamu Baru
+        $request->validate([
+            'kdsiswa' => 'required',
+            'tanggal' => 'required',
+            'semester' => 'required',
+            'keperluan' => 'required',
+            'tahun_ajaran' => 'required',
+            'hasil' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
-    $array = $request->only([
-        'kdsiswa',
-        'tanggal',
-        'semester',
-        'keperluan',
-        'tahun_ajaran',
-    ]);
+        ]);
 
-    if ($request->hasFile('hasil')) {
-        $array['hasil'] = $request->file('hasil')->store('Foto bukutamu');
+        $array = $request->only([
+            'kdsiswa',
+            'tanggal',
+            'semester',
+            'keperluan',
+            'tahun_ajaran',
+        ]);
+
+        if ($request->hasFile('hasil')) {
+            $array['hasil'] = $request->file('hasil')->store('Foto bukutamu');
+        }
+
+
+
+        $tambah = Bukutamu::create($array);
+
+        if ($tambah) {
+            return redirect()->route('bukutamu.index')
+                ->with('success_message', 'Berhasil menambah bukutamu baru');
+        } else {
+            return redirect()->back()
+                ->with('error_message', 'Gagal menambah bukutamu baru');
+        }
     }
-
-   
-
-    $tambah = Bukutamu::create($array);
-
-    if ($tambah) {
-        return redirect()->route('bukutamu.index')
-            ->with('success_message', 'Berhasil menambah bukutamu baru');
-    } else {
-        return redirect()->back()
-            ->with('error_message', 'Gagal menambah bukutamu baru');
-    }
-}
 
 
     public function edit($id)
     {
-    
+
         $semester = Lookup::where('jenis', 'semester')->get();
         $bukutamu = Bukutamu::with('semesterLookup')->get();
 
@@ -84,7 +86,7 @@ class BukutamuController extends Controller
             'bukutamu' => $bukutamu,
             'dataEdit' => $bukutamu,
             'siswa' => Siswa::all()
-            
+
         ]);
     }
 
@@ -97,9 +99,9 @@ class BukutamuController extends Controller
             'keperluan' => 'required',
             'semester' => 'required',
             'tahun_ajaran' => 'required',
-           
-            
-            
+
+
+
         ]);
         $bukutamu = Bukutamu::find($id);
         $bukutamu->kdsiswa = $request->kdsiswa;
@@ -124,5 +126,28 @@ class BukutamuController extends Controller
             ->with('success_message', 'Berhasil menghapus Bukutamu');
     }
 
+    public function downloadPDF()
+    {
+        // Ambil data yang diperlukan untuk PDF
+        $bukutamu = Bukutamu::all(); // Mengambil data dari model Bukutamu
 
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF
+        $html = view('pdf.bukutamu', compact('bukutamu'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream('bukutamu.pdf');
+    }
 }
