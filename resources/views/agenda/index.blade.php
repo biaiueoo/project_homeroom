@@ -13,6 +13,10 @@
 btn-primary mb-2">
                     Tambah
                 </a>
+
+                <a href="{{ route('agenda.pdf') }}" class="btn btn-secondary mb-2">
+                    Download PDF
+                </a>
                 <div class="table-responsive">
 
                     <table class="table table-hover table-bordered 

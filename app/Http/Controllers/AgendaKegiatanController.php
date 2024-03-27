@@ -7,6 +7,8 @@ use App\Models\AgendaKegiatan;
 use App\Models\Kompetensi;
 use App\Models\Kelas;
 use App\Models\Lookup;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Support\Facades\Log;
 
 class AgendaKegiatanController extends Controller
@@ -143,5 +145,30 @@ class AgendaKegiatanController extends Controller
         }
         return redirect()->route('agenda.index')
             ->with('success_message', 'Berhasil menghapus Agenda Kegiatan');
+    }
+
+    public function downloadPDF()
+    {
+        // Ambil data yang diperlukan untuk PDF
+        $agenda = AgendaKegiatan::all(); // Atur ini sesuai dengan cara Anda mendapatkan data siswa
+
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF
+        $html = view('pdf.agenda', compact('agenda'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream('agenda_walas.pdf');
     }
 }
