@@ -84,7 +84,7 @@
 </head>
 
 <body>
-    <h2 class="judul">BUKU TAMU ORANG TUA/WALI PESERTA DIDIK</h2>
+    <h2 class="judul">DAFTAR PESERTA DIDIK</h2>
 
     <p class="kp">Kelas : {{ $siswa[0]->fkelas->kelas }} </p>
     <p class="k">Kompetensi : {{ $siswa[0]->fkompetensi->kompetensi_keahlian }}</p>

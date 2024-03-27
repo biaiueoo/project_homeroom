@@ -97,7 +97,7 @@
 </head>
 
 <body>
-    <h2 class="judul">BUKU TAMU ORANG TUA/WALI PESERTA DIDIK</h2>
+    <h2 class="judul">AGENDA KEGIATAN WALI KELAS</h2>
 
     <p class="kp">Kelas : {{ $agenda[0]->fkelas->kelas }} </p>
     <p class="k">Kompetensi : {{ $agenda[0]->fkompetensi->kompetensi_keahlian }}</p>
