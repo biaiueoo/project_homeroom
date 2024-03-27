@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\daftarrapot;
 use App\Models\Siswa;
 use App\Models\Lookup;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 use Illuminate\Http\Request;
 
@@ -130,5 +132,30 @@ class DaftarrapotController extends Controller
         }
         return redirect()->route('daftarrapot.index')
             ->with('success_message', 'Berhasil menghapus daftarrapot');
+    }
+
+    public function downloadPDF()
+    {
+        // Ambil data yang diperlukan untuk PDF
+        $daftarrapot = daftarrapot::all(); // Atur ini sesuai dengan cara Anda mendapatkan data siswa
+
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF
+        $html = view('pdf.daftarrapot', compact('daftarrapot'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream('daftar_rapot.pdf');
     }
 }
