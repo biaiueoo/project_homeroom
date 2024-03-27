@@ -13,6 +13,10 @@
 btn-primary mb-2">
                     Tambah
                 </a>
+                 <!-- Tombol download PDF -->
+                 <a href="{{ route('jadwalpiket.pdf') }}" class="btn btn-secondary mb-2">
+                    Download PDF
+                </a>
                 <table class="table table-hover table-bordered 
 table-stripped" id="example2">
                     <thead>

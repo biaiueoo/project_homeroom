@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\jadwalpiket;
 use App\Models\Lookup;
 use App\Models\Siswa;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 class jadwalpiketController extends Controller
@@ -97,4 +99,30 @@ class jadwalpiketController extends Controller
         return redirect()->route('jadwalpiket.index')
             ->with('success_message', 'Berhasil menghapus jadwal Piket "' . $jadwalpiket->fsiswa->nama_lengkap . '" !');
     }
+
+    public function downloadPDF()
+    {
+        // Ambil data yang diperlukan untuk PDF
+        $jadwalpiket = JadwalPiket::all(); // Atur ini sesuai dengan cara Anda mendapatkan data jadwal piket
+
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF
+        $html = view('pdf.jadwalpiket', compact('jadwalpiket'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream('jadwal_piket.pdf');
+    }
+
 }

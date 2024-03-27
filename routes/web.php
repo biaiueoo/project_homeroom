@@ -55,9 +55,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('walas', WalasController::class);
     Route::resource('kunjunganrumah', KunjunganRumahController::class);
     Route::resource('catatankasus', CatatanKasusController::class);
-    Route::resource('jadwalpiket', JadwalpiketController::class);
     Route::resource('daftarrapot', DaftarrapotController::class);
     Route::resource('siswakes', SiswakesController::class);
     Route::resource('laporankasus', LaporankasusController::class);
-    
+    Route::get('/jadwalpiket/pdf', [JadwalpiketController::class, 'downloadPDF'])->name('jadwalpiket.pdf');
+    Route::resource('jadwalpiket', JadwalpiketController::class);
 });
