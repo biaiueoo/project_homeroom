@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('guru', GuruController::class);
     Route::resource('users', UserController::class);
     Route::resource('kelas', KelasController::class);
-    Route::resource('bukutamu', BukutamuController::class);
+
     Route::resource('siswa', SiswaController::class);
     Route::resource('agenda', AgendaKegiatanController::class);
 
@@ -62,4 +62,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('jadwalpiket', JadwalpiketController::class);
     Route::get('/jadwal/pdf', [JadwalController::class, 'downloadPDF'])->name('jadwal.pdf');
     Route::resource('jadwal', JadwalController::class);
+    Route::get('/bukutamu/pdf', [BukutamuController::class, 'downloadPDF'])->name('bukutamu.pdf');
+    Route::resource('bukutamu', BukutamuController::class);
 });
