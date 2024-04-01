@@ -5,10 +5,10 @@
 @section('page', 'Kunjungan Rumah')
 @section('main')
 @include('dashboard.main')
-<form action="{{ route('kunjunganrumah.update', $kunjunganrumah->id) }}" method="post">
+<form action="{{ route('kunjunganrumah.update', $kunjunganrumah->id) }}" method="post" enctype="multipart/form-data">
     @csrf
     @method('PUT') <!-- Menambahkan metode PUT untuk update -->
-    <div class="row">
+    <div class=" row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
@@ -82,6 +82,30 @@
                         @error('tahun_ajaran')
                         <span class="text danger">{{ $message }}</span>
                         @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gambar_lama">Dokumentasi</label><br>
+                        <img id="gambarSebelumnya" src="{{ asset('uploads/' . $kunjunganrumah->dokumentasi) }}" alt="Gambar Sebelumnya" width="200">
+                    </div>
+
+                    <!-- Form untuk upload Gambar Baru -->
+                    <div class="form-group">
+                        <label for="dokumentasi">Upload Dokumentasi (jpg, jpeg, png)</label>
+                        <input type="file" class="form-control" id="dokumentasi" name="dokumentasi" onchange="previewImage(event)">
+                        <small class="text-muted">Upload hanya jika ingin mengganti gambar sebelumnya.</small>
+                    </div>
+
+                    <!-- Tampilkan Nama Surat -->
+                    <div class="form-group" id="namaSuratContainer">
+                        <label for="surat">Surat</label><br>
+                        <span>{{ $kunjunganrumah->surat }}</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="surat">Upload Surat (pdf)</label>
+                        <input type="file" class="form-control" id="surat" name="surat" onchange="previewSurat(event)">
+                        <small class="text-muted">Upload hanya jika ingin mengganti surat sebelumnya.</small>
                     </div>
 
                     <div class="card-footer">
@@ -159,6 +183,18 @@
         document.getElementById('tahun_ajaran_display').value = tahun_ajaran;
 
         $('#staticBackdrop').modal('hide');
+    }
+
+    function previewImage(event) {
+        var image = document.getElementById('gambarSebelumnya');
+        image.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    // Fungsi untuk menampilkan nama surat yang baru diunggah
+    function previewSurat(event) {
+        var suratInput = event.target;
+        var namaSuratSpan = document.getElementById('namaSuratContainer').querySelector('span');
+        namaSuratSpan.innerText = suratInput.files[0].name;
     }
 </script>
 @stop
