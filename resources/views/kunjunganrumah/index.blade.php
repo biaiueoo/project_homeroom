@@ -44,14 +44,14 @@
                                 <td>{{ $kr->fkasus->tahun_ajaran }}</td>
                                 <td>
                                     @if($kr->surat)
-                                    <a href="data:application/pdf;base64,{{ base64_encode($kr->surat) }}" target="_blank" class="btn btn-secondary">Lihat Dokumen</a>
+                                    <a href="{{ asset('uploads/' . $kr->surat) }}" target="_blank" class="btn btn-secondary">Lihat Dokumen</a>
                                     @else
                                     <span>Tidak ada dokumen</span>
                                     @endif
                                 </td>
                                 <td>
                                     @if($kr->dokumentasi)
-                                    <img src=" data:image/jpeg;base64,{{ base64_encode($kr->dokumentasi) }}" alt="Gambar Dokumentasi" width="150">
+                                    <img src="{{ asset('uploads/' . $kr->dokumentasi) }}" alt="{{ $kr->dokumentasi }}" style="max-width: 100px;">
                                     @else
                                     <span>Tidak ada gambar</span>
                                     @endif

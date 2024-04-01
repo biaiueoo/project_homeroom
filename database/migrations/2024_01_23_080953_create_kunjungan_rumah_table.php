@@ -20,8 +20,8 @@ return new class extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->date('tanggal');
             $table->string('solusi', 50);
-            $table->binary('surat')->length('longBlob');
-            $table->binary('dokumentasi')->length('longBlob');
+            $table->text('surat');
+            $table->text('dokumentasi');
             $table->timestamps();
         });
     }
