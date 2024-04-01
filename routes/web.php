@@ -41,7 +41,7 @@ Auth::routes();
 // Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('mapel', MapelController::class);
     Route::resource('kompetensi', KompetensiController::class);
@@ -66,7 +66,37 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('daftarrapot', DaftarrapotController::class);
     Route::get('/guru/pdf', [GuruController::class, 'downloadPDF'])->name('guru.pdf');
     Route::resource('guru', GuruController::class);
+});
 
+Route::middleware(['auth', 'role:walikelas'])->group(function () {
+    Route::get('/jadwalpiket/pdf', [JadwalpiketController::class, 'downloadPDF'])->name('jadwalpiket.pdf');
+    Route::resource('jadwalpiket', JadwalpiketController::class);
+    Route::get('/jadwal/pdf', [JadwalController::class, 'downloadPDF'])->name('jadwal.pdf');
+    Route::resource('jadwal', JadwalController::class);
+    Route::get('/bukutamu/pdf', [BukutamuController::class, 'downloadPDF'])->name('bukutamu.pdf');
+    Route::resource('bukutamu', BukutamuController::class);
+    Route::get('/siswa/pdf', [SiswaController::class, 'downloadPDF'])->name('siswa.pdf');
+    Route::resource('siswa', SiswaController::class);
+    Route::get('/agenda/pdf', [AgendaKegiatanController::class, 'downloadPDF'])->name('agenda.pdf');
+    Route::resource('agenda', AgendaKegiatanController::class);
+    Route::get('/daftarrapot/pdf', [DaftarrapotController::class, 'downloadPDF'])->name('daftarrapot.pdf');
+    Route::resource('daftarrapot', DaftarrapotController::class);
+    Route::resource('dashboard', DashboardController::class);
+    Route::resource('kunjunganrumah', KunjunganRumahController::class);
+});
 
+Route::middleware(['auth', 'role:kesiswaan'])->group(function () {
+    Route::resource('kunjunganrumah', KunjunganRumahController::class);
+    Route::resource('dashboard', DashboardController::class);
+    Route::resource('catatankasus', CatatanKasusController::class);
+    Route::resource('siswakes', SiswakesController::class);
+    Route::resource('laporankasus', LaporankasusController::class);
+});
 
+Route::middleware(['auth', 'role:kakom'])->group(function () {
+    Route::resource('laporankasus', LaporankasusController::class);
+});
+
+Route::middleware(['auth', 'role:bk'])->group(function () {
+    Route::resource('laporankasus', LaporankasusController::class);
 });
