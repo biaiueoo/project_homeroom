@@ -18,6 +18,7 @@ use App\Http\Controllers\JadwalpiketController;
 use App\Http\Controllers\DaftarrapotController;
 use App\Http\Controllers\SiswakesController;
 use App\Http\Controllers\LaporankasusController;
+use App\Http\Controllers\PresentaseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('kunjunganrumah', KunjunganRumahController::class);
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::resource('siswakes', SiswakesController::class);
+    Route::resource('presentase', PresentaseController::class);
     Route::resource('laporankasus', LaporankasusController::class);
     Route::get('/jadwalpiket/pdf', [JadwalpiketController::class, 'downloadPDF'])->name('jadwalpiket.pdf');
     Route::resource('jadwalpiket', JadwalpiketController::class);
@@ -83,6 +85,7 @@ Route::middleware(['auth', 'role:walikelas'])->group(function () {
     Route::resource('daftarrapot', DaftarrapotController::class);
     Route::resource('dashboard', DashboardController::class);
     Route::resource('kunjunganrumah', KunjunganRumahController::class);
+    Route::resource('presentase', PresentaseController::class);
 });
 
 Route::middleware(['auth', 'role:kesiswaan'])->group(function () {
