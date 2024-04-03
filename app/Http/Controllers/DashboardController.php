@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Presentase;
 
 class DashboardController extends Controller
 {
@@ -11,8 +12,14 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        //
-        return view('dashboard.home');
+        // Ambil data dari tabel presentase_sosial
+        $data = Presentase::select('pekerjaan_ortu')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('pekerjaan_ortu')
+            ->get();
+
+        // Mengembalikan data dalam format yang sesuai untuk digunakan dalam grafik
+        return view('dashboard.home', compact('data'));
     }
 
     /**
