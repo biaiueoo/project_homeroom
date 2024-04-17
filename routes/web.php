@@ -19,6 +19,7 @@ use App\Http\Controllers\DaftarrapotController;
 use App\Http\Controllers\SiswakesController;
 use App\Http\Controllers\LaporankasusController;
 use App\Http\Controllers\PresentaseController;
+use App\Models\KunjunganRumah;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,7 +50,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('kelas', KelasController::class);
     Route::resource('walas', WalasController::class);
-    Route::resource('kunjunganrumah', KunjunganRumahController::class);
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::resource('siswakes', SiswakesController::class);
     Route::resource('presentase', PresentaseController::class);
@@ -68,6 +68,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('daftarrapot', DaftarrapotController::class);
     Route::get('/guru/pdf', [GuruController::class, 'downloadPDF'])->name('guru.pdf');
     Route::resource('guru', GuruController::class);
+    Route::get('/kunjunganrumah/pdf/{id}', [KunjunganRumahController::class, 'downloadPDF'])->name('kunjunganrumah.pdf');
+    Route::resource('kunjunganrumah', KunjunganRumahController::class);
 });
 
 Route::middleware(['auth', 'role:walikelas'])->group(function () {

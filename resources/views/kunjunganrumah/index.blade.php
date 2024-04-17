@@ -63,6 +63,10 @@
                                     <a href="{{ route('kunjunganrumah.destroy', $kr) }}" onclick="notificationBeforeDelete(event, this)" class="btn btn-danger btn-xs">
                                         Delete
                                     </a>
+                                    <a href="{{ route('kunjunganrumah.pdf', ['id' => $kr->id]) }}" class="btn btn-danger btn-xs">
+                                        Download PDF
+                                    </a>
+
                                 </td>
                             </tr>
                             @endforeach
