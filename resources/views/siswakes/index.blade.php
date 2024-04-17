@@ -13,7 +13,7 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <form action="{{ route('siswakes.index') }}" method="get" id="filter-form">
-                                <div class="form-group">
+                                <div class="form-group"> 
                                     {{-- <label for="kompetensi_keahlian">Kompetensi Keahlian:</label> --}}
                                     <select name="kompetensi_keahlian" id="kompetensi_keahlian" class="form-control">
                                         <option value="">-- Pilih Kompetensi Keahlian --</option>
@@ -48,7 +48,7 @@
                         @endif
                     </div>
                     </form>
-                    {{-- <hr>
+                    {{-- <hr> //
                     @if (request('kompetensi_keahlian'))
                         <p><strong>Kompetensi Keahlian:</strong>
                             {{ $kompetensiKeahlianOptions->firstWhere('id', request('kompetensi_keahlian'))->kompetensi_keahlian }}
