@@ -66,7 +66,7 @@ class CatatanKasusController extends Controller
         return redirect()->route('catatankasus.index')->with('success_message', 'Berhasil menambah catatan kasus baru');
     }
 
-    
+
 
 
     // public function upload(Request $request)
@@ -139,5 +139,14 @@ class CatatanKasusController extends Controller
         $catatankasus = CatatanKasus::find($id);
         if ($catatankasus) $catatankasus->delete();
         return redirect()->route('catatankasus.index')->with('success_message', 'Berhasil menghapus Catatan Kasus');
+    }
+
+    public function laporanKasusBK()
+    {
+        $laporanKasusBK = CatatanKasus::where('dampingan_bk', 'Ya')->get();
+
+        return view('catatankasus.laporan_kasus_bk', [
+            'laporanKasusBK' => $laporanKasusBK
+        ]);
     }
 }

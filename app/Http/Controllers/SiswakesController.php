@@ -10,6 +10,26 @@ use App\Models\Kompetensi;
 
 class SiswakesController extends Controller
 {
+    // ///
+    // public function index(Request $request)
+    // {
+    //     $siswa = Siswa::query();
+    //     $kompetensiKeahlianOptions = Kompetensi::all();
+
+    //     if ($request->has('kompetensi_keahlian') && $request->kompetensi_keahlian !== '') {
+    //         $siswa->where('kdkompetensi', $request->kompetensi_keahlian);
+    //     } else {
+    //         $siswa->where('kdkompetensi', '');
+    //     }
+
+    //     $filteredSiswa = $siswa->get();
+
+    //     return view('siswakes.index', [
+    //         'siswa' => $filteredSiswa,
+    //         'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+    //     ]);
+    // }
+
     public function index(Request $request)
     {
         $siswa = Siswa::query();
