@@ -68,6 +68,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('daftarrapot', DaftarrapotController::class);
     Route::get('/guru/pdf', [GuruController::class, 'downloadPDF'])->name('guru.pdf');
     Route::resource('guru', GuruController::class);
+    Route::get('/laporan-kasus-bk', [CatatanKasusController::class, 'laporanKasusBK'])->name('laporan.kasus.bk');
+
 });
 
 Route::middleware(['auth', 'role:walikelas'])->group(function () {

@@ -10,24 +10,61 @@ use App\Models\Kompetensi;
 
 class SiswakesController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     $siswa = Siswa::query();
+    //     $kompetensiKeahlianOptions = Kompetensi::all();
+
+    //     if ($request->has('kompetensi_keahlian') && $request->kompetensi_keahlian !== '') {
+    //         $siswa->where('kdkompetensi', $request->kompetensi_keahlian);
+    //     } else {
+    //         $siswa->where('kdkompetensi', '');
+    //     }
+
+    //     $filteredSiswa = $siswa->get();
+
+    //     return view('siswakes.index', [
+    //         'siswa' => $filteredSiswa,
+    //         'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+    //     ]);
+    // }
+
     public function index(Request $request)
     {
         $siswa = Siswa::query();
         $kompetensiKeahlianOptions = Kompetensi::all();
+        $kelasOptions = collect(); // Inisialisasi koleksi kosong untuk opsi kelas
 
-        if ($request->has('kompetensi_keahlian') && $request->kompetensi_keahlian !== '') {
+        // Jika filter kompetensi keahlian telah diaplikasikan
+        if ($request->filled('kompetensi_keahlian')) {
+            // Ambil siswa yang memiliki kompetensi keahlian yang dipilih
             $siswa->where('kdkompetensi', $request->kompetensi_keahlian);
+
+            // Ambil opsi kelas yang hanya berlaku untuk siswa dengan kompetensi keahlian yang dipilih
+            $kelasOptions = Kelas::where('kdkompetensi', $request->kompetensi_keahlian)->get();
         } else {
-            $siswa->where('kdkompetensi', '');
+            // Jika filter kompetensi keahlian tidak diaplikasikan, ambil semua kelas
+            $kelasOptions = Kelas::all();
+        }
+
+        // Jika filter kelas juga telah diaplikasikan
+        if ($request->filled('kelas')) {
+            // Filter siswa berdasarkan kelas yang dipilih
+            $siswa->where('kdkelas', $request->kelas);
         }
 
         $filteredSiswa = $siswa->get();
-        
+
         return view('siswakes.index', [
             'siswa' => $filteredSiswa,
             'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+            'kelasOptions' => $kelasOptions, // Mengirim opsi kelas ke tampilan
         ]);
     }
+
+
+
+
 
     public function store(Request $request)
     {
