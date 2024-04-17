@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\KunjunganRumah;
 use App\Models\CatatanKasus;
 use App\Models\Siswa;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 
 class KunjunganRumahController extends Controller
@@ -137,5 +139,33 @@ class KunjunganRumahController extends Controller
         $kunjunganrumah = KunjunganRumah::find($id);
         if ($kunjunganrumah) $kunjunganrumah->delete();
         return redirect()->route('kunjunganrumah.index')->with('success_message', 'Berhasil menghapus Catatan Kunjungan Rumah "' . $kunjunganrumah->id . '" !');
+    }
+
+    public function downloadPDF($id)
+    {
+        // Ambil data kunjungan rumah berdasarkan ID yang dipilih
+        $kunjunganRumah = KunjunganRumah::findOrFail($id);
+
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF dengan data kunjungan rumah yang dipilih
+        $html = view('pdf.kunjunganrumah', compact('kunjunganRumah'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Tentukan nama file PDF berdasarkan ID yang dipilih
+        $fileName = 'kunjunganrumah_' . $id . '.pdf';
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream($fileName);
     }
 }
