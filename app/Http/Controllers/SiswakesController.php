@@ -10,7 +10,7 @@ use App\Models\Kompetensi;
 
 class SiswakesController extends Controller
 {
-    // 
+    // ///
     // public function index(Request $request)
     // {
     //     $siswa = Siswa::query();
