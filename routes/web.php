@@ -53,7 +53,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('mapel', MapelController::class);
     Route::resource('kompetensi', KompetensiController::class);
-    Route::get('/rencanakegiatan/pdf', [BukutamuController::class, 'downloadPDF'])->name('rencanakegiatan.pdf');
+    Route::get('/rencanakegiatan/pdf', [RencanakegiatanController::class, 'downloadPDF'])->name('rencanakegiatan.pdf');
     Route::resource('rencanakegiatan', RencanakegiatanController::class);
     Route::patch('/rencanakegiatan/{id}', [RencanakegiatanController::class, 'update'])->name('rencanakegiatan.update');
     Route::post('/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('uploadFile');

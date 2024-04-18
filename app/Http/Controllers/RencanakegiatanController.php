@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rencanakegiatan;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 
 class RencanakegiatanController extends Controller
@@ -60,12 +62,42 @@ class RencanakegiatanController extends Controller
 }
 
 
-    public function destroy($id)
-    {
-        $rencanakegiatan = Rencanakegiatan::findOrFail($id);
-        $rencanakegiatan->delete();
+public function downloadPDF()
+{
+    try {
+        // Ambil data rencana kegiatan
+        $rencanaKegiatan = Rencanakegiatan::all();
 
-        return redirect()->route('rencanakegiatan.index')
-                         ->with('success', 'Data Rencana Kegiatan berhasil dihapus.');
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Konfigurasi options Dompdf
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $options->set('orientation', 'landscape'); // Set orientasi ke landscape
+        $dompdf->setOptions($options);
+
+        // Render view ke PDF
+        $html = view('pdf.rencanakegiatan', compact('rencanaKegiatan'))->render();
+
+        // Atur kertas ke ukuran kustom (lebih panjang ke samping)
+        $customPaper = array(0, 0, 1300, 700); // Lebih panjang ke samping (800x600 px)
+        $dompdf->setPaper($customPaper);
+
+        // Load HTML ke Dompdf
+        $dompdf->loadHtml($html);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream('rencana_kegiatan.pdf');
+    } catch (\Exception $e) {
+        // Tangani kesalahan yang mungkin terjadi
+        return response()->json(['error' => 'Gagal membuat PDF: ' . $e->getMessage()], 500);
     }
 }
+}
+
+
