@@ -97,6 +97,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:walikelas'])->group(function () {
     Route::get('/jadwalpiket/pdf', [JadwalpiketController::class, 'downloadPDF'])->name('jadwalpiket.pdf');
     Route::resource('jadwalpiket', JadwalpiketController::class);
+    Route::get('/rencanakegiatan/pdf', [RencanakegiatanController::class, 'downloadPDF'])->name('rencanakegiatan.pdf');
+    Route::resource('rencanakegiatan', RencanakegiatanController::class);
+    Route::patch('/rencanakegiatan/{id}', [RencanakegiatanController::class, 'update'])->name('rencanakegiatan.update');
+    Route::post('/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('uploadFile');
+    Route::resource('kegiatan', KegiatanController::class);
     Route::get('/jadwal/pdf', [JadwalController::class, 'downloadPDF'])->name('jadwal.pdf');
     Route::resource('jadwal', JadwalController::class);
     Route::get('/bukutamu/pdf', [BukutamuController::class, 'downloadPDF'])->name('bukutamu.pdf');
