@@ -58,7 +58,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('/rencanakegiatan/{id}', [RencanakegiatanController::class, 'update'])->name('rencanakegiatan.update');
     Route::post('/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('uploadFile');
     Route::resource('kegiatan', KegiatanController::class);
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class); 
     Route::resource('kelas', KelasController::class);
     Route::resource('walas', WalasController::class);
     Route::resource('catatankasus', CatatanKasusController::class);
