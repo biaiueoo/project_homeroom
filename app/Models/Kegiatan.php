@@ -34,4 +34,16 @@ class Kegiatan extends Model
             ]);
         });
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($kegiatan) {
+            // Hapus RencanaKegiatan terkait saat Kegiatan dihapus
+            if ($kegiatan->rencanaKegiatan) {
+                $kegiatan->rencanaKegiatan->delete();
+            }
+        });
+    }
 }

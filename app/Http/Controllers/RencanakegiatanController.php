@@ -38,22 +38,25 @@ class RencanakegiatanController extends Controller
     public function uploadFile(Request $request)
 {
     $request->validate([
-        'file_keterangan' => 'required|file|max:10240', // Validasi untuk file
-        'rencanakegiatan_id' => 'required|exists:rencana__kegiatan,id'
+        'file_keterangan' => 'required|file|max:10240', // Sesuaikan validasi dengan kebutuhan
+        'rencanakegiatan_id' => 'required|exists:rencana__kegiatan,id',
     ]);
 
+    $rencanaKegiatan = RencanaKegiatan::find($request->rencanakegiatan_id);
+
+    if (!$rencanaKegiatan) {
+        return response()->json(['error' => 'Rencana kegiatan tidak ditemukan.'], 404);
+    }
+
+    // Simpan file ke storage
     $file = $request->file('file_keterangan');
-    $rencanakegiatanId = $request->input('rencanakegiatan_id');
+    $filePath = $file->store('public/keterangan');
 
-    // Simpan file yang diunggah ke dalam penyimpanan yang diinginkan (misalnya: storage/app/public)
-    $filePath = $file->store('public');
-
-    // Update kolom 'keterangan' pada RencanaKegiatan yang sesuai dengan path file
-    $rencanaKegiatan = RencanaKegiatan::find($rencanakegiatanId);
-    $rencanaKegiatan->keterangan = $filePath; // Simpan path file di dalam kolom 'keterangan'
+    // Update kolom 'keterangan' dengan nama file
+    $rencanaKegiatan->keterangan = $filePath;
     $rencanaKegiatan->save();
 
-    return redirect()->back()->with('success', 'File berhasil diunggah.');
+    return response()->json(['keterangan' => asset('storage/' . $filePath)], 200);
 }
 
 
