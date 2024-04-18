@@ -5,8 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Kompetensi;
 use Illuminate\Http\Request;
 
+use App\Imports\KompetensiImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class KompetensiController extends Controller
 {
+    public function importView(Request $request){
+        return view('importFile');
+    }
+
+    public function import(Request $request){
+        Excel::import(new KompetensiImport, $request->file('file')->store('files'));
+        return redirect()->back();
+    }
+
     public function index()
     {
 

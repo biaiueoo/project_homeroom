@@ -12,6 +12,17 @@
                     <a href="{{ route('kompetensi.create') }}" class="btn btn-primary mb-2">
                         Tambah
                     </a>
+
+                    <form action="{{ route('kompetensi-import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group mb-4">
+                            <div class="custom-file text-left">
+                                <input type="file" name="file" class="custom-file-input" id="customFile">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">Import Kompetensi Keahlian</button>
+                    </form>
+
                     <table class="table table-hover table-bordered table-stripped" id="example2">
                         <thead>
                             <tr>
