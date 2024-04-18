@@ -14,7 +14,10 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <h1>Rencana Kegiatan Walikelas</h1>
+                <a href="{{ route('rencanakegiatan.pdf') }}" class="btn btn-secondary mb-2">
+                    Download PDF
+                </a>
+                    <!-- <h1>Rencana Kegiatan Walikelas</h1> -->
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -43,28 +46,27 @@
                                         </div>
                                     </td>
                                     <td>{{ $k->fbukti->bukti }}</td>
+                                    <td id="fileCell_{{ $k->id }}">
+                                        <!-- Menampilkan file yang sudah diunggah -->
+                                        @if ($k->keterangan)
+                                        <a href="{{ asset("storage/{$k->keterangan}") }}" target="_blank">Lihat File</a>
+                                        @else
+                                        <span id="fileStatus_{{ $k->id }}">Belum ada file diunggah.</span>
+                                        @endif
+                                    </td>
                                     <td>
-                                        <!-- Form untuk mengunggah file -->
-                                        <form method="POST" action="{{ route('uploadFile') }}" enctype="multipart/form-data">
+                                        <form id="uploadForm_{{ $k->id }}" method="POST" enctype="multipart/form-data">
                                             @csrf
                                             <input type="file" name="file_keterangan" id="file_keterangan_{{ $k->id }}">
                                             <input type="hidden" name="rencanakegiatan_id" value="{{ $k->id }}">
-                                            <button type="submit" class="btn btn-sm btn-primary">Unggah</button>
+                                            <button type="button" onclick="uploadFile('{{ $k->id }}')" class="btn btn-sm btn-primary">Unggah</button>
                                         </form>
                                     </td>
-                                    <td>
-                                        <!-- Menampilkan file yang sudah diunggah -->
-                                            @if ($k->keterangan)
-                                            <a href="{{ asset("storage/{$k->keterangan}") }}" alt="{{ $k->keterangan }} target="_blank">Lihat File</a>
-                            
-                                            @else
-                                            Belum ada file diunggah.
-                                            @endif
-                                    </td>
+
+
                                     <td>
                                         <button type="button" onclick="saveChanges('{{ $k->id }}')" class="btn btn-primary btn-xs">Simpan</button>
-                                        <a href="{{ route('rencanakegiatan.edit', $k->id) }}" class="btn btn-primary btn-xs">Edit</a>
-                                        <a href="{{ route('rencanakegiatan.destroy', $k->id) }}" onclick="notificationBeforeDelete(event, this)" class="btn btn-danger btn-xs">Delete</a>
+
                                     </td>
                                 </tr>
                                 @endforeach
@@ -81,6 +83,52 @@
     @method('delete')
     @csrf
 </form>
+
+<script>
+function uploadFile(rencanaKegiatanId) {
+        const fileInput = document.getElementById(`file_keterangan_${rencanaKegiatanId}`);
+        const file = fileInput.files[0];
+        const formData = new FormData();
+        formData.append('file_keterangan', file);
+        formData.append('rencanakegiatan_id', rencanaKegiatanId);
+
+        fetch('{{ route("uploadFile") }}', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Gagal mengunggah file.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const fileCell = document.getElementById(`fileCell_${rencanaKegiatanId}`);
+            const fileStatusSpan = document.getElementById(`fileStatus_${rencanaKegiatanId}`);
+            const uploadForm = document.getElementById(`uploadForm_${rencanaKegiatanId}`);
+            const saveButton = document.getElementById(`saveButton_${rencanaKegiatanId}`);
+
+            if (data.keterangan) {
+                fileCell.innerHTML = `<a href="${data.keterangan}" target="_blank">Lihat File</a>`;
+                fileStatusSpan.textContent = ''; // Kosongkan pesan "Belum ada file diunggah."
+                uploadForm.style.display = 'none'; // Sembunyikan form upload
+                saveButton.style.display = 'inline-block'; // Tampilkan tombol Simpan
+            } else {
+                fileCell.innerHTML = 'Belum ada file diunggah.';
+            }
+
+            fileInput.value = ''; // Reset nilai input file setelah berhasil diunggah
+        })
+        .catch(error => {
+            console.error('Gagal mengunggah file:', error);
+        });
+    }
+
+
+</script>
 
 <script>
     function handleCheckboxChange(rencanaKegiatanId, checkboxId) {

@@ -65,14 +65,19 @@ tidak ditemukan');
     }
 
     public function destroy(Request $request, $id)
+    
     {
-        //Menghapus Bidang Studi 
-        $kegiatan = kegiatan::find($id);
+        // Temukan kegiatan berdasarkan ID
+        $kegiatan = Kegiatan::find($id);
 
-        if ($kegiatan) $kegiatan->delete();
+        if (!$kegiatan) {
+            return redirect()->route('kegiatan.index')->with('error_message', 'Kegiatan tidak ditemukan.');
+        }
 
-        return redirect()->route('kegiatan.index')
-            ->with('success_message', 'Berhasil menghapus kegiatan "' . $kegiatan->nama . '" !');
+        // Hapus kegiatan
+        $kegiatan->delete();
+
+        return redirect()->route('kegiatan.index')->with('success_message', 'Berhasil menghapus kegiatan dan rencana kegiatan terkait.');
     }
 }
 
