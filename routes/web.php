@@ -16,9 +16,11 @@ use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CatatanKasusController;
 use App\Http\Controllers\JadwalpiketController;
 use App\Http\Controllers\DaftarrapotController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\SiswakesController;
 use App\Http\Controllers\LaporankasusController;
 use App\Http\Controllers\PresentaseController;
+use App\Http\Controllers\RencanakegiatanController;
 use App\Models\KunjunganRumah;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +49,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('mapel', MapelController::class);
     Route::resource('kompetensi', KompetensiController::class);
+    Route::resource('rencanakegiatan', RencanakegiatanController::class);
+    Route::patch('/rencanakegiatan/{id}', [RencanakegiatanController::class, 'update'])->name('rencanakegiatan.update');
+    Route::post('/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('uploadFile');
+    Route::resource('kegiatan', KegiatanController::class);
     Route::resource('users', UserController::class);
     Route::resource('kelas', KelasController::class);
     Route::resource('walas', WalasController::class);
