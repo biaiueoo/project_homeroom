@@ -13,6 +13,20 @@
 btn-primary mb-2">
                     Tambah
                 </a>
+
+                <form action="{{ route('siswa-import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group mb-4">
+                        <div class="custom-file text-left">
+                            <input type="file" name="file" class="custom-file-input" id="customFile">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <a class="btn btn-info" href="{{ route('export.excel') }}">Export Excel File</a>
+                    </div> 
+                    <button class="btn btn-primary">Import Siswa</button>
+                </form>                
+
                 <a href="{{ route('siswa.pdf') }}" class="btn btn-secondary mb-2">
                     Download PDF
                 </a>

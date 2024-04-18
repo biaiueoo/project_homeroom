@@ -20,9 +20,13 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\SiswakesController;
 use App\Http\Controllers\LaporankasusController;
 use App\Http\Controllers\PresentaseController;
+
+use App\Models\Kompetensi;
 use App\Http\Controllers\RencanakegiatanController;
+
 use App\Models\KunjunganRumah;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SiswaExportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,6 +78,19 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('daftarrapot', DaftarrapotController::class);
     Route::get('/guru/pdf', [GuruController::class, 'downloadPDF'])->name('guru.pdf');
     Route::resource('guru', GuruController::class);
+
+    
+    Route::get('/siswa/file-import',[SiswaController::class,'importView'])->name('siswa-import-view');
+    Route::post('/siswa/import',[SiswaController::class,'import'])->name('siswa-import');
+    
+    Route::get('/kompetensi/file-import',[KompetensiController::class,'importView'])->name('kompetensi-import-view');
+    Route::post('/kompetensi/import',[KompetensiController::class,'import'])->name('kompetensi-import');
+
+    Route::controller(SiswaExportController::class)->group(function(){
+        Route::get('index', 'index');    
+        Route::get('export/siswa', 'export')->name('export.excel');
+    });
+
 });
 
 Route::middleware(['auth', 'role:walikelas'])->group(function () {

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Imports\SiswaImport;
+use App\Exports\SiswaExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Kompetensi;
@@ -12,6 +15,20 @@ use Dompdf\Options;
 
 class SiswaController extends Controller
 {
+    public function importViewSiswa(Request $request){
+        return view('importFile');
+    }
+
+    public function import(Request $request){
+        Excel::import(new SiswaImport, $request->file('file')->store('files'));
+        return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new SiswaExport, 'siswa_template.xlsx');
+    }
+    
     public function index()
     {
         $siswa = Siswa::all();
