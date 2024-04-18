@@ -13,13 +13,13 @@
 btn-primary mb-2">
                         Tambah
                     </a>
-                    <div class="table-responsive">
+                    <div class="table-resposive">
                         <table class="table table-hover table-bordered 
 table-stripped" id="example2">
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Id Catatan Kasus</th>
+                                    {{-- <th>Id Catatan Kasus</th> --}}
                                     <th>Nama Siswa</th>
                                     <th>Kelas</th>
                                     <th>Kompetensi Keahlian</th>
@@ -47,7 +47,7 @@ table-stripped" id="example2">
                                 @foreach ($catatankasus as $key => $ck)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $ck->id }}</td>
+                                        {{-- <td>{{ $ck->id }}</td> --}}
                                         <td>{{ $ck->fsiswa->nama_lengkap }}</td>
                                         <td>{{ $ck->fsiswa->fkelas->kelas }}</td>
                                         <td>{{ $ck->fsiswa->fkompetensi->kompetensi_keahlian }}</td>
@@ -111,7 +111,31 @@ table-stripped" id="example2">
 
                                         <td>{{ $ck->tanggal }}</td>
                                         <td>{{ $ck->tindak_lanjut }}</td>
-                                        <td>{{ $ck->status_kasus }}</td>
+                                        {{-- <td>{{ $ck->status_kasus }}</td> --}}
+                                        <td>
+                                            @switch($ck->status_kasus)
+                                                @case('sedang ditangani')
+                                                    <button class="btn btn-warning btn-xs">{{ $ck->status_kasus }}</button>
+                                                @break
+
+                                                @case('Diajukan ke kepala kompetensi')
+                                                    <button class="btn btn-info btn-xs">{{ $ck->status_kasus }}</button>
+                                                @break
+
+                                                @case('Diajukan ke kesiswaan')
+                                                    <button class="btn btn-primary btn-xs">{{ $ck->status_kasus }}</button>
+                                                @break
+
+                                                @case('Kasus selesai')
+                                                    <button class="btn btn-success btn-xs">{{ $ck->status_kasus }}</button>
+                                                @break
+
+                                                @default
+                                                    <span>{{ $ck->status_kasus }}</span>
+                                            @endswitch
+                                        </td>
+
+
                                         <td>{{ $ck->dampingan_bk }}</td>
                                         {{-- @if (Auth::user()->level == 'admin')
                                             <td>{{ $ck->user_admin }}</td>

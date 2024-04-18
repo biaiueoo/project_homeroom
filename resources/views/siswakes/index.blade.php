@@ -13,6 +13,14 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <form action="{{ route('siswakes.index') }}" method="get" id="filter-form">
+                                <div class="col-md-8 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text text-body"><i class="fas fa-search"
+                                                aria-hidden="true"></i></span>
+                                        <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control"
+                                            placeholder="Cari Berdasarkan Nama Siswa">
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     {{-- <label for="kompetensi_keahlian">Kompetensi Keahlian:</label> --}}
                                     <select name="kompetensi_keahlian" id="kompetensi_keahlian" class="form-control">
@@ -39,12 +47,8 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <div class="form-group">
-                                <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control" placeholder="Filter Nama Lengkap">
-                            </div>
-                        </div>
-                        
+
+
                         @if (request('kompetensi_keahlian'))
                             <div class="col-md-4 mb-3">
                                 <div class="form-group text-right">
@@ -152,20 +156,23 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-    // Submit form when competency field changes
-    $('#kompetensi_keahlian').change(function() {
-        $('#filter-form').submit();
-    });
+        // Menyimpan nilai input nama_lengkap saat submit form
+        var namaLengkapValue = "{{ request('nama_lengkap') }}";
+        $('#nama_lengkap').val(namaLengkapValue);
 
-    // Submit form when class field changes
-    $('#kelas').change(function() {
-        $('#filter-form').submit();
-    });
+        // Submit form when competency field changes
+        $('#kompetensi_keahlian').change(function() {
+            $('#filter-form').submit();
+        });
 
-    // Submit form when nama_lengkap field value changes
-    $('#nama_lengkap').on('input', function() {
-        $('#filter-form').submit();
-    });
-});
+        // Submit form when class field changes
+        $('#kelas').change(function() {
+            $('#filter-form').submit();
+        });
 
+        // Submit form when nama_lengkap field value changes
+        $('#nama_lengkap').on('input', function() {
+            $('#filter-form').submit();
+        });
+    });
 </script>

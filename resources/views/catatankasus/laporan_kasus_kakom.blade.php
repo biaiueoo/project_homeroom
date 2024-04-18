@@ -12,7 +12,7 @@
                     <h6 class="mb-4">FILTER DATA</h6>
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <form action="{{ route('laporan.kasus.bk') }}" method="GET" id="filter-form">
+                            <form action="{{ route('laporan.kasus.kakom') }}" method="GET" id="filter-form">
                                 <div class="col-md-8 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text text-body"><i class="fas fa-search"
@@ -21,20 +21,8 @@
                                             placeholder="Cari Berdasarkan Nama Siswa">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    {{-- <label for="kompetensi_keahlian">Kompetensi Keahlian:</label> --}}
-                                    <select name="kompetensi_keahlian" id="kompetensi_keahlian" class="form-control">
-                                        <option value="">-- Pilih Kompetensi Keahlian --</option>
-                                        @foreach ($kompetensiKeahlianOptions as $option)
-                                            <option value="{{ $option->id }}"
-                                                {{ request('kompetensi_keahlian') == $option->id ? 'selected' : '' }}>
-                                                {{ $option->kompetensi_keahlian }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
                         </div>
-                        <div class="col-md-4 mb-3" id="kelas-filter"
-                            style="{{ request('kompetensi_keahlian') ? '' : 'display:none;' }}">
+                        <div class="col-md-4 mb-3" id="kelas-filter">
                             <div class="form-group">
                                 {{-- <label for="kelas">Kelas:</label> --}}
                                 <select name="kelas" id="kelas" class="form-control">
@@ -48,15 +36,13 @@
                             </div>
                         </div>
 
-
-
-                        @if (request('kompetensi_keahlian'))
-                            <div class="col-md-4 mb-3">
-                                <div class="form-group text-right">
-                                    <a href="{{ route('laporan.kasus.bk') }}" class="btn btn-secondary">Clear Filter</a>
-                                </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="form-group text-right">
+                                @if (request()->has('kelas') || request()->has('nama_lengkap'))
+                                    <a href="{{ route('laporan.kasus.kakom') }}" class="btn btn-secondary">Clear Filter</a>
+                                @endif
                             </div>
-                        @endif
+                        </div>
                     </div>
                     </form>
 
@@ -79,7 +65,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($laporanKasusBK as $key => $ck)
+                                @foreach ($laporanKasusKakom as $key => $ck)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $ck->fsiswa->nama_lengkap }}</td>
@@ -126,18 +112,7 @@
         var namaLengkapValue = "{{ request('nama_lengkap') }}";
         $('#nama_lengkap').val(namaLengkapValue);
 
-        // Submit form when competency field changes
-        $('#kompetensi_keahlian').change(function() {
-            $('#filter-form').submit();
-        });
-
-        // Submit form when class field changes
         $('#kelas').change(function() {
-            $('#filter-form').submit();
-        });
-
-        // Submit form when nama_lengkap field value changes
-        $('#nama_lengkap').on('input', function() {
             $('#filter-form').submit();
         });
     });
