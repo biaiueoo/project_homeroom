@@ -80,6 +80,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/guru/pdf', [GuruController::class, 'downloadPDF'])->name('guru.pdf');
     Route::resource('guru', GuruController::class);
 
+    Route::get('/laporan-kasus-bk', [CatatanKasusController::class, 'laporanKasusBK'])->name('laporan.kasus.bk');
+    Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
+
     
     Route::get('/siswa/file-import',[SiswaController::class,'importView'])->name('siswa-import-view');
     Route::post('/siswa/import',[SiswaController::class,'import'])->name('siswa-import');
