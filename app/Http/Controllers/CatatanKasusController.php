@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\CatatanKasus;
 use App\Models\Siswa;
-use App\Models\Lookup;
-use App\Models\Kelas;
 use App\Models\Kompetensi;
+use App\Models\Kelas;
+use App\Models\Lookup;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 use Illuminate\Http\Request;
 
@@ -144,75 +146,103 @@ class CatatanKasusController extends Controller
     }
 
     public function laporanKasusBK(Request $request)
-{
-    // Ambil semua catatan kasus dengan dampingan BK
-    $laporanKasusBK = CatatanKasus::where('dampingan_bk', 'Ya');
+    {
+        // Ambil semua catatan kasus dengan dampingan BK
+        $laporanKasusBK = CatatanKasus::where('dampingan_bk', 'Ya');
 
-    // Filter berdasarkan kompetensi keahlian
-    if ($request->filled('kompetensi_keahlian')) {
-        $kompetensiId = $request->kompetensi_keahlian;
-        $laporanKasusBK->whereHas('fsiswa.fkompetensi', function ($query) use ($kompetensiId) {
-            $query->where('id', $kompetensiId);
-        });
+        // Filter berdasarkan kompetensi keahlian
+        if ($request->filled('kompetensi_keahlian')) {
+            $kompetensiId = $request->kompetensi_keahlian;
+            $laporanKasusBK->whereHas('fsiswa.fkompetensi', function ($query) use ($kompetensiId) {
+                $query->where('id', $kompetensiId);
+            });
+
+            if ($request->filled('kelas')) {
+                $kelasId = $request->kelas;
+                $laporanKasusBK->whereHas('fsiswa.fkelas', function ($query) use ($kelasId) {
+                    $query->where('id', $kelasId);
+                });
+            }
+
+            // Ambil hasil setelah penerapan semua filter
+            $laporanKasusBK = $laporanKasusBK->get();
+
+            // Ambil opsi kelas yang sesuai dengan kompetensi keahlian yang dipilih
+            $kelasOptions = [];
+            if ($request->filled('kompetensi_keahlian')) {
+                $kelasOptions = Kelas::where('kdkompetensi', $request->kompetensi_keahlian)->get();
+            }
+
+            return view('catatankasus.laporan_kasus_bk', [
+                'laporanKasusBK' => $laporanKasusBK,
+                'kompetensiKeahlianOptions' => Kompetensi::all(),
+                'kelasOptions' => $kelasOptions,
+            ]);
+        }
     }
 
-    // Filter berdasarkan kelas
-    if ($request->filled('kelas')) {
-        $kelasId = $request->kelas;
-        $laporanKasusBK->whereHas('fsiswa.fkelas', function ($query) use ($kelasId) {
-            $query->where('id', $kelasId);
-        });
+    public function downloadPDF($id)
+    {
+        // Ambil data kunjungan rumah berdasarkan ID yang dipilih
+        $catatankasus = CatatanKasus::findOrFail($id);
+
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF dengan data kunjungan rumah yang dipilih
+        $html = view('pdf.catatankasus', compact('catatankasus'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Tentukan nama file PDF berdasarkan ID yang dipilih
+        $fileName = 'catatankasus_' . $id . '.pdf';
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream($fileName);
     }
 
-    // Ambil hasil setelah penerapan semua filter
-    $laporanKasusBK = $laporanKasusBK->get();
 
-    // Ambil opsi kelas yang sesuai dengan kompetensi keahlian yang dipilih
-    $kelasOptions = [];
-    if ($request->filled('kompetensi_keahlian')) {
-        $kelasOptions = Kelas::where('kdkompetensi', $request->kompetensi_keahlian)->get();
-    }
-
-    return view('catatankasus.laporan_kasus_bk', [
-        'laporanKasusBK' => $laporanKasusBK,
-        'kompetensiKeahlianOptions' => Kompetensi::all(),
-        'kelasOptions' => $kelasOptions,
-    ]);
-}
 
 
     public function laporanKasusKakom(Request $request)
-{
-    // Ambil semua kelas yang terkait dengan kompetensi keahlian Sistem Informatika, Jaringan, atau Aplikasi
-    $kelasOptions = Kelas::whereHas('fkompetensi', function ($query) {
-        $query->where('kompetensi_keahlian', 'like', '%Sistem Informatika, Jaringan dan Aplikasi%');
-    })->get();
+    {
+        // Ambil semua kelas yang terkait dengan kompetensi keahlian Sistem Informatika, Jaringan, atau Aplikasi
+        $kelasOptions = Kelas::whereHas('fkompetensi', function ($query) {
+            $query->where('kompetensi_keahlian', 'like', '%Sistem Informatika, Jaringan dan Aplikasi%');
+        })->get();
 
-    // Ambil semua catatan kasus yang memiliki kompetensi keahlian Sistem Informatika, Jaringan, atau Aplikasi
-    $laporanKasusKakom = CatatanKasus::whereHas('fsiswa.fkompetensi', function ($query) {
-        $query->where('kompetensi_keahlian', 'like', '%Sistem Informatika, Jaringan dan Aplikasi%');
-    });
-
-    // Filter berdasarkan kelas yang terkait dengan kompetensi keahlian tersebut
-    if ($request->filled('kelas')) {
-        $laporanKasusKakom->whereHas('fsiswa.fkelas', function ($query) use ($request) {
-            // Filter kelas yang memiliki kompetensi keahlian yang sesuai
-            $query->whereHas('fkompetensi', function ($subquery) {
-                $subquery->where('kompetensi_keahlian', 'like', '%Sistem Informatika, Jaringan dan Aplikasi%');
-            });
-            // Filter berdasarkan id kelas yang dipilih
-            $query->where('id', $request->kelas);
+        // Ambil semua catatan kasus yang memiliki kompetensi keahlian Sistem Informatika, Jaringan, atau Aplikasi
+        $laporanKasusKakom = CatatanKasus::whereHas('fsiswa.fkompetensi', function ($query) {
+            $query->where('kompetensi_keahlian', 'like', '%Sistem Informatika, Jaringan dan Aplikasi%');
         });
+
+        // Filter berdasarkan kelas yang terkait dengan kompetensi keahlian tersebut
+        if ($request->filled('kelas')) {
+            $laporanKasusKakom->whereHas('fsiswa.fkelas', function ($query) use ($request) {
+                // Filter kelas yang memiliki kompetensi keahlian yang sesuai
+                $query->whereHas('fkompetensi', function ($subquery) {
+                    $subquery->where('kompetensi_keahlian', 'like', '%Sistem Informatika, Jaringan dan Aplikasi%');
+                });
+                // Filter berdasarkan id kelas yang dipilih
+                $query->where('id', $request->kelas);
+            });
+        }
+
+        // Ambil hasil setelah penerapan semua filter
+        $laporanKasusKakom = $laporanKasusKakom->get();
+
+        return view('catatankasus.laporan_kasus_kakom', [
+            'laporanKasusKakom' => $laporanKasusKakom,
+            'kompetensiKeahlianOptions' => Kompetensi::all(),
+            'kelasOptions' => $kelasOptions,
+        ]);
     }
-
-    // Ambil hasil setelah penerapan semua filter
-    $laporanKasusKakom = $laporanKasusKakom->get();
-
-    return view('catatankasus.laporan_kasus_kakom', [
-        'laporanKasusKakom' => $laporanKasusKakom,
-        'kompetensiKeahlianOptions' => Kompetensi::all(),
-        'kelasOptions' => $kelasOptions,
-    ]);
-}
-
 }

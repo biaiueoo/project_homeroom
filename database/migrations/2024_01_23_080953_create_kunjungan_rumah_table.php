@@ -20,7 +20,7 @@ return new class extends Migration
                 ->onDelete('cascade')->onUpdate('cascade');
             $table->date('tanggal');
             $table->string('solusi', 50);
-            $table->text('surat');
+            $table->text('surat')->nullable();
             $table->text('dokumentasi');
             $table->timestamps();
         });

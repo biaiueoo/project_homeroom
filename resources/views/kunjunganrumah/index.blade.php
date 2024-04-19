@@ -25,7 +25,7 @@
                                 <th>Tanggal</th>
                                 <th>Semester</th>
                                 <th>Tahun Ajaran</th>
-                                <th>Surat</th>
+
                                 <th>Dokumentasi</th>
                                 <th>Opsi</th>
                             </tr>
@@ -43,13 +43,6 @@
                                 <td>{{ $kr->fkasus->semester }}</td>
                                 <td>{{ $kr->fkasus->tahun_ajaran }}</td>
                                 <td>
-                                    @if($kr->surat)
-                                    <a href="{{ asset('uploads/' . $kr->surat) }}" target="_blank" class="btn btn-secondary">Lihat Dokumen</a>
-                                    @else
-                                    <span>Tidak ada dokumen</span>
-                                    @endif
-                                </td>
-                                <td>
                                     @if($kr->dokumentasi)
                                     <img src="{{ asset('uploads/' . $kr->dokumentasi) }}" alt="{{ $kr->dokumentasi }}" style="max-width: 100px;">
                                     @else
@@ -57,14 +50,20 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('kunjunganrumah.edit', $kr) }}" class="btn btn-primary btn-xs">
-                                        Edit
+                                    <a href="{{ route('kunjunganrumah.pdf', ['id' => $kr->id]) }}" class="btn btn-secondary btn-xs">
+                                        Unduh Surat
                                     </a>
+                                    <form id="uploadForm_{{ $kr->id }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="file" name="surat" id="kunjungan{{ $kr->id }}">
+                                        <input type="hidden" name="kunjunganid" value="{{ $kr->id }}">
+                                        <button type="button" onclick="uploadFile('{{ $kr->id }}')" class="btn btn-sm btn-primary">Unggah</button>
+                                    </form>
+                                    <!-- <a href="{{ route('kunjunganrumah.edit', $kr) }}" class="btn btn-primary btn-xs">
+                                        Edit
+                                    </a> -->
                                     <a href="{{ route('kunjunganrumah.destroy', $kr) }}" onclick="notificationBeforeDelete(event, this)" class="btn btn-danger btn-xs">
                                         Delete
-                                    </a>
-                                    <a href="{{ route('kunjunganrumah.pdf', ['id' => $kr->id]) }}" class="btn btn-danger btn-xs">
-                                        Download PDF
                                     </a>
 
                                 </td>
@@ -82,6 +81,56 @@
     @method('delete')
     @csrf
 </form>
+<script>
+    function uploadFile(kunjunganId) {
+        const fileInput = document.getElementById(`kunjungan${kunjunganId}`);
+        const file = fileInput.files[0];
+
+        if (!file) {
+            console.error('File tidak ditemukan.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('surat', file);
+        formData.append('kunjunganid', kunjunganId);
+
+        fetch('{{ route("uploadFile") }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Gagal mengunggah file.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const fileCell = document.getElementById(`fileCell_${kunjunganId}`);
+                const fileStatusSpan = document.getElementById(`fileStatus_${kunjunganId}`);
+                const uploadForm = document.getElementById(`uploadForm_${kunjunganId}`);
+                const saveButton = document.getElementById(`saveButton_${kunjunganId}`);
+
+                if (data.surat) {
+                    fileCell.innerHTML = `<a href="${data.surat}" target="_blank">Lihat File</a>`;
+                    fileStatusSpan.textContent = ''; // Kosongkan pesan "Belum ada file diunggah."
+                    uploadForm.style.display = 'none'; // Sembunyikan form upload
+                    saveButton.style.display = 'inline-block'; // Tampilkan tombol Simpan
+                } else {
+                    fileCell.textContent = 'Belum ada file diunggah.';
+                }
+
+                fileInput.value = ''; // Reset nilai input file setelah berhasil diunggah
+            })
+            .catch(error => {
+                console.error('Gagal mengunggah file:', error);
+            });
+    }
+</script>
+
 <script>
     $('#example2').DataTable({
         "responsive": true,
