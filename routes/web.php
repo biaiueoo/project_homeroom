@@ -92,6 +92,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('index', 'index');
         Route::get('export/siswa', 'export')->name('export.excel');
     });
+    Route::get('/laporan-kasus-bk', [CatatanKasusController::class, 'laporanKasusBK'])->name('laporan.kasus.bk');
+    Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
+
 });
 
 // ROLE WALI KELAS
