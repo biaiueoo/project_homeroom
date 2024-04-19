@@ -84,6 +84,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('guru', GuruController::class);
     Route::resource('kunjunganrumah', KunjunganRumahController::class);
     Route::get('/kunjunganrumah/pdf/{id}', [KunjunganRumahController::class, 'downloadPDF'])->name('kunjunganrumah.pdf');
+    Route::post('/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
     Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('siswa-import-view');
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa-import');
     Route::get('/kompetensi/file-import', [KompetensiController::class, 'importView'])->name('kompetensi-import-view');

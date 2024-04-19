@@ -55,8 +55,8 @@
                                     </a>
                                     <form id="uploadForm_{{ $kr->id }}" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="file" name="surat" id="kunjungan{{ $kr->id }}">
-                                        <input type="hidden" name="kunjunganid" value="{{ $kr->id }}">
+                                        <input type="file" name="file_surat" id="file_surat_{{ $kr->id }}">
+                                        <input type="hidden" name="kunjungarumah_id" value="{{ $kr->id }}">
                                         <button type="button" onclick="uploadFile('{{ $kr->id }}')" class="btn btn-sm btn-primary">Unggah</button>
                                     </form>
                                     <!-- <a href="{{ route('kunjunganrumah.edit', $kr) }}" class="btn btn-primary btn-xs">
@@ -82,18 +82,12 @@
     @csrf
 </form>
 <script>
-    function uploadFile(kunjunganId) {
-        const fileInput = document.getElementById(`kunjungan${kunjunganId}`);
+    function uploadFile(kunjunganRumahId) {
+        const fileInput = document.getElementById(`file_surat_${kunjunganRumahId}`);
         const file = fileInput.files[0];
-
-        if (!file) {
-            console.error('File tidak ditemukan.');
-            return;
-        }
-
         const formData = new FormData();
-        formData.append('surat', file);
-        formData.append('kunjunganid', kunjunganId);
+        formData.append('file_surat', file);
+        formData.append('kunjunganrumah_id', kunjunganRumahId);
 
         fetch('{{ route("uploadFile") }}', {
                 method: 'POST',
@@ -109,10 +103,10 @@
                 return response.json();
             })
             .then(data => {
-                const fileCell = document.getElementById(`fileCell_${kunjunganId}`);
-                const fileStatusSpan = document.getElementById(`fileStatus_${kunjunganId}`);
-                const uploadForm = document.getElementById(`uploadForm_${kunjunganId}`);
-                const saveButton = document.getElementById(`saveButton_${kunjunganId}`);
+                const fileCell = document.getElementById(`fileCell_${kunjunganRumahId}`);
+                const fileStatusSpan = document.getElementById(`fileStatus_${kunjunganRumahId}`);
+                const uploadForm = document.getElementById(`uploadForm_${kunjunganRumahId}`);
+                const saveButton = document.getElementById(`saveButton_${kunjunganRumahId}`);
 
                 if (data.surat) {
                     fileCell.innerHTML = `<a href="${data.surat}" target="_blank">Lihat File</a>`;
@@ -120,7 +114,7 @@
                     uploadForm.style.display = 'none'; // Sembunyikan form upload
                     saveButton.style.display = 'inline-block'; // Tampilkan tombol Simpan
                 } else {
-                    fileCell.textContent = 'Belum ada file diunggah.';
+                    fileCell.innerHTML = 'Belum ada file diunggah.';
                 }
 
                 fileInput.value = ''; // Reset nilai input file setelah berhasil diunggah

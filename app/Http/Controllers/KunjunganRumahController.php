@@ -172,18 +172,18 @@ class KunjunganRumahController extends Controller
     public function uploadFile(Request $request)
     {
         $request->validate([
-            'surat' => 'required|file|max:10240', // Sesuaikan validasi dengan kebutuhan
-            'kunjunganid' => 'required|exists:kunjungan,id',
+            'file_surat' => 'required|file|max:10240', // Sesuaikan validasi dengan kebutuhan
+            'kunjunganrumah_id' => 'required|exists:kunjungan_rumah,id',
         ]);
 
-        $kunjunganRumah = KunjunganRumah::find($request->kunjunganid);
+        $kunjunganRumah = KunjunganRumah::find($request->kunjunganrumah_id);
 
         if (!$kunjunganRumah) {
-            return response()->json(['error' => 'Rencana kegiatan tidak ditemukan.'], 404);
+            return response()->json(['error' => 'Kunjungan Rumah tidak ditemukan.'], 404);
         }
 
         // Simpan file ke storage
-        $file = $request->file('surat');
+        $file = $request->file('file_surat');
         $filePath = $file->store('public/surat');
 
         // Update kolom 'keterangan' dengan nama file
