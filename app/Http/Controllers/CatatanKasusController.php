@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\CatatanKasus;
 use App\Models\Siswa;
 use App\Models\Lookup;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 use Illuminate\Http\Request;
 
@@ -148,5 +150,33 @@ class CatatanKasusController extends Controller
         return view('catatankasus.laporan_kasus_bk', [
             'laporanKasusBK' => $laporanKasusBK
         ]);
+    }
+
+    public function downloadPDF($id)
+    {
+        // Ambil data kunjungan rumah berdasarkan ID yang dipilih
+        $catatankasus = CatatanKasus::findOrFail($id);
+
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF dengan data kunjungan rumah yang dipilih
+        $html = view('pdf.catatankasus', compact('catatankasus'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Tentukan nama file PDF berdasarkan ID yang dipilih
+        $fileName = 'catatankasus_' . $id . '.pdf';
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream($fileName);
     }
 }

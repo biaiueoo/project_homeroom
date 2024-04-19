@@ -7,6 +7,7 @@ use App\Models\CatatanKasus;
 use App\Models\Siswa;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
 class KunjunganRumahController extends Controller
@@ -33,7 +34,6 @@ class KunjunganRumahController extends Controller
     {
         // Validasi
         $request->validate([
-            'surat' => 'required|file|mimes:pdf|max:2048',
             'dokumentasi' => 'required|file|mimes:jpeg,jpg,png,pdf|max:2048',
             'kdkasus' => 'required',
             'tanggal' => 'required',
@@ -167,5 +167,29 @@ class KunjunganRumahController extends Controller
 
         // Kembalikan respons dengan PDF untuk diunduh
         return $dompdf->stream($fileName);
+    }
+
+    public function uploadFile(Request $request)
+    {
+        $request->validate([
+            'surat' => 'required|file|max:10240', // Sesuaikan validasi dengan kebutuhan
+            'kunjunganid' => 'required|exists:kunjungan,id',
+        ]);
+
+        $kunjunganRumah = KunjunganRumah::find($request->kunjunganid);
+
+        if (!$kunjunganRumah) {
+            return response()->json(['error' => 'Rencana kegiatan tidak ditemukan.'], 404);
+        }
+
+        // Simpan file ke storage
+        $file = $request->file('surat');
+        $filePath = $file->store('public/surat');
+
+        // Update kolom 'keterangan' dengan nama file
+        $kunjunganRumah->surat = $filePath;
+        $kunjunganRumah->save();
+
+        return response()->json(['surat' => asset('storage/' . $filePath)], 200);
     }
 }

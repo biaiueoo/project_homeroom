@@ -1,3 +1,4 @@
+BAP
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +11,7 @@
             size: legal;
         }
 
+        /* Body styles */
         body {
             font-family: 'Times New Roman', Times, serif;
             font-size: 12px;
@@ -60,7 +62,7 @@
         .judul {
             font-size: 14px;
             text-align: center;
-            padding: 6px;
+            padding: 10px;
             font-weight: bold;
             margin-bottom: 5;
         }
@@ -129,7 +131,7 @@
             </td>
             <td class="jenis" rowspan="4">
                 <strong>
-                    <center>HOME VISIT</center>
+                    <center>BERITA ACARA</center>
                 </strong>
             </td>
             <!-- Baris pertama di kolom kanan -->
@@ -152,67 +154,56 @@
             <td class="right-column">1 dari 1</td>
         </tr>
     </table>
+    <div class="judul">BERITA ACARA PERKARA</div>
 
-    <h2 class="judul">KUNJUNGAN RUMAH (HOME VISIT)</h2>
     <div class="content">
         <div class="detail-item">
-            <strong>NAMA</strong>: {{ $kunjunganRumah->fkasus->fsiswa->nama_lengkap }}
+            <strong>Nama</strong>: {{ $catatankasus->fsiswa->nama_lengkap }}
         </div>
         <div class="detail-item">
-            <strong>NIS</strong>: {{ $kunjunganRumah->fkasus->fsiswa->nis }}
+            <strong>Kelas</strong>: {{ $catatankasus->fsiswa->fkelas->kelas }}
         </div>
         <div class="detail-item">
-            <strong>KELAS</strong>: {{ $kunjunganRumah->fkasus->fsiswa->fkelas->kelas }}
+            <strong>Tanggal</strong>: {{ $catatankasus->tanggal }}
         </div>
         <div class="detail-item">
-            <strong>PROGRAM KEAHLIAN</strong>: {{ $kunjunganRumah->fkasus->fsiswa->fkompetensi->kompetensi_keahlian }}
+            <strong>Kasus</strong>: {{ $catatankasus->kasus }}
         </div>
         <div class="detail-item">
-            <strong>ALAMAT</strong>: {{ $kunjunganRumah->fkasus->fsiswa->alamat }}
+            <strong>Keterangan</strong>:
+            ...................................................................................................................................................... <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
+            ........................................................................................................................................................................................................ <br>
         </div>
-        <div class="detail-item">
-            <strong>WAKTU KUNJUNGAN</strong>: {{ $kunjunganRumah->tanggal }}
+        <div class="tgl-surat">Cibinong, {{ $catatankasus->tanggal }}</div>
+
+        <div class="signature">
+            <table class="signature">
+                <tr>
+                    <td>
+                        Siswa<br><br><br><br><br>
+                    </td>
+                    <td>
+                        Wali Kelas<br><br><br><br><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ $catatankasus->fsiswa->nama_lengkap }}</td>
+                    <td>(................................)</td>
+                </tr>
+            </table>
         </div>
     </div>
-
-    <div class="tgl-surat">CIBINONG, {{ $kunjunganRumah->tanggal }}</div>
-
-    <div class="signature">
-        <table class="signature">
-            <tr>
-                <td>
-                    WALI KELAS<br><br><br><br><br>
-                </td>
-                <td>
-                    ORANG TUA SISWA<br><br><br><br><br>
-                </td>
-            </tr>
-            <tr>
-                <td>(................................)</td>
-                <td>(................................)</td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="mengetahui">MENGETAHUI,</div>
-
-    <div class="signature">
-        <table class="signature">
-            <tr>
-                <td>
-                    BP/BK<br><br><br><br><br>
-                </td>
-                <td>
-                    WAKASEK BID KESISWAAN,<br><br><br><br><br>
-                </td>
-            </tr>
-            <tr>
-                <td>(................................)</td>
-                <td>(................................)</td>
-            </tr>
-        </table>
-    </div>
-
 </body>
 
 </html>
