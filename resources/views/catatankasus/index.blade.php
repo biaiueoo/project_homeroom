@@ -13,6 +13,9 @@
 btn-primary mb-2">
                     Tambah
                 </a>
+                <a href="{{ route('catatankasus.pdf') }}" class="btn btn-secondary mb-2">
+                    Template SP
+                </a>
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered 
 table-stripped" id="example2">
@@ -117,7 +120,7 @@ table-stripped" id="example2">
                                         <button type="submit" class="btn btn-primary btn-sm">Ubah Status</button>
                                     </form>
                                 </td>
-                                
+
                                 <td>{{ $ck->dampingan_bk }}</td>
                                 {{-- @if (Auth::user()->level == 'admin')
                                             <td>{{ $ck->user_admin }}</td>
