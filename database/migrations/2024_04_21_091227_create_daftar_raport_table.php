@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -13,8 +14,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('daftar_raport', function (Blueprint $table) {
+        Schema::create('daftar_rapot', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('kdsiswa');
+            $table->foreign('kdsiswa')->references('id')->on('siswa') 
+            ->onDelete('cascade')->onUpdate('cascade');
+            $table->date('tanggal');
+            $table->string('rapor', 100);
+            $table->text('Dokumentasi');
+            $table->string('semester',100);
+            $table->string('tahun_ajaran',30);
+
             $table->timestamps();
         });
     }
@@ -26,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('daftar_raport');
+        Schema::dropIfExists('daftar_rapot');
     }
 };
