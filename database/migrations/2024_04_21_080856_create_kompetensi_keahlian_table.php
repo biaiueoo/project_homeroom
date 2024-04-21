@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -15,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('kompetensi_keahlian', function (Blueprint $table) {
             $table->id();
+            $table->string('kompetensi_keahlian', 50);
             $table->timestamps();
         });
     }

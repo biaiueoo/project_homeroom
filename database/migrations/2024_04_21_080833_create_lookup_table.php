@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -15,6 +16,9 @@ return new class extends Migration
     {
         Schema::create('lookup', function (Blueprint $table) {
             $table->id();
+            $table->string('keterangan',50);
+            $table->string('jenis',50);
+            $table->integer('idx');
             $table->timestamps();
         });
     }

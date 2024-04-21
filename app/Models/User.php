@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -14,18 +13,20 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'level',
+        'guru_id',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
@@ -35,7 +36,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -55,5 +56,18 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return $this->level === $role;
+    }
+
+    public function getData() {
+        if ($this->level === 'admin') {
+            return Guru::all();
+        } elseif ($this->level === 'kepala_kompetensi') {
+            return Kelas::where('kdkompetensi', $this->guru_id)->get();
+        } elseif ($this->level === 'wali_kelas') {
+            return Kelas::where('kdkompetensi', $this->guru_id)->where('id', $this->kelas_id)->get();
+        } else {
+            // Handle other cases
+            return [];
+        }
     }
 }
