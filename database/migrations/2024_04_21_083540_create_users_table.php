@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('presentase_sosial', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('kdsiswa');
-            $table->foreign('kdsiswa')->references('id')->on('siswa') 
-            ->onDelete('cascade')->onUpdate('cascade');
-            $table->string('pekerjaan_ortu',100);
             $table->timestamps();
         });
     }
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('presentase_sosial');
+        Schema::dropIfExists('users');
     }
 };

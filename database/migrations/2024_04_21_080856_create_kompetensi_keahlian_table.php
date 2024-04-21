@@ -13,15 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('jadwal_piket', function (Blueprint $table) {
+        Schema::create('kompetensi_keahlian', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('kdsiswa');
-            $table->foreign('kdsiswa')->references('id')->on('siswa') 
-            ->onDelete('cascade')->onUpdate('cascade');
-            $table->date('tanggal');
-            $table->string('hari',11);
-            $table->string('semester',50);
-            $table->string('tahun_ajaran',30);
             $table->timestamps();
         });
     }
@@ -33,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('jadwal_piket');
+        Schema::dropIfExists('kompetensi_keahlian');
     }
 };
