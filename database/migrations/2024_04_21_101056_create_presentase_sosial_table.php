@@ -1,4 +1,3 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -14,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('kompetensi_keahlian', function (Blueprint $table) {
+        Schema::create('presentase_sosial', function (Blueprint $table) {
             $table->id();
-            $table->string('kompetensi_keahlian', 50);
+            $table->unsignedBigInteger('kdsiswa');
+            $table->foreign('kdsiswa')->references('id')->on('siswa') 
+            ->onDelete('cascade')->onUpdate('cascade');
+            $table->string('pekerjaan_ortu',100);
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kompetensi_keahlian');
+        Schema::dropIfExists('presentase_sosial');
     }
 };
