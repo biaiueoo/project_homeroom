@@ -20,6 +20,13 @@ class DaftarrapotController extends Controller
         ]);
     }
 
+    public function show($id)
+{
+    $dr = DaftarRapot::find($id); // Misalnya, mengambil data DaftarRapot berdasarkan ID
+    return view('daftarrapot.index', compact('dr'));
+}
+
+
 
     public function create()
     {
@@ -34,42 +41,56 @@ class DaftarrapotController extends Controller
         ]);
     }
 
+    public function prosesPenyerahan(Request $request)
+    {
+        $document = daftarrapot::findOrFail($request->id);
+
+        // Lakukan logika untuk penyerahan dokumen
+        $document->update(['rapor' => 'Selesai']);
+
+        return response()->json(['success' => true]);
+    }
+
 
 
     public function store(Request $request)
-    {
+{
+    // Validasi input
+    $request->validate([
+        'kdsiswa' => 'required',
+        'tanggal' => 'required',
+        'semester' => 'required',
+        'tahun_ajaran' => 'required',
+        'Dokumentasi' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
 
-        $request->validate([
-            'kdsiswa' => 'required',
-            'tanggal' => 'required',
-            'semester' => 'required',
-            'rapor' => 'required',
-            'tahun_ajaran' => 'required',
-            'Dokumentasi' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+    // Menyiapkan data untuk disimpan
+    $data = $request->only([
+        'kdsiswa',
+        'tanggal',
+        'semester',
+        'tahun_ajaran',
+    ]);
 
-        $array = $request->only([
-            'kdsiswa',
-            'tanggal',
-            'semester',
-            'rapor',
-            'tahun_ajaran',
+    // Menetapkan nilai default "pengambilan" untuk field 'rapor'
+    $data['rapor'] = $request->input('rapor', 'pengambilan');
 
-        ]);
-        if ($request->hasFile('Dokumentasi')) {
-            $array['Dokumentasi'] = $request->file('Dokumentasi')->store('Dokumentasi Daftar Rapot');
-        }
-
-        $tambah = daftarrapot::create($array);
-
-        if ($tambah) {
-            return redirect()->route('daftarrapot.index')
-                ->with('success_message', 'Berhasil menambah Daftar Rapot baru');
-        } else {
-            return redirect()->back()
-                ->with('error_message', 'Gagal menambah Daftar Rapot baru');
-        }
+    // Jika terdapat file yang diunggah, simpan file ke direktori dan tambahkan ke data
+    if ($request->hasFile('Dokumentasi')) {
+        $data['Dokumentasi'] = $request->file('Dokumentasi')->store('Dokumentasi Daftar Rapot');
     }
+
+    // Simpan data ke database
+    $daftarrapot = DaftarRapot::create($data);
+
+    if ($daftarrapot) {
+        return redirect()->route('daftarrapot.index')
+            ->with('success_message', 'Berhasil menambah Daftar Rapot baru');
+    } else {
+        return redirect()->back()
+            ->with('error_message', 'Gagal menambah Daftar Rapot baru');
+    }
+}
 
 
     public function edit($id)

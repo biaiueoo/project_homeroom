@@ -56,7 +56,7 @@
                         </select>
                     </div>
 
-                    {{-- Input rapor --}}
+                    <!-- {{-- Input rapor --}}
                     <div class="form-group">
                         <label for="rapor">Laporan</label>
                         <select name="rapor" id="rapor" class="form-control">
@@ -64,7 +64,7 @@
                             <option value="{{ $rapor_item->keterangan }}">{{ $rapor_item->keterangan }}</option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                         <label for="Dokumentasi" class="form-label">Dokumentasi</label>
