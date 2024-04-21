@@ -146,53 +146,51 @@ class CatatanKasusController extends Controller
     }
 
     public function laporanKasusBK(Request $request)
-{
-    // Ambil semua catatan kasus dengan dampingan BK
-    $laporanKasusBK = CatatanKasus::where('dampingan_bk', 'Ya');
-
-    // Filter berdasarkan kompetensi keahlian
-    if ($request->filled('kompetensi_keahlian')) {
-        $kompetensiId = $request->kompetensi_keahlian;
-        $laporanKasusBK->whereHas('fsiswa.fkompetensi', function ($query) use ($kompetensiId) {
-            $query->where('id', $kompetensiId);
-        });
-    }
-
-    // Filter berdasarkan kelas
-    if ($request->filled('kelas')) {
-        $kelasId = $request->kelas;
-        $laporanKasusBK->whereHas('fsiswa.fkelas', function ($query) use ($kelasId) {
-            $query->where('id', $kelasId);
-        });
-    }
-
-    // Ambil hasil setelah penerapan semua filter
-    $laporanKasusBK = $laporanKasusBK->get();
-
-    // Ambil opsi kelas yang sesuai dengan kompetensi keahlian yang dipilih
-    $kelasOptions = [];
-    if ($request->filled('kompetensi_keahlian')) {
-        $kelasOptions = Kelas::where('kdkompetensi', $request->kompetensi_keahlian)->get();
-    }
-
-    return view('catatankasus.laporan_kasus_bk', [
-        'laporanKasusBK' => $laporanKasusBK,
-        'kompetensiKeahlianOptions' => Kompetensi::all(),
-        'kelasOptions' => $kelasOptions,
-    ]);
-}
-
-
-
-    public function downloadPDF($id)
     {
-        // Ambil data kunjungan rumah berdasarkan ID yang dipilih
-        $catatankasus = CatatanKasus::findOrFail($id);
+        // Ambil semua catatan kasus dengan dampingan BK
+        $laporanKasusBK = CatatanKasus::where('dampingan_bk', 'Ya');
+
+        // Filter berdasarkan kompetensi keahlian
+        if ($request->filled('kompetensi_keahlian')) {
+            $kompetensiId = $request->kompetensi_keahlian;
+            $laporanKasusBK->whereHas('fsiswa.fkompetensi', function ($query) use ($kompetensiId) {
+                $query->where('id', $kompetensiId);
+            });
+        }
+
+        // Filter berdasarkan kelas
+        if ($request->filled('kelas')) {
+            $kelasId = $request->kelas;
+            $laporanKasusBK->whereHas('fsiswa.fkelas', function ($query) use ($kelasId) {
+                $query->where('id', $kelasId);
+            });
+        }
+
+        // Ambil hasil setelah penerapan semua filter
+        $laporanKasusBK = $laporanKasusBK->get();
+
+        // Ambil opsi kelas yang sesuai dengan kompetensi keahlian yang dipilih
+        $kelasOptions = [];
+        if ($request->filled('kompetensi_keahlian')) {
+            $kelasOptions = Kelas::where('kdkompetensi', $request->kompetensi_keahlian)->get();
+        }
+
+        return view('catatankasus.laporan_kasus_bk', [
+            'laporanKasusBK' => $laporanKasusBK,
+            'kompetensiKeahlianOptions' => Kompetensi::all(),
+            'kelasOptions' => $kelasOptions,
+        ]);
+    }
+
+    public function downloadPDF()
+    {
+        // Ambil data yang diperlukan untuk PDF
+        $catatankasus = CatatanKasus::all(); // Atur ini sesuai dengan cara Anda mendapatkan data siswa
 
         // Buat objek Dompdf
         $dompdf = new Dompdf();
 
-        // Render view ke PDF dengan data kunjungan rumah yang dipilih
+        // Render view ke PDF
         $html = view('pdf.catatankasus', compact('catatankasus'))->render();
         $dompdf->loadHtml($html);
 
@@ -205,15 +203,9 @@ class CatatanKasusController extends Controller
         // Render PDF
         $dompdf->render();
 
-        // Tentukan nama file PDF berdasarkan ID yang dipilih
-        $fileName = 'catatankasus_' . $id . '.pdf';
-
         // Kembalikan respons dengan PDF untuk diunduh
-        return $dompdf->stream($fileName);
+        return $dompdf->stream('catatan_kasus.pdf');
     }
-
-
-
 
     public function laporanKasusKakom(Request $request)
     {
@@ -250,19 +242,19 @@ class CatatanKasusController extends Controller
     }
 
     public function updateStatus(Request $request, $id)
-{
-    // Cari catatan kasus berdasarkan ID
-    $catatanKasus = CatatanKasus::findOrFail($id);
+    {
+        // Cari catatan kasus berdasarkan ID
+        $catatanKasus = CatatanKasus::findOrFail($id);
 
-    // Validasi status yang diizinkan
-    $request->validate([
-        'status' => 'required|in:baru,proses,selesai',
-    ]);
+        // Validasi status yang diizinkan
+        $request->validate([
+            'status' => 'required|in:baru,proses,selesai',
+        ]);
 
-    // Update status kasus
-    $catatanKasus->status_kasus = $request->status;
-    $catatanKasus->save();
+        // Update status kasus
+        $catatanKasus->status_kasus = $request->status;
+        $catatanKasus->save();
 
-    return redirect()->back()->with('success_message', 'Status kasus berhasil diubah.');
-}
+        return redirect()->back()->with('success_message', 'Status kasus berhasil diubah.');
+    }
 }

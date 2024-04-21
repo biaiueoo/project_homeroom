@@ -52,10 +52,10 @@ table-stripped" id="example2">
 
 
                                 <td id="rapot" data-id="{{ $dr->id }}">{{ $dr->rapor }}</td>
-        
 
-<td> <button id="btnPenyerahan" type="button" class="btn btn-primary" onclick="prosesAksi('penyerahan')">Penyerahan</button>
-</td>
+
+                                <td> <button id="btnPenyerahan" type="button" class="btn btn-primary" onclick="prosesAksi('penyerahan')">Penyerahan</button>
+                                </td>
                                 <td>
                                     <a href="{{ route('daftarrapot.edit', $dr) }}" class="btn btn-primary btn-xs">
                                         Edit
@@ -96,38 +96,40 @@ table-stripped" id="example2">
 
 
 <script>
-        function prosesAksi(aksi) {
-            let id = document.getElementById('rapot').getAttribute('data-id');
-            let url = '';
+    function prosesAksi(aksi) {
+        let id = document.getElementById('rapot').getAttribute('data-id');
+        let url = '';
 
-            if (aksi === 'penyerahan') {
-                url = '{{ route("prosesPenyerahan") }}';
+        if (aksi === 'penyerahan') {
+            url = '{{ route("prosesPenyerahan") }}';
 
-                // Kirim permintaan Ajax menggunakan Axios
-                axios.post(url, { id: id })
-                    .then(response => {
-                        if (response.data.success) {
-                            // Ubah tampilan tergantung pada hasil sukses dari server
-                            document.getElementById('rapot').textContent = 'Selesai';
-                            // Hapus tombol Penyerahan setelah berhasil
-                            document.getElementById('btnPenyerahan').remove();
+            // Kirim permintaan Ajax menggunakan Axios
+            axios.post(url, {
+                    id: id
+                })
+                .then(response => {
+                    if (response.data.success) {
+                        // Ubah tampilan tergantung pada hasil sukses dari server
+                        document.getElementById('rapot').textContent = 'Selesai';
+                        // Hapus tombol Penyerahan setelah berhasil
+                        document.getElementById('btnPenyerahan').remove();
 
-                            // Simpan status aksi ke localStorage
-                            localStorage.setItem('penyerahanDone', true);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Terjadi kesalahan:', error);
-                    });
-            }
+                        // Simpan status aksi ke localStorage
+                        localStorage.setItem('penyerahanDone', true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Terjadi kesalahan:', error);
+                });
         }
+    }
 
-        // Saat halaman dimuat, periksa status aksi dari localStorage
-        document.addEventListener('DOMContentLoaded', function() {
-            let penyerahanDone = localStorage.getItem('penyerahanDone');
-            if (penyerahanDone) {
-                // Jika penyerahan sudah dilakukan sebelumnya, sembunyikan tombol Penyerahan
-                document.getElementById('btnPenyerahan').style.display = 'none';
-            }
-        });
-    </script>
+    // Saat halaman dimuat, periksa status aksi dari localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        let penyerahanDone = localStorage.getItem('penyerahanDone');
+        if (penyerahanDone) {
+            // Jika penyerahan sudah dilakukan sebelumnya, sembunyikan tombol Penyerahan
+            document.getElementById('btnPenyerahan').style.display = 'none';
+        }
+    });
+</script>

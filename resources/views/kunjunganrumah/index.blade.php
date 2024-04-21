@@ -25,8 +25,8 @@
                                 <th>Tanggal</th>
                                 <th>Semester</th>
                                 <th>Tahun Ajaran</th>
-
                                 <th>Dokumentasi</th>
+                                <th>Surat</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -49,11 +49,13 @@
                                     <span>Tidak ada gambar</span>
                                     @endif
                                 </td>
-                                <td>
-                                    <a href="{{ route('kunjunganrumah.pdf', ['id' => $kr->id]) }}" class="btn btn-secondary btn-xs">
-                                        Unduh Surat
-                                    </a>
-                                    
+                                <td id="fileCell_{{ $kr->id }}">
+                                    <!-- Menampilkan file yang sudah diunggah -->
+                                    @if ($kr->surat)
+                                    <a href="{{ asset("storage/{$kr->surat}") }}" target="_blank">Lihat File</a>
+                                    @else
+                                    <span id="fileStatus_{{ $kr->id }}">Belum ada file diunggah.</span>
+                                    @endif
                                     <div>
                                         <form id="uploadForm_{{ $kr->id }}" method="POST" enctype="multipart/form-data">
                                             @csrf
@@ -61,23 +63,19 @@
                                             <input type="hidden" name="kunjunganrumah_id" value="{{ $kr->id }}">
                                             <button type="button" onclick="uploadFile('{{ $kr->id }}')" class="btn btn-sm btn-primary">Unggah</button>
                                         </form>
-                                        </div>
-                                   
-                                    <!-- <a href="{{ route('kunjunganrumah.edit', $kr) }}" class="btn btn-primary btn-xs">
+                                    </div>
+                                </td>
+                                <!-- <a href="{{ route('kunjunganrumah.edit', $kr) }}" class="btn btn-primary btn-xs">
                                         Edit
                                     </a> -->
+                                </td>
+                                <td>
+                                    <a href="{{ route('kunjunganrumah.pdf', ['id' => $kr->id]) }}" class="btn btn-secondary btn-xs">
+                                        Template Surat
+                                    </a>
                                     <a href="{{ route('kunjunganrumah.destroy', $kr) }}" onclick="notificationBeforeDelete(event, this)" class="btn btn-danger btn-xs">
                                         Delete
                                     </a>
-
-                                </td>
-                                <td id="fileCell_{{ $kr->id }}">
-                                        <!-- Menampilkan file yang sudah diunggah -->
-                                        @if ($kr->surat)
-                                        <a href="{{ asset("storage/{$kr->surat}") }}" target="_blank">Lihat File</a>
-                                        @else
-                                        <span id="fileStatus_{{ $kr->id }}">Belum ada file diunggah.</span>
-                                        @endif
                                 </td>
                             </tr>
                             @endforeach
