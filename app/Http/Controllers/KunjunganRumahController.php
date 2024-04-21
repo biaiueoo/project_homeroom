@@ -40,11 +40,6 @@ class KunjunganRumahController extends Controller
             'solusi' => 'required',
         ]);
 
-        // Pengolahan file
-        $suratFile = $request->file('surat');
-        $suratFileName = time() . '_' . $suratFile->getClientOriginalName();
-        $suratFile->move(public_path('uploads'), $suratFileName);
-
         $dokumentasiFile = $request->file('dokumentasi');
         $dokumentasiFileName = time() . '_' . $dokumentasiFile->getClientOriginalName();
         $dokumentasiFile->move(public_path('uploads'), $dokumentasiFileName);
@@ -54,7 +49,6 @@ class KunjunganRumahController extends Controller
             'kdkasus' => $request->kdkasus,
             'tanggal' => $request->tanggal,
             'solusi' => $request->solusi,
-            'surat' => $suratFileName,
             'dokumentasi' => $dokumentasiFileName,
         ]);
 
@@ -171,25 +165,29 @@ class KunjunganRumahController extends Controller
 
     public function uploadFile(Request $request)
     {
+        // Validasi request
         $request->validate([
-            'file_surat' => 'required|file|max:10240', // Sesuaikan validasi dengan kebutuhan
-            'kunjunganrumah_id' => 'required|exists:kunjungan_rumah,id',
+            'file_surat' => 'required|file|max:10240', // Validasi file dengan maksimum 10 MB
+            'kunjunganrumah_id' => 'required|integer',
         ]);
-
-        $kunjunganRumah = KunjunganRumah::find($request->kunjunganrumah_id);
-
-        if (!$kunjunganRumah) {
-            return response()->json(['error' => 'Kunjungan Rumah tidak ditemukan.'], 404);
+    
+        // Ambil instance KunjunganRumah berdasarkan ID
+        $kunjunganrumah = KunjunganRumah::find($request->kunjunganrumah_id);
+    
+        if (!$kunjunganrumah) {
+            return response()->json(['error' => 'Kunjungan Rumah tidak ditemukan'], 404);
         }
-
-        // Simpan file ke storage
+    
+        // Ambil file dari request
         $file = $request->file('file_surat');
+    
+        // Simpan file ke storage (misalnya, folder 'public/surat')
         $filePath = $file->store('public/surat');
-
-        // Update kolom 'keterangan' dengan nama file
-        $kunjunganRumah->surat = $filePath;
-        $kunjunganRumah->save();
-
+    
+        // Simpan path file ke dalam model KunjunganRumah
+        $kunjunganrumah->surat = $filePath;
+        $kunjunganrumah->save();
+    
+        // Mengembalikan response JSON dengan URL file yang disimpan
         return response()->json(['surat' => asset('storage/' . $filePath)], 200);
-    }
-}
+    }}
