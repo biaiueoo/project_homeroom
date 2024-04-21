@@ -5,7 +5,7 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class GuruExport implements FromCollection, WithHeadings
+class KegiatanExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
@@ -16,14 +16,9 @@ class GuruExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'NIP',
-            'Nama Guru',
-            'Nomor Telepon',
-            'Jenis Kelamin (L/P)',
-            'Alamat',
-            'Agama (Islam, Hindu, Buddha, Katolik, Protestan, Lainnya)',
-            'Tempat Lahir',
-            'Tanggal Lahir (YYYY-MM-DD)',
+            'URAIAN KEGIATAN',
+            'BUKTI',
+            
         ];
     }
 }

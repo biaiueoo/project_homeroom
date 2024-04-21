@@ -21,7 +21,7 @@ class SiswaController extends Controller
     }
 
     public function import(Request $request){
-        Excel::import(new Guruimport, $request->file('file')->store('files'));
+        Excel::import(new SiswaImport, $request->file('file')->store('files'));
         return redirect()->back();
     }
 

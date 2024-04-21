@@ -18,6 +18,7 @@ use App\Http\Controllers\JadwalpiketController;
 use App\Http\Controllers\DaftarrapotController;
 use App\Http\Controllers\GuruExportController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\KegiatanExportController;
 use App\Http\Controllers\SiswakesController;
 use App\Http\Controllers\LaporankasusController;
 use App\Http\Controllers\PresentaseController;
@@ -94,15 +95,23 @@ Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'up
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa-import');
     Route::controller(SiswaExportController::class)->group(function () {
         Route::get('index', 'index');
-        Route::get('export/siswa', 'export')->name('export.excel');
+        Route::get('export/siswa', 'export')->name('export.siswa');
     });
 
     Route::get('/guru/file-import', [SiswaController::class, 'importView'])->name('guru-import-view');
     Route::post('/guru/import', [SiswaController::class, 'import'])->name('guru-import');
     Route::controller(GuruExportController::class)->group(function () {
         Route::get('index', 'index');
-        Route::get('export/guru', 'export')->name('export.excel');
+        Route::get('export/guru', 'export')->name('export.guru');
     });
+
+    Route::get('/kegiatan/file-import', [KegiatanController::class, 'importView'])->name('kegiatan-import-view');
+    Route::post('/kegiatan/import', [KegiatanController::class, 'import'])->name('kegiatan-import');
+    Route::controller(KegiatanExportController::class)->group(function () {
+        Route::get('index', 'index');
+        Route::get('export/kegiatan', 'export')->name('export.kegiatan');
+    });
+    
     Route::get('/kompetensi/file-import', [KompetensiController::class, 'importView'])->name('kompetensi-import-view');
     Route::post('/kompetensi/import', [KompetensiController::class, 'import'])->name('kompetensi-import');
     
