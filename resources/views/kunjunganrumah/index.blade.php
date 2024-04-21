@@ -53,7 +53,7 @@
                                     <a href="{{ route('kunjunganrumah.pdf', ['id' => $kr->id]) }}" class="btn btn-secondary btn-xs">
                                         Unduh Surat
                                     </a>
-                                    @foreach ($kunjunganrumah as $kr)
+                                    
                                     <div>
                                         <form id="uploadForm_{{ $kr->id }}" method="POST" enctype="multipart/form-data">
                                             @csrf
@@ -62,7 +62,7 @@
                                             <button type="button" onclick="uploadFile('{{ $kr->id }}')" class="btn btn-sm btn-primary">Unggah</button>
                                         </form>
                                         </div>
-                                    @endforeach
+                                   
                                     <!-- <a href="{{ route('kunjunganrumah.edit', $kr) }}" class="btn btn-primary btn-xs">
                                         Edit
                                     </a> -->
@@ -71,14 +71,14 @@
                                     </a>
 
                                 </td>
-                                <td><td id="fileCell_{{ $kr->id }}">
+                                <td id="fileCell_{{ $kr->id }}">
                                         <!-- Menampilkan file yang sudah diunggah -->
                                         @if ($kr->surat)
                                         <a href="{{ asset("storage/{$kr->surat}") }}" target="_blank">Lihat File</a>
                                         @else
                                         <span id="fileStatus_{{ $kr->id }}">Belum ada file diunggah.</span>
                                         @endif
-                                    </td></td>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
