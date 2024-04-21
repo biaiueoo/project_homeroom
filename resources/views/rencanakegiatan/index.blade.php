@@ -106,6 +106,7 @@ function uploadFile(rencanaKegiatanId) {
             return response.json();
         })
         .then(data => {
+            localStorage.setItem(`fileUploaded_${rencanaKegiatanId}`, 'true');
             const fileCell = document.getElementById(`fileCell_${rencanaKegiatanId}`);
             const fileStatusSpan = document.getElementById(`fileStatus_${rencanaKegiatanId}`);
             const uploadForm = document.getElementById(`uploadForm_${rencanaKegiatanId}`);
@@ -125,7 +126,20 @@ function uploadFile(rencanaKegiatanId) {
         .catch(error => {
             console.error('Gagal mengunggah file:', error);
         });
+
     }
+    document.addEventListener('DOMContentLoaded', () => {
+    // Periksa status pengunggahan di localStorage saat halaman dimuat
+    const forms = document.querySelectorAll('[id^="uploadForm_"]');
+    forms.forEach(form => {
+        const rencanaKegiatanId = form.id.replace('uploadForm_', '');
+        const isUploaded = localStorage.getItem(`fileUploaded_${rencanaKegiatanId}`);
+
+        if (isUploaded === 'true') {
+            form.style.display = 'none'; // Sembunyikan form upload
+        }
+    });
+});
 
 
 </script>

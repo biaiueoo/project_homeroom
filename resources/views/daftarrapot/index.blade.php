@@ -25,11 +25,12 @@ table-stripped" id="example2">
                                 <th>No.</th>
                                 <th>Nama Siswa</th>
                                 <th>Nama Orang tua</th>
-                                <th>Laporan</th>
                                 <th>tanggal</th>
                                 <th>Semester</th>
                                 <th>Tahun Ajaran</th>
                                 <th>Dokumentasi</th>
+                                <th>Status</th>
+                                <th></th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -39,7 +40,6 @@ table-stripped" id="example2">
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $dr->fsiswa->nama_lengkap }}</td>
                                 <td>{{ $dr->fsiswa->nama_ayah }}</td>
-                                <td>{{ $dr->rapor }}</td>
 
                                 <td>{{ $dr->tanggal }}</td>
                                 <td>{{ $dr->semester }}</td>
@@ -51,8 +51,11 @@ table-stripped" id="example2">
                                 </td>
 
 
+                                <td id="rapot" data-id="{{ $dr->id }}">{{ $dr->rapor }}</td>
+        
 
-
+<td> <button id="btnPenyerahan" type="button" class="btn btn-primary" onclick="prosesAksi('penyerahan')">Penyerahan</button>
+</td>
                                 <td>
                                     <a href="{{ route('daftarrapot.edit', $dr) }}" class="btn btn-primary btn-xs">
                                         Edit
@@ -89,3 +92,42 @@ table-stripped" id="example2">
         }
     }
 </script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+<script>
+        function prosesAksi(aksi) {
+            let id = document.getElementById('rapot').getAttribute('data-id');
+            let url = '';
+
+            if (aksi === 'penyerahan') {
+                url = '{{ route("prosesPenyerahan") }}';
+
+                // Kirim permintaan Ajax menggunakan Axios
+                axios.post(url, { id: id })
+                    .then(response => {
+                        if (response.data.success) {
+                            // Ubah tampilan tergantung pada hasil sukses dari server
+                            document.getElementById('rapot').textContent = 'Selesai';
+                            // Hapus tombol Penyerahan setelah berhasil
+                            document.getElementById('btnPenyerahan').remove();
+
+                            // Simpan status aksi ke localStorage
+                            localStorage.setItem('penyerahanDone', true);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Terjadi kesalahan:', error);
+                    });
+            }
+        }
+
+        // Saat halaman dimuat, periksa status aksi dari localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            let penyerahanDone = localStorage.getItem('penyerahanDone');
+            if (penyerahanDone) {
+                // Jika penyerahan sudah dilakukan sebelumnya, sembunyikan tombol Penyerahan
+                document.getElementById('btnPenyerahan').style.display = 'none';
+            }
+        });
+    </script>

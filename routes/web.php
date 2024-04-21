@@ -84,6 +84,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('agenda', AgendaKegiatanController::class);
     Route::get('/daftarrapot/pdf', [DaftarrapotController::class, 'downloadPDF'])->name('daftarrapot.pdf');
     Route::resource('daftarrapot', DaftarrapotController::class);
+
+
+    Route::post('/proses-penyerahan', [DaftarrapotController::class, 'prosesPenyerahan'])->name('prosesPenyerahan');
+   
     Route::get('/guru/pdf', [GuruController::class, 'downloadPDF'])->name('guru.pdf');
     Route::resource('guru', GuruController::class);
     Route::resource('kunjunganrumah', KunjunganRumahController::class);
