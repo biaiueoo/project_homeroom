@@ -99,6 +99,7 @@ Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('
     });
     Route::get('/laporan-kasus-bk', [CatatanKasusController::class, 'laporanKasusBK'])->name('laporan.kasus.bk');
     Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
+    Route::put('/catatankasus/{id}/update-status', [CatatanKasusController::class, 'updateStatus'])->name('catatankasus.updateStatus');
 
 });
 

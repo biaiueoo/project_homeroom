@@ -19,7 +19,6 @@ table-stripped" id="example2">
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Id Catatan Kasus</th>
                                 <th>Nama Siswa</th>
                                 <th>Kelas</th>
                                 <th>Kompetensi Keahlian</th>
@@ -47,7 +46,6 @@ table-stripped" id="example2">
                             @foreach ($catatankasus as $key => $ck)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $ck->id }}</td>
                                 <td>{{ $ck->fsiswa->nama_lengkap }}</td>
                                 <td>{{ $ck->fsiswa->fkelas->kelas }}</td>
                                 <td>{{ $ck->fsiswa->fkompetensi->kompetensi_keahlian }}</td>
@@ -107,7 +105,19 @@ table-stripped" id="example2">
 
                                 <td>{{ $ck->tanggal }}</td>
                                 <td>{{ $ck->tindak_lanjut }}</td>
-                                <td>{{ $ck->status_kasus }}</td>
+                                <td>
+                                    <form action="{{ route('catatankasus.updateStatus', $ck->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <select name="status" class="form-select form-select-sm">
+                                            <option value="baru" {{ $ck->status_kasus == 'baru' ? 'selected' : '' }}>Baru</option>
+                                            <option value="proses" {{ $ck->status_kasus == 'proses' ? 'selected' : '' }}>Proses</option>
+                                            <option value="selesai" {{ $ck->status_kasus == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary btn-sm">Ubah Status</button>
+                                    </form>
+                                </td>
+                                
                                 <td>{{ $ck->dampingan_bk }}</td>
                                 {{-- @if (Auth::user()->level == 'admin')
                                             <td>{{ $ck->user_admin }}</td>
