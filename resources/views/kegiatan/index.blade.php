@@ -24,7 +24,7 @@
                                     <label class="custom-file-label" for="customFile">Pilih file Excel</label>
                                 </div>
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="submit">Import guru</button>
+                                    <button class="btn btn-primary" type="submit">Import Kegiatan</button>
                                 </div>
                             </div>
                         </form>
@@ -32,8 +32,6 @@
                     </div>
                     <!-- Tombol Export Excel dan Download PDF -->
                     <div>
-
-
                         <a href="{{ route('export.kegiatan') }}" class="btn btn-info mr-2">Export Excel File</a>
 
                     </div>

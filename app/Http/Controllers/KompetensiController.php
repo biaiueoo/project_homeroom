@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KompetensiExport;
 use App\Models\Kompetensi;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class KompetensiController extends Controller
 {
-    public function importView(Request $request){
+    public function importViewSiswa(Request $request){
         return view('importFile');
     }
 
@@ -18,6 +19,12 @@ class KompetensiController extends Controller
         Excel::import(new KompetensiImport, $request->file('file')->store('files'));
         return redirect()->back();
     }
+
+    public function export()
+    {
+        return Excel::download(new KompetensiExport, 'kompetensi_template.xlsx');
+    }
+    
 
     public function index()
     {

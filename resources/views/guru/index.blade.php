@@ -12,7 +12,7 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
                 
             <div>
-                    <a href="{{ route('guru.create') }}" class="btn btn-primary">Tambah</a>
+                    <a href="{{ route('kompetensi.create') }}" class="btn btn-primary">Tambah</a>
 
                     <!-- Tombol untuk memunculkan formulir import -->
                     <button id="showImportForm" class="btn btn-primary mb-2">Import Guru</button>
@@ -129,6 +129,7 @@ table-stripped" id="example2">
         }
     }
 </script>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {

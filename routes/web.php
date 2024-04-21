@@ -19,6 +19,7 @@ use App\Http\Controllers\DaftarrapotController;
 use App\Http\Controllers\GuruExportController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KegiatanExportController;
+use App\Http\Controllers\KompetensiExportController;
 use App\Http\Controllers\SiswakesController;
 use App\Http\Controllers\LaporankasusController;
 use App\Http\Controllers\PresentaseController;
@@ -114,7 +115,11 @@ Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'up
     
     Route::get('/kompetensi/file-import', [KompetensiController::class, 'importView'])->name('kompetensi-import-view');
     Route::post('/kompetensi/import', [KompetensiController::class, 'import'])->name('kompetensi-import');
-    
+    Route::controller(KompetensiExportController::class)->group(function () {
+        Route::get('index', 'index');
+        Route::get('export/kompetensi', 'export')->name('export.kompetensi');
+    });
+
     Route::get('/laporan-kasus-bk', [CatatanKasusController::class, 'laporanKasusBK'])->name('laporan.kasus.bk');
     Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
 

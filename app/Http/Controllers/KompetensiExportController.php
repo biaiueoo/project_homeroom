@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\KegiatanExport;
+use App\Exports\KompetensiExport;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
-
-class KegiatanExportController extends Controller
+class KompetensiExportController extends Controller
 {
     public function index()
     {
@@ -16,6 +15,6 @@ class KegiatanExportController extends Controller
 
     public function export() 
     {
-        return Excel::download(new KegiatanExport, 'kegiatan_template.xlsx');
+        return Excel::download(new KompetensiExport, 'kompetensi_template.xlsx');
     }    
 }
