@@ -134,6 +134,7 @@ Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'up
 
     Route::get('/laporan-kasus-bk', [CatatanKasusController::class, 'laporanKasusBK'])->name('laporan.kasus.bk');
     Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
+    Route::put('/catatankasus/{id}/update-status', [CatatanKasusController::class, 'updateStatus'])->name('catatankasus.updateStatus');
 
 });
 
@@ -164,7 +165,7 @@ Route::middleware(['auth', 'role:kesiswaan'])->group(function () {
 
 //ROLE KAKOM
 Route::middleware(['auth', 'role:kakom'])->group(function () {
-    Route::resource('laporankasus', LaporankasusController::class);
+    Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
 });
 
 //ROLE BK
