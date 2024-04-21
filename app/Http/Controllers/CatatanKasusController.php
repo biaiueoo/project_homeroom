@@ -182,6 +182,8 @@ class CatatanKasusController extends Controller
     ]);
 }
 
+
+
     public function downloadPDF($id)
     {
         // Ambil data kunjungan rumah berdasarkan ID yang dipilih
@@ -246,4 +248,83 @@ class CatatanKasusController extends Controller
             'kelasOptions' => $kelasOptions,
         ]);
     }
+
+    public function store(Request $request)
+{
+    // Validasi data input
+    $request->validate([
+        'kdsiswa' => 'required',
+        'semester' => 'required',
+        'tahun_ajaran' => 'required',
+        'kasus' => 'required',
+        'keterangan' => 'required|file|mimes:pdf|max:2048', // Sesuaikan dengan tipe file yang diizinkan
+        'tanggal' => 'required',
+        'tindak_lanjut' => 'required',
+        'status_kasus' => 'required',
+        'dampingan_bk' => 'required',
+    ]);
+
+    // Tetapkan nilai default untuk status_kasus dan dampingan_bk
+    $request->merge([
+        'status_kasus' => 'baru', // Nilai default untuk status_kasus
+        'dampingan_bk' => 'Tidak', // Nilai default untuk dampingan_bk
+    ]);
+
+    // Simpan file keterangan
+    $keteranganFile = $request->file('keterangan');
+    $keteranganContents = file_get_contents($keteranganFile->getRealPath());
+
+    // Simpan data ke dalam basis data
+    CatatanKasus::create([
+        'kdsiswa' => $request->kdsiswa,
+        'semester' => $request->semester,
+        'tahun_ajaran' => $request->tahun_ajaran,
+        'kasus' => $request->kasus,
+        'keterangan' => $keteranganContents,
+        'tanggal' => $request->tanggal,
+        'tindak_lanjut' => $request->tindak_lanjut,
+        'status_kasus' => $request->status_kasus,
+        'dampingan_bk' => $request->dampingan_bk,
+    ]);
+
+    // Redirect atau kembali ke halaman yang sesuai
+    return redirect()->route('catatankasus.index')->with('success_message', 'Berhasil menambah catatan kasus baru');
+}
+
+// Jika Anda ingin mengizinkan pengguna untuk mengubah status_kasus dan dampingan_bk di halaman index, biarkan metode berikut tetap ada:
+
+// Metode untuk mengubah status_kasus
+public function updateStatus(Request $request, $id)
+{
+    // Validasi data input
+
+    // Ambil data catatan kasus berdasarkan ID
+    $catatanKasus = CatatanKasus::findOrFail($id);
+
+    // Perbarui nilai status_kasus sesuai dengan input pengguna
+    $catatanKasus->status_kasus = $request->status;
+
+    // Simpan perubahan
+    $catatanKasus->save();
+
+    // Redirect atau kembali ke halaman yang sesuai
+}
+
+// Metode untuk mengubah dampingan_bk
+public function updateDampinganBK(Request $request, $id)
+{
+    // Validasi data input
+
+    // Ambil data catatan kasus berdasarkan ID
+    $catatanKasus = CatatanKasus::findOrFail($id);
+
+    // Perbarui nilai dampingan_bk sesuai dengan input pengguna
+    $catatanKasus->dampingan_bk = $request->dampingan_bk;
+
+    // Simpan perubahan
+    $catatanKasus->save();
+
+    // Redirect atau kembali ke halaman yang sesuai
+}
+
 }
