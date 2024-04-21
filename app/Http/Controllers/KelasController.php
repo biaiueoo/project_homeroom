@@ -2,12 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KelasExport;
+use App\Imports\KelasImport;
 use App\Models\Kelas;
 use App\Models\Kompetensi;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
 {
+
+    public function importViewSiswa(Request $request){
+        return view('importFile');
+    }
+
+    public function import(Request $request){
+        Excel::import(new KelasImport, $request->file('file')->store('files'));
+        return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new KelasExport, 'kelas_template.xlsx');
+    }
     public function index()
     {
         $kelas = Kelas::all();
