@@ -2,13 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GuruExport;
+use App\Imports\Guruimport;
 use App\Models\Guru;
 use Illuminate\Http\Request;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
 {
+    public function importViewSiswa(Request $request){
+        return view('importFile');
+    }
+
+    public function import(Request $request){
+        Excel::import(new Guruimport, $request->file('file')->store('files'));
+        return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new GuruExport, 'siswa_template.xlsx');
+    }
+    
+    
     public function index()
     {
         $guru = Guru::all();

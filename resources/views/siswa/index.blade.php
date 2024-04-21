@@ -9,27 +9,34 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <a href="{{ route('siswa.create') }}" class="btn 
-btn-primary mb-2">
-                    Tambah
-                </a>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <!-- Tombol Tambah -->
+                    <div>
+                        <a href="{{ route('siswa.create') }}" class="btn btn-primary">Tambah</a>
 
-                <form action="{{ route('siswa-import') }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group mb-4">
-                        <div class="custom-file text-left">
-                            <input type="file" name="file" class="custom-file-input" id="customFile">
-                        </div>
+                        <!-- Tombol untuk memunculkan formulir import -->
+                        <button id="showImportForm" class="btn btn-primary mb-2">Import Siswa</button>
+
+                        <!-- Formulir untuk unggah file (awalnya tersembunyi) -->
+                        <form action="{{ route('siswa-import') }}" method="POST" enctype="multipart/form-data" id="importForm" style="display: none;">
+                            @csrf
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" name="file" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Pilih file Excel</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">Import Siswa</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <a class="btn btn-info" href="{{ route('export.excel') }}">Export Excel File</a>
-                    </div> 
-                    <button class="btn btn-primary">Import Siswa</button>
-                </form>                
-
-                <a href="{{ route('siswa.pdf') }}" class="btn btn-secondary mb-2">
-                    Download PDF
-                </a>
+                    <!-- Tombol Export Excel dan Download PDF -->
+                    <div>
+                        <a href="{{ route('export.siswa') }}" class="btn btn-info mr-2">Export Excel File</a>
+                        <a href="{{ route('siswa.pdf') }}" class="btn btn-secondary">Download PDF</a>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered 
 table-stripped" id="example2">
@@ -130,4 +137,23 @@ table-stripped" id="example2">
             $("#delete-form").submit();
         }
     }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#showImportForm').click(function() {
+            $('#importForm').toggle(); // Menampilkan/menyembunyikan formulir import
+        });
+
+        // Reset formulir saat ditutup (misalnya, setelah unggah selesai)
+        $('#importForm').submit(function() {
+            $(this).hide(); // Sembunyikan formulir setelah submit
+        });
+
+        // Mengatur label custom file saat file dipilih
+        $('#customFile').change(function() {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').html(fileName);
+        });
+    });
 </script>
