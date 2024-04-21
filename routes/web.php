@@ -16,6 +16,7 @@ use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CatatanKasusController;
 use App\Http\Controllers\JadwalpiketController;
 use App\Http\Controllers\DaftarrapotController;
+use App\Http\Controllers\GuruExportController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\SiswakesController;
 use App\Http\Controllers\LaporankasusController;
@@ -89,14 +90,22 @@ Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, '
 Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
 
 
-Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('siswa-import-view');
+    Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('siswa-import-view');
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa-import');
-    Route::get('/kompetensi/file-import', [KompetensiController::class, 'importView'])->name('kompetensi-import-view');
-    Route::post('/kompetensi/import', [KompetensiController::class, 'import'])->name('kompetensi-import');
     Route::controller(SiswaExportController::class)->group(function () {
         Route::get('index', 'index');
         Route::get('export/siswa', 'export')->name('export.excel');
     });
+
+    Route::get('/guru/file-import', [SiswaController::class, 'importView'])->name('guru-import-view');
+    Route::post('/guru/import', [SiswaController::class, 'import'])->name('guru-import');
+    Route::controller(GuruExportController::class)->group(function () {
+        Route::get('index', 'index');
+        Route::get('export/guru', 'export')->name('export.excel');
+    });
+    Route::get('/kompetensi/file-import', [KompetensiController::class, 'importView'])->name('kompetensi-import-view');
+    Route::post('/kompetensi/import', [KompetensiController::class, 'import'])->name('kompetensi-import');
+    
     Route::get('/laporan-kasus-bk', [CatatanKasusController::class, 'laporanKasusBK'])->name('laporan.kasus.bk');
     Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
     Route::put('/catatankasus/{id}/update-status', [CatatanKasusController::class, 'updateStatus'])->name('catatankasus.updateStatus');
