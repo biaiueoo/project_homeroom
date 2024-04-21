@@ -92,7 +92,7 @@ function uploadFile(rencanaKegiatanId) {
         formData.append('file_keterangan', file);
         formData.append('rencanakegiatan_id', rencanaKegiatanId);
 
-        fetch('{{ route("uploadFile") }}', {
+        fetch('{{ route("rencana.uploadFile") }}', {
             method: 'POST',
             body: formData,
             headers: {

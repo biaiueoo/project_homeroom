@@ -58,7 +58,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/rencanakegiatan/pdf', [RencanakegiatanController::class, 'downloadPDF'])->name('rencanakegiatan.pdf');
     Route::resource('rencanakegiatan', RencanakegiatanController::class);
     Route::patch('/rencanakegiatan/{id}', [RencanakegiatanController::class, 'update'])->name('rencanakegiatan.update');
-    Route::post('/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('uploadFile');
+    // Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('uploadFile');
     Route::resource('kegiatan', KegiatanController::class);
     Route::resource('users', UserController::class);
     Route::resource('kelas', KelasController::class);
@@ -84,8 +84,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('guru', GuruController::class);
     Route::resource('kunjunganrumah', KunjunganRumahController::class);
     Route::get('/kunjunganrumah/pdf/{id}', [KunjunganRumahController::class, 'downloadPDF'])->name('kunjunganrumah.pdf');
-    Route::post('/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
-    Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('siswa-import-view');
+//  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
+Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('rencana.uploadFile');
+Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
+
+
+Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('siswa-import-view');
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa-import');
     Route::get('/kompetensi/file-import', [KompetensiController::class, 'importView'])->name('kompetensi-import-view');
     Route::post('/kompetensi/import', [KompetensiController::class, 'import'])->name('kompetensi-import');
