@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -15,6 +16,13 @@ return new class extends Migration
     {
         Schema::create('walas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('kdguru');
+            $table->foreign('kdguru')->references('id')->on('guru') 
+            ->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('kdkelas');
+            $table->foreign('kdkelas')->references('id')->on('kelas') 
+            ->onDelete('cascade')->onUpdate('cascade');
+            $table->string('tahun_ajaran',30);
             $table->timestamps();
         });
     }

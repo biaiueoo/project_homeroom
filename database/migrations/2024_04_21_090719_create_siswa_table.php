@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -15,6 +16,36 @@ return new class extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->id();
+            $table->string('nis')->unique();
+            $table->string('nama_lengkap', 50);
+            $table->string('tempat_lahir', 50);
+            $table->date('tanggal_lahir');
+            $table->string('alamat', 300);
+            $table->enum('agama', ['Islam', 'Katolik', 'Protestan', 'Buddha', 'Hindu', 'Lainnya']);
+            $table->enum('kewarganegaraan', ['WNI', 'WNA']);
+            $table->string('no_hp', 20);
+            $table->string('email')->unique();
+            $table->string('nisn', 50);
+            $table->unsignedBigInteger('kdkelas');
+            $table->foreign('kdkelas')->references('id')->on('kelas') 
+            ->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('kdkompetensi');
+            $table->foreign('kdkompetensi')->references('id')->on('kompetensi_keahlian') 
+            ->onDelete('cascade')->onUpdate('cascade');
+            $table->string('tahun_masuk', 50);
+            $table->string('nama_ayah', 50);
+            $table->string('nama_ibu', 50);
+            $table->string('alamat_ortu', 300);
+            $table->string('no_ortu', 20);
+            $table->string('nama_sekolah_asal', 15);
+            $table->string('alamat_sekolah', 300);
+            $table->string('tahun_lulus', 50);
+            $table->string('riwayat_penyakit', 50);
+            $table->string('alergi', 50);
+            $table->string('prestasi_akademik', 50);
+            $table->string('prestasi_non_akademik', 50);
+            $table->string('ekstrakurikuler', 50);
+            $table->string('biografi', 500);
             $table->timestamps();
         });
     }
