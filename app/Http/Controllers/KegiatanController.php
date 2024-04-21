@@ -2,11 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\KegiatanExport;
+use App\Imports\KegiatanImport;
 use App\Models\Kegiatan;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KegiatanController extends Controller
 {
+
+
+    public function importViewSiswa(Request $request){
+        return view('importFile');
+    }
+
+    public function import(Request $request){
+        Excel::import(new KegiatanImport, $request->file('file')->store('files'));
+        return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new KegiatanExport, 'kegiatan_template.xlsx');
+    }
+    
     public function index()
     {
         $kegiatan = Kegiatan::all();
