@@ -11,16 +11,19 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Kompetensi;
+use App\Models\User;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
 class SiswaController extends Controller
 {
-    public function importViewSiswa(Request $request){
+    public function importViewSiswa(Request $request)
+    {
         return view('importFile');
     }
 
-    public function import(Request $request){
+    public function import(Request $request)
+    {
         Excel::import(new SiswaImport, $request->file('file')->store('files'));
         return redirect()->back();
     }
@@ -29,12 +32,51 @@ class SiswaController extends Controller
     {
         return Excel::download(new SiswaExport, 'Guru_template.xlsx');
     }
-    
+
+    // public function index()
+    // {
+    //     $siswa = Siswa::all();
+    //     return view('siswa.index', ['siswa' => $siswa]);
+    // }
+
     public function index()
-    {
-        $siswa = Siswa::all();
-        return view('siswa.index', ['siswa' => $siswa]);
+{
+    $user = auth()->user();
+    $siswa = null; 
+
+    switch ($user->level) {
+        case 'admin':
+            $siswa = Siswa::all();
+            break;
+
+        case 'kakom':
+            $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
+            // dd($kompetensi);
+            
+            $siswa = Siswa::where('kdkompetensi', $kompetensi->id)->get();
+            // dd($siswa);
+            break;
+
+        case 'walikelas':
+            $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+            // dd($kelas);
+            
+            $siswa = Siswa::where('kdkelas', $kelas->id)
+                ->where('kdkompetensi', $kelas->kdkompetensi)
+                ->get();
+            //dd($siswa);
+            break;
+
+        default:
+            return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+            break;
     }
+
+    return view('siswa.index', ['siswa' => $siswa]);
+}
+
+
+
 
     public function create()
     {
