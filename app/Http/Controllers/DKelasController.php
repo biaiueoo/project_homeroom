@@ -18,6 +18,16 @@ class DKelasController extends Controller
         ]);
     }
 
+    public function detail($id)
+    {
+        $dkelas = DKelas::where('kdkelas', $id)->get();
+        $kelas = Kelas::where('id', $id)->value('kelas');
+        return view('dkelas.index', [
+            'dkelas' => $dkelas,
+            'kelas' => $kelas
+        ]);
+    }
+
     public function create()
     {
         return view(

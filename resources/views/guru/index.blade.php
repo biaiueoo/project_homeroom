@@ -9,34 +9,34 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                
-            <div>
-                    <a href="{{ route('kompetensi.create') }}" class="btn btn-primary">Tambah</a>
+                <div class="d-flex justify-content-between align-items-center mb-4">
 
-                    <!-- Tombol untuk memunculkan formulir import -->
-                    <button id="showImportForm" class="btn btn-primary mb-2">Import Guru</button>
+                    <div>
+                        <a href="{{ route('guru.create') }}" class="btn btn-primary">Tambah</a>
 
-                    <!-- Formulir untuk unggah file (awalnya tersembunyi) -->
-                    <form action="{{ route('guru-import') }}" method="POST" enctype="multipart/form-data" id="importForm" style="display: none;">
-                        @csrf
-                        <div class="input-group">
-                            <div class="custom-file">
-                                <input type="file" name="file" class="custom-file-input" id="customFile">
-                                <label class="custom-file-label" for="customFile">Pilih file Excel</label>
+                        <!-- Tombol untuk memunculkan formulir import -->
+                        <button id="showImportForm" class="btn btn-primary mb-2">Import Guru</button>
+
+                        <!-- Formulir untuk unggah file (awalnya tersembunyi) -->
+                        <form action="{{ route('guru-import') }}" method="POST" enctype="multipart/form-data" id="importForm" style="display: none;">
+                            @csrf
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" name="file" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Pilih file Excel</label>
+                                </div>
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">Import guru</button>
+                                </div>
                             </div>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">Import guru</button>
-                            </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                    <!-- Tombol Export Excel dan Download PDF -->
+                    <div>
+                        <a href="{{ route('export.guru') }}" class="btn btn-info mr-2">Export Excel File</a>
+                        <a href="{{ route('guru.pdf') }}" class="btn btn-secondary">Download PDF</a>
+                    </div>
                 </div>
-                <!-- Tombol Export Excel dan Download PDF -->
-                <div>
-                    <a href="{{ route('export.guru') }}" class="btn btn-info mr-2">Export Excel File</a>
-                    <a href="{{ route('guru.pdf') }}" class="btn btn-secondary">Download PDF</a>
-                </div>
-            </div>
             </div>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered 

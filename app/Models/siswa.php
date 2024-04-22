@@ -20,8 +20,6 @@ class Siswa extends Model
         'no_hp',
         'email',
         'nisn',
-        'kdkelas',
-        'kdkompetensi',
         'tahun_masuk',
         'nama_ayah',
         'nama_ibu',
@@ -37,15 +35,4 @@ class Siswa extends Model
         'ekstrakurikuler',
         'biografi'
     ];
-
-    public function fkelas()
-    {
-        return $this->belongsTo(Kelas::class, 'kdkelas', 'id');
-    }
-
-
-    public function fkompetensi()
-    {
-        return $this->belongsTo(Kompetensi::class, 'kdkompetensi', 'id');
-    }
 }

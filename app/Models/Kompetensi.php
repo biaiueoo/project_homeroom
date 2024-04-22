@@ -13,7 +13,8 @@ class Kompetensi extends Model
     protected $fillable = [
         'id',
         'kompetensi_keahlian',
-        'guru_nip', // Tambahkan 'guru_nip' ke fillable
+        'guru_nip',
+        'tahun_ajaran' // Tambahkan 'guru_nip' ke fillable
     ];
 
     public function fguru()
@@ -21,4 +22,3 @@ class Kompetensi extends Model
         return $this->belongsTo(Guru::class, 'guru_nip');
     }
 }
-

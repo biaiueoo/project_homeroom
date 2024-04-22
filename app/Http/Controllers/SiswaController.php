@@ -33,11 +33,6 @@ class SiswaController extends Controller
         return Excel::download(new SiswaExport, 'Guru_template.xlsx');
     }
 
-    // public function index()
-    // {
-    //     $siswa = Siswa::all();
-    //     return view('siswa.index', ['siswa' => $siswa]);
-    // }
 
     public function index()
 {
@@ -81,14 +76,7 @@ class SiswaController extends Controller
     public function create()
     {
         return view(
-            'siswa.create',
-            [
-                'kelas' => Kelas::all()
-            ],
-            [
-                'kompetensi' => Kompetensi::all()
-            ]
-
+            'siswa.create'
         );
     }
 
@@ -135,8 +123,6 @@ class SiswaController extends Controller
             'no_hp',
             'email',
             'nisn',
-            'kdkelas',
-            'kdkompetensi',
             'tahun_masuk',
             'nama_ayah',
             'nama_ibu',
@@ -154,10 +140,6 @@ class SiswaController extends Controller
         ]);
         $siswa = Siswa::create($array);
 
-        // Associate the student with the class and competency
-        $siswa->fkelas()->associate($request->input('kdkelas'));
-        $siswa->fkompetensi()->associate($request->input('kdkompetensi'));
-
         $siswa->save();
 
         return redirect()->route('siswa.index')->with('success_message', 'Berhasil menambah siswa baru');
@@ -170,9 +152,7 @@ class SiswaController extends Controller
         if (!$siswa) return redirect()->route('siswa.index')
             ->with('error_message', 'Siswa dengan id = ' . $id . ' tidak ditemukan');
         return view('siswa.edit', [
-            'siswa' => $siswa,
-            'kelas' => Kelas::all(),
-            'kompetensi' => Kompetensi::all()
+            'siswa' => $siswa
         ]);
     }
 
@@ -194,8 +174,6 @@ class SiswaController extends Controller
             'no_hp',
             'email',
             'nisn',
-            'kdkelas',
-            'kdkompetensi',
             'tahun_masuk',
             'nama_ayah',
             'nama_ibu',
@@ -223,8 +201,6 @@ class SiswaController extends Controller
             'no_hp',
             'email',
             'nisn',
-            'kdkelas',
-            'kdkompetensi',
             'tahun_masuk',
             'nama_ayah',
             'nama_ibu',
@@ -242,9 +218,6 @@ class SiswaController extends Controller
         ]);
 
         $siswa->update($array);
-
-        $siswa->fkelas()->associate($request->input('kdkelas'));
-        $siswa->fkompetensi()->associate($request->input('kdkompetensi'));
 
         $siswa->save();
 
