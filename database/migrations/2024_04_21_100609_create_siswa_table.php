@@ -25,12 +25,6 @@ return new class extends Migration
             $table->string('no_hp', 20);
             $table->string('email')->unique();
             $table->string('nisn', 50);
-            $table->unsignedBigInteger('kdkelas');
-            $table->foreign('kdkelas')->references('id')->on('kelas') 
-            ->onDelete('cascade')->onUpdate('cascade');
-            $table->unsignedBigInteger('kdkompetensi');
-            $table->foreign('kdkompetensi')->references('id')->on('kompetensi_keahlian') 
-            ->onDelete('cascade')->onUpdate('cascade');
             $table->string('tahun_masuk', 50);
             $table->string('nama_ayah', 50);
             $table->string('nama_ibu', 50);

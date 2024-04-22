@@ -35,24 +35,6 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="kelas">Kelas</label>
-                        <input type="hidden" name="kdkelas" id="kdkelas" value="{{ old('kdkelas') }}">
-                        <input type="text" class="form-control @error('kelas') is-invalid @enderror" id="kelas" placeholder="Kelas" name="kelas" value="{{ old('kelas') }}" readonly>
-                        @error('kelas')
-                        <span class="text danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
-                        <label for="kompetensi_keahlian">Kompetensi Keahlian</label>
-                        <input type="hidden" name="kdkompetensi" id="kdkompetensi" value="{{ old('kdkompetensi') }}">
-                        <input type="text" class="form-control @error('kompetensi_keahlian') is-invalid @enderror" id="kompetensi_keahlian" placeholder="Kompetensi Keahlian" name="kompetensi_keahlian" value="{{ old('kompetensi_keahlian') }}" readonly>
-                        @error('kompetensi_keahlian')
-                        <span class="text danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <div class="form-group">
                         <label for="solusi">Solusi</label>
                         <input type="text" class="form-control @error('solusi') is-invalid @enderror" id="solusi" placeholder="Solusi" name="solusi" value="{{ old('solusi') }}">
                         @error('solusi')
@@ -130,8 +112,6 @@
                                 <th>Kasus</th>
                                 <th>Tanggal</th>
                                 <th>Nama Siswa</th>
-                                <th>Kelas</th>
-                                <th>Kompetensi Keahlian</th>
                                 <th>Semester</th>
                                 <th>Tahun Ajaran</th>
                                 <th>Opsi</th>
@@ -144,13 +124,11 @@
                                 <td id="kdkasus{{ $key + 1 }}">{{ $k->kasus }}</td>
                                 <td id="kdkasus{{ $key + 1 }}">{{ $k->tanggal }}</td>
                                 <td id="kdkasus{{ $key + 1 }}">{{ $k->fsiswa->nama_lengkap }}</td>
-                                <td id="kdkasus{{ $key + 1 }}">{{ $k->fsiswa->fkelas->kelas }}</td>
-                                <td id="kdkasus{{ $key + 1 }}">{{ $k->fsiswa->fkompetensi->kompetensi_keahlian }}</td>
                                 <td id="kdkasus{{ $key + 1 }}">{{ $k->semester }}</td>
                                 <td id="kdkasus{{ $key + 1 }}">{{ $k->tahun_ajaran }}</td>
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="pilih('{{ $k->id }}', '{{ $k->kasus }}', '{{ $k->fsiswa->nama_lengkap }}', '{{ $k->fsiswa->fkelas->kelas }}', '{{ $k->fsiswa->fkompetensi->kompetensi_keahlian }}', '{{ $k->semester }}', '{{ $k->tahun_ajaran }}',)">
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="pilih('{{ $k->id }}', '{{ $k->kasus }}', '{{ $k->fsiswa->nama_lengkap }}', '{{ $k->semester }}', '{{ $k->tahun_ajaran }}',)">
                                         Pilih
                                     </a>
                                 </td>
@@ -174,8 +152,6 @@
         document.getElementById('kdkasus').value = id;
         document.getElementById('kasus').value = kasus;
         document.getElementById('nama_lengkap').value = nama_lengkap;
-        document.getElementById('kelas').value = kdkelas;
-        document.getElementById('kompetensi_keahlian').value = kdkompetensi;
         document.getElementById('semester_display').value = semester;
         document.getElementById('tahun_ajaran_display').value = tahun_ajaran;
 

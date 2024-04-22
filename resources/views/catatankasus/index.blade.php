@@ -22,8 +22,6 @@ table-stripped" id="example2">
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Siswa</th>
-                                <th>Kelas</th>
-                                <th>Kompetensi Keahlian</th>
                                 <th>Semester</th>
                                 <th>Tahun Ajaran</th>
                                 <th>Catatan Kasus</th>
@@ -49,8 +47,6 @@ table-stripped" id="example2">
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $ck->fsiswa->nama_lengkap }}</td>
-                                <td>{{ $ck->fsiswa->fkelas->kelas }}</td>
-                                <td>{{ $ck->fsiswa->fkompetensi->kompetensi_keahlian }}</td>
                                 <td>{{ $ck->semester }}</td>
                                 <td>{{ $ck->tahun_ajaran }}</td>
                                 <td>{{ $ck->kasus }}</td>

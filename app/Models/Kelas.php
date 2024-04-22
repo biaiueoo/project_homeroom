@@ -12,8 +12,9 @@ class Kelas extends Model
     protected $table = 'kelas';
     protected $fillable = [
         'kelas',
-        'guru_nip', // Tambahkan 'guru_nip' ke fillable
+        'guru_nip',
         'kdkompetensi',
+        'tahun_ajaran',
     ];
 
     public function fguru()
