@@ -58,45 +58,46 @@
         @method('delete')
         @csrf
     </form>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        function prosesAksi(aksi) {
-            let id = document.getElementById('status').getAttribute('data-id');
-            let url = '';
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    function prosesAksi(aksi) {
+        let id = document.getElementById('status').getAttribute('data-id');
+        let url = '';
 
-            if (aksi === 'status') {
-                url = '{{ route("mulaiPembinaan") }}';
+        if (aksi === 'status') { // Sesuaikan dengan aksi yang diberikan pada tombol HTML
+            url = '{{ route("mulaiPembinaan") }}';
 
-                // Kirim permintaan Ajax menggunakan Axios
-                axios.post(url, {
-                        id: id
-                    })
-                    .then(response => {
-                        if (response.data.success) {
-                            // Ubah tampilan tergantung pada hasil sukses dari server
-                            document.getElementById('status').textContent = 'Dalam Pembinaan';
-                            // Hapus tombol Penyerahan setelah berhasil
-                            document.getElementById('btnStatus').remove();
+            // Kirim permintaan Ajax menggunakan Axios
+            axios.post(url, {
+                    id: id
+                })
+                .then(response => {
+                    if (response.data.success) {
+                        // Ubah tampilan tergantung pada hasil sukses dari server
+                        document.getElementById('status').textContent = 'Dalam Pembinaan';
+                        // Hapus tombol "Mulai Pembinaan" setelah berhasil
+                        document.getElementById('btnStatus').remove();
 
-                            // Simpan status aksi ke localStorage
-                            localStorage.setItem('pembinaanDone', true);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Terjadi kesalahan:', error);
-                    });
-            }
+                        // Simpan status aksi ke localStorage
+                        localStorage.setItem('pembinaanDone', true);
+                    }
+                })
+                .catch(error => {
+                    console.error('Terjadi kesalahan:', error);
+                });
         }
+    }
 
-        // Saat halaman dimuat, periksa status aksi dari localStorage
-        document.addEventListener('DOMContentLoaded', function() {
-            let pembinaanDone = localStorage.getItem('pembinaanDone');
-            if (pembinaanDone) {
-                // Jika penyerahan sudah dilakukan sebelumnya, sembunyikan tombol Penyerahan
-                document.getElementById('btnStatus').style.display = 'none';
-            }
-        });
+    // Saat halaman dimuat, periksa status aksi dari localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        let pembinaanDone = localStorage.getItem('pembinaanDone');
+        if (pembinaanDone) {
+            // Jika pembinaan sudah dilakukan sebelumnya, sembunyikan tombol "Mulai Pembinaan"
+            document.getElementById('btnStatus').style.display = 'none';
+        }
+    });
+
 
         $(document).ready(function() {
             // Menyimpan nilai input nama_lengkap saat submit form
