@@ -38,13 +38,18 @@ class PembinaanBkController extends Controller
         $id = $request->input('id');
 
         try {
+            // Temukan data pembinaan berdasarkan ID
             $pembinaan = PembinaanBK::findOrFail($id);
+
+            // Ubah status pembinaan menjadi 'Dalam Pembinaan'
             $pembinaan->status = 'Dalam Pembinaan';
             $pembinaan->save();
 
+            // Kirim respons JSON sukses
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Gagal mengubah status kasus.'], 500);
+            // Jika terjadi kesalahan, kirim respons JSON dengan pesan kesalahan
+            return response()->json(['success' => false, 'message' => 'Gagal memulai pembinaan.'], 500);
         }
     }
 }
