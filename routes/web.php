@@ -16,6 +16,7 @@ use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CatatanKasusController;
 use App\Http\Controllers\JadwalpiketController;
 use App\Http\Controllers\DaftarrapotController;
+use App\Http\Controllers\DKelasController;
 use App\Http\Controllers\GuruExportController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KegiatanExportController;
@@ -105,7 +106,6 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::controller(SiswaExportController::class)->group(function () {
         Route::get('index', 'index');
         Route::get('export/siswa', 'export')->name('export.siswa');
-
     });
 
     Route::get('/guru/file-import', [GuruController::class, 'importView'])->name('guru-import-view');
@@ -146,6 +146,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/pembinaan-bk-selesai', [PembinaanBkController::class, 'kasusSelesai'])->name('pembinaanbk.selesai');
     Route::post('/mulai-pembinaan', [PembinaanBkController::class, 'mulaiPembinaan'])->name('mulaiPembinaan');
     Route::get('/pembinaan-kasus-bk', [PembinaanBkController::class, 'pembinaanKasusBK'])->name('pembinaan.kasus.bk');
+
+    Route::resource('dkelas', DKelasController::class);
 });
 
 // ROLE WALI KELAS

@@ -19,8 +19,6 @@
                                 <th>No.</th>
                                 <th>Kasus</th>
                                 <th>Nama Siswa</th>
-                                <th>Kelas</th>
-                                <th>Kompetensi Keahlian</th>
                                 <th>Solusi</th>
                                 <th>Tanggal</th>
                                 <th>Semester</th>
@@ -36,8 +34,6 @@
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $kr->fkasus->kasus }}</td>
                                 <td>{{ $kr->fkasus->fsiswa->nama_lengkap}}</td>
-                                <td>{{ $kr->fkasus->fsiswa->fkelas->kelas}}</td>
-                                <td>{{ $kr->fkasus->fsiswa->fkompetensi->kompetensi_keahlian}}</td>
                                 <td>{{ $kr->solusi}}</td>
                                 <td>{{ $kr->tanggal}}</td>
                                 <td>{{ $kr->fkasus->semester }}</td>
