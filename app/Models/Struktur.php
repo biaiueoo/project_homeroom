@@ -12,6 +12,8 @@ class Struktur extends Model
 
     protected $fillable = [
         'nama',
-        'jabatans'
+        'jabatan'
     ];
+
+    
 }

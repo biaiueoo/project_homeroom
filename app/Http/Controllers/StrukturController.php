@@ -3,14 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\Struktur;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Illuminate\Http\Request;
 
 class StrukturController extends Controller
 {
     public function index()
     {
+        
         $struktur = Struktur::all();
         return view('struktur.index', [
+            'struktur' => $struktur
+        ]);
+    }
+
+    public function show($id)
+    {
+        // Ambil data struktur organisasi berdasarkan ID
+        $struktur = Struktur::findOrFail($id);
+
+        return view('struktur.show', [
             'struktur' => $struktur
         ]);
     }
@@ -81,5 +94,29 @@ tidak ditemukan');
 
         return redirect()->route('struktur.index')->with('success_message', 'Berhasil menghapus struktur dan rencana struktur terkait.');
     }
+    public function downloadPDF()
+    {
+        // Ambil data yang diperlukan untuk PDF
+        $struktur = Struktur::all(); // Atur ini sesuai dengan cara Anda mendapatkan data siswa
 
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF
+        $html = view('pdf.struktur', compact('struktur'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream('struktur.pdf');
+    }
 }
+

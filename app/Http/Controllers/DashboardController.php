@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\PembinaanBK;
 use App\Models\Presentase;
+use App\Models\Struktur;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -22,9 +23,11 @@ class DashboardController extends Controller
             ->groupBy('status')
             ->get();
 
+        $dataStrukturOrganisasi = Struktur::all();
         return view('dashboard.home', [
             'dataPresentase' => $dataPresentase,
-            'dataStatusKasus' => $dataStatusKasus
+            'dataStatusKasus' => $dataStatusKasus,
+            'dataStrukturOrganisasi' => $dataStrukturOrganisasi,
         ]);
     }
 }
