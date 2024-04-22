@@ -17,8 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('kompetensi_keahlian');
             $table->string('guru_nip'); // Tambahkan kolom untuk menyimpan NIP guru
-            $table->foreign('guru_nip')->references('nip')->on('guru') 
-            ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('guru_nip')->references('nip')->on('guru')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->string('tahun_ajaran', 30);
             $table->timestamps();
         });
     }
