@@ -11,9 +11,9 @@
                 <div class="card-body">
                     <h6 class="mb-4">FILTER DATA</h6>
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-40 mb-3">
                             <form action="{{ route('laporan.kasus.bk') }}" method="GET" id="filter-form">
-                                <div class="col-md-8 mb-3">
+                                <div class="col-md-50 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text text-body"><i class="fas fa-search"
                                                 aria-hidden="true"></i></span>
@@ -21,7 +21,7 @@
                                             placeholder="Cari Berdasarkan Nama Siswa">
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-md-3 mb-3">
                                     {{-- <label for="kompetensi_keahlian">Kompetensi Keahlian:</label> --}}
                                     <select name="kompetensi_keahlian" id="kompetensi_keahlian" class="form-control">
                                         <option value="">-- Pilih Kompetensi Keahlian --</option>
