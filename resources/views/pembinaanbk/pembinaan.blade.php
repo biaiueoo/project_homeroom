@@ -60,13 +60,15 @@
     </form>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script>
         function prosesAksi(aksi) {
             let id = document.getElementById('status').getAttribute('data-id');
             let url = '';
 
             if (aksi === 'status') {
-                url = '{{ route("mulaiPembinaan") }}';
+                url = '{{ route("selesaiPembinaan") }}';
 
                 // Kirim permintaan Ajax menggunakan Axios
                 axios.post(url, {
@@ -75,12 +77,12 @@
                     .then(response => {
                         if (response.data.success) {
                             // Ubah tampilan tergantung pada hasil sukses dari server
-                            document.getElementById('status').textContent = 'Dalam Pembinaan';
+                            document.getElementById('status').textContent = 'Kasus Selesai';
                             // Hapus tombol Penyerahan setelah berhasil
                             document.getElementById('btnStatus').remove();
 
                             // Simpan status aksi ke localStorage
-                            localStorage.setItem('pembinaanDone', true);
+                            //  localStorage.setItem('pembinaanDone', true);
                         }
                     })
                     .catch(error => {
@@ -90,13 +92,13 @@
         }
 
         // Saat halaman dimuat, periksa status aksi dari localStorage
-        document.addEventListener('DOMContentLoaded', function() {
-            let pembinaanDone = localStorage.getItem('pembinaanDone');
-            if (pembinaanDone) {
-                // Jika penyerahan sudah dilakukan sebelumnya, sembunyikan tombol Penyerahan
-                document.getElementById('btnStatus').style.display = 'none';
-            }
-        });
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     let pembinaanDone = localStorage.getItem('pembinaanDone');
+        //     if (pembinaanDone) {
+        //         // Jika penyerahan sudah dilakukan sebelumnya, sembunyikan tombol Penyerahan
+        //         document.getElementById('btnStatus').style.display = 'none';
+        //     }
+        // });
 
         $(document).ready(function() {
             // Menyimpan nilai input nama_lengkap saat submit form
