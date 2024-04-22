@@ -51,5 +51,6 @@ class PembinaanBkController extends Controller
             // Jika terjadi kesalahan, kirim respons JSON dengan pesan kesalahan
             return response()->json(['success' => false, 'message' => 'Gagal memulai pembinaan.'], 500);
         }
+  
     }
-}
+} 

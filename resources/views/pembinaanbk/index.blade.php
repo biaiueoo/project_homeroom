@@ -29,6 +29,7 @@
                             <tbody>
                                 @foreach ($laporanKasusBK as $key => $ck)
                                 <tr>
+                                    
                                     <td>{{ $key + 1 }}</td>
                                     <td>{{ $ck->fkasus->fsiswa->nama_lengkap }}</td>
                                     <td>{{ $ck->fkasus->fsiswa->fkelas->kelas }}</td>

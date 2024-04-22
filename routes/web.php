@@ -180,6 +180,7 @@ Route::middleware(['auth', 'role:kakom'])->group(function () {
     Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
 });
 
+
 //ROLE BK
 Route::middleware(['auth', 'role:bk'])->group(function () {
     Route::resource('laporankasus', LaporankasusController::class);
