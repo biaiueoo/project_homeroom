@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Siswa;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
@@ -18,14 +19,15 @@ class SiswaImport implements ToModel, WithStartRow
         // Cek apakah kolom NIS tidak kosong (indeks 0)
         if (!empty($row[0])) {
             // Format tanggal (indeks 3)
-            $formattedDate = date('Y-m-d', strtotime($row[3]));
-
             // Buat instance Siswa dengan data yang diimpor
+            //dd ($row);
+            $tanggal_lahir = Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row[3]));
+
             return new Siswa([
                 'nis' => $row[0],
                 'nama_lengkap' => $row[1],
                 'tempat_lahir' => $row[2],
-                'tanggal_lahir' => $formattedDate,
+                'tanggal_lahir' => $tanggal_lahir->toDateString(), 
                 'alamat' => $row[4],
                 'agama' => $row[5],
                 'kewarganegaraan' => $row[6],

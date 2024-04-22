@@ -106,8 +106,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('export/siswa', 'export')->name('export.siswa');
     });
 
-    Route::get('/guru/file-import', [SiswaController::class, 'importView'])->name('guru-import-view');
-    Route::post('/guru/import', [SiswaController::class, 'import'])->name('guru-import');
+    Route::get('/guru/file-import', [GuruController::class, 'importView'])->name('guru-import-view');
+    Route::post('/guru/import', [GuruController::class, 'import'])->name('guru-import');
     Route::controller(GuruExportController::class)->group(function () {
         Route::get('index', 'index');
         Route::get('export/guru', 'export')->name('export.guru');
