@@ -182,30 +182,25 @@ class CatatanKasusController extends Controller
         ]);
     }
 
-    public function downloadPDF()
-    {
-        // Ambil data yang diperlukan untuk PDF
-        $catatankasus = CatatanKasus::all(); // Atur ini sesuai dengan cara Anda mendapatkan data siswa
+    public function pdfDownload()
+{
+    // Ambil data yang diperlukan untuk PDF
+    $catatankasus = CatatanKasus::all(); 
 
-        // Buat objek Dompdf
-        $dompdf = new Dompdf();
+    // Buat objek Dompdf
+    $dompdf = new Dompdf();
 
-        // Render view ke PDF
-        $html = view('pdf.catatankasus', compact('catatankasus'))->render();
-        $dompdf->loadHtml($html);
+    // Render view ke PDF
+    $html = view('pdf.catatankasus', compact('catatankasus'))->render();
+    $dompdf->loadHtml($html);
 
-        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
-        $options = new Options();
-        $options->set('isHtml5ParserEnabled', true);
-        $options->set('isPhpEnabled', true);
-        $dompdf->setOptions($options);
+    // Render PDF
+    $dompdf->render();
 
-        // Render PDF
-        $dompdf->render();
+    // Kembalikan respons dengan PDF untuk diunduh
+    return $dompdf->stream('catatan_kasus.pdf', ['Attachment' => false]);
+}
 
-        // Kembalikan respons dengan PDF untuk diunduh
-        return $dompdf->stream('catatan_kasus.pdf');
-    }
 
     public function laporanKasusKakom(Request $request)
     {
@@ -257,4 +252,7 @@ class CatatanKasusController extends Controller
 
         return redirect()->back()->with('success_message', 'Status kasus berhasil diubah.');
     }
+
+    
+
 }
