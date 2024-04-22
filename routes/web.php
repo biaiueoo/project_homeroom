@@ -32,6 +32,7 @@ use App\Http\Controllers\RencanakegiatanController;
 use App\Models\KunjunganRumah;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SiswaExportController;
+use App\Http\Controllers\StrukturController;
 use App\Models\PembinaanBK;
 
 /*
@@ -70,6 +71,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('kelas', KelasController::class);
     Route::resource('walas', WalasController::class);
+    Route::resource('struktur', StrukturController::class);
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'downloadPDF'])->name('catatankasus.pdf');
     Route::resource('siswakes', SiswakesController::class);
