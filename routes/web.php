@@ -173,6 +173,10 @@ Route::middleware(['auth', 'role:walikelas'])->group(function () {
     Route::resource('presentase', PresentaseController::class);
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'PDFdownload'])->name('ckpdf');
+    Route::get('/struktur/pdf', [StrukturController::class, 'downloadPDF'])->name('struktur.pdf');
+    Route::resource('struktur', StrukturController::class);
+    Route::get('struktur/{id}', [StrukturController::class, 'show'])->name('struktur.show');
+    
 });
 
 //ROLE KESISWAAN
