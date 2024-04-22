@@ -58,6 +58,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //ROLE ADMIN
 Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'pdfDownload'])->name('ckpdf')->middleware('auth');
     Route::resource('dashboard', DashboardController::class);
     Route::resource('mapel', MapelController::class);
     Route::resource('kompetensi', KompetensiController::class);
@@ -104,6 +105,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::controller(SiswaExportController::class)->group(function () {
         Route::get('index', 'index');
         Route::get('export/siswa', 'export')->name('export.siswa');
+
     });
 
     Route::get('/guru/file-import', [SiswaController::class, 'importView'])->name('guru-import-view');
@@ -163,7 +165,7 @@ Route::middleware(['auth', 'role:walikelas'])->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('presentase', PresentaseController::class);
     Route::resource('catatankasus', CatatanKasusController::class);
-    Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'downloadPDF'])->name('catatankasus.pdf');
+    Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'PDFdownload'])->name('ckpdf');
 });
 
 //ROLE KESISWAAN

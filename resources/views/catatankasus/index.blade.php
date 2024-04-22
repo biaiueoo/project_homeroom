@@ -13,9 +13,8 @@
 btn-primary mb-2">
                     Tambah
                 </a>
-                <a href="{{ route('catatankasus.pdf') }}" class="btn btn-secondary mb-2">
-                    Template SP
-                </a>
+                <a href="{{ route('ckpdf') }}" class="btn btn-secondary mb-2">Template SP</a>
+
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered 
 table-stripped" id="example2">
@@ -138,7 +137,7 @@ table-stripped" id="example2">
                                     <a href="{{ route('catatankasus.destroy', $ck) }}" onclick="notificationBeforeDelete(event, this)" class="btn btn-danger btn-xs">
                                         Delete
                                     </a>
-                                    <a href="{{ route('catatankasus.pdf', ['id' => $ck->id]) }}" class="btn btn-secondary btn-xs">
+                                    <a href="{{ route('ckpdf', ['id' => $ck->id]) }}" class="btn btn-secondary btn-xs">
                                         Unduh BAP
                                     </a>
                                 </td>
