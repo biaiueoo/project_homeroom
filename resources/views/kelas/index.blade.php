@@ -67,6 +67,9 @@ table-stripped" id="example2">
                             <a href="{{ route('kelas.destroy', $k) }}" onclick="notificationBeforeDelete(event, this)" class="btn btn-danger btn-xs">
                                 Delete
                             </a>
+                            <a href="{{ route('dkelas.detail', $k->id) }}" class="btn btn-info btn-xs">Detail</a>
+
+
                         </td>
                     </tr>
                     @endforeach

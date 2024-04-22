@@ -2,7 +2,7 @@
 @section('nav')
     @include('dashboard.nav')
 @endsection
-@section('page', 'Laporan Kasus BK')
+@section('page', 'Laporan Kasus Kepala Kompetensi')
 @section('main')
     @include('dashboard.main')
     <div class="row">
@@ -11,9 +11,9 @@
                 <div class="card-body">
                     <h6 class="mb-4">FILTER DATA</h6>
                     <div class="row">
-                        <div class="col-md-4 mb-3">
+                        <div class="col-md-40 mb-3">
                             <form action="{{ route('laporan.kasus.kakom') }}" method="GET" id="filter-form">
-                                <div class="col-md-8 mb-3">
+                                <div class="col-md-50 mb-3">
                                     <div class="input-group">
                                         <span class="input-group-text text-body"><i class="fas fa-search"
                                                 aria-hidden="true"></i></span>

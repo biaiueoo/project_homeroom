@@ -15,12 +15,45 @@ use Illuminate\Http\Request;
 class CatatanKasusController extends Controller
 {
     public function index()
-    {
-        $catatankasus = CatatanKasus::all();
-        return view('catatankasus.index', [
-            'catatankasus' => $catatankasus
-        ]);
+{
+    $user = auth()->user();
+    $catatankasus = null; 
+
+    switch ($user->level) {
+        case 'admin':
+            $catatankasus = CatatanKasus::all();
+            break;
+
+        case 'kakom':
+            $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
+            if (!$kompetensi) {
+                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kompetensi terkait.');
+            }
+            $catatankasus = CatatanKasus::whereHas('fsiswa', function ($query) use ($kompetensi) {
+                $query->where('kdkompetensi', $kompetensi->id);
+            })->get();
+            break;
+
+        case 'walikelas':
+            $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+            if (!$kelas) {
+                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
+            }
+            $catatankasus = CatatanKasus::whereHas('fsiswa', function ($query) use ($kelas) {
+                $query->where('kdkelas', $kelas->id)->where('kdkompetensi', $kelas->kdkompetensi);
+            })->get();
+            break;
+
+        default:
+            return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+            break;
     }
+
+    return view('catatankasus.index', ['catatankasus' => $catatankasus]);
+}
+
+
+
 
     public function create()
     {

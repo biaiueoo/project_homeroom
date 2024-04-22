@@ -25,7 +25,7 @@ class User extends Authenticatable
 
     public function fguru()
     {
-        return $this->belongsTo(Guru::class, 'guru_nip');
+        return $this->belongsTo(Guru::class, 'guru_nip', 'nip');
     }
 
     public function hasRole($role)

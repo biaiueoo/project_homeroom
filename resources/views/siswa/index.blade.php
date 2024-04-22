@@ -45,8 +45,6 @@ table-stripped" id="example2">
                                 <th>No.</th>
                                 <th>NIS</th>
                                 <th>Nama</th>
-                                <th>Kelas</th>
-                                <th>Kompetensi Keahlian</th>
                                 <th>Nama Ayah</th>
                                 <th>Nama Ibu</th>
                                 <th>Tempat Lahir</th>
@@ -77,8 +75,6 @@ table-stripped" id="example2">
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $s->nis }}</td>
                                 <td>{{ $s->nama_lengkap }}</td>
-                                <td>{{ $s->fkelas->kelas }}</td>
-                                <td>{{ $s->fkompetensi->kompetensi_keahlian }}</td>
                                 <td>{{ $s->nama_ayah }}</td>
                                 <td>{{ $s->nama_ibu }}</td>
                                 <td>{{ $s->tempat_lahir }}</td>
