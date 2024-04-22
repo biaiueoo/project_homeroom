@@ -53,4 +53,24 @@ class PembinaanBkController extends Controller
         }
   
     }
+
+    public function selesai(Request $request)
+    {
+        $id = $request->input('id');
+    
+        try {
+            // Temukan data pembinaan berdasarkan ID
+            $pembinaan = PembinaanBK::findOrFail($id);
+    
+            // Ubah status pembinaan menjadi 'Kasus Selesai'
+            $pembinaan->status = 'Kasus Selesai';
+            $pembinaan->save();
+    
+            // Kirim respons JSON sukses
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // Jika terjadi kesalahan, kirim respons JSON dengan pesan kesalahan
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }  
 } 
+}

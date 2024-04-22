@@ -185,4 +185,6 @@ Route::middleware(['auth', 'role:kakom'])->group(function () {
 Route::middleware(['auth', 'role:bk'])->group(function () {
     Route::resource('laporankasus', LaporankasusController::class);
     Route::post('/mulai-pembinaan', [PembinaanBkController::class, 'mulaiPembinaan'])->name('mulaiPembinaan');
+Route::post('/selesai-pembinaan', [PembinaanBkController::class, 'selesai'])->name('selesaiPembinaan');
+
 });
