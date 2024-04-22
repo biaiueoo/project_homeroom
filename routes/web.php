@@ -148,6 +148,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/pembinaan-kasus-bk', [PembinaanBkController::class, 'pembinaanKasusBK'])->name('pembinaan.kasus.bk');
 
     Route::resource('dkelas', DKelasController::class);
+    Route::get('dkelas/{id}/detail', [DKelasController::class, 'detail'])->name('dkelas.detail');
 });
 
 // ROLE WALI KELAS

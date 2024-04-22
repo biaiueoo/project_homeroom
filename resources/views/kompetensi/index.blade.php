@@ -43,6 +43,8 @@
                     <tr>
                         <th>No.</th>
                         <th>Kompetensi Keahlian</th>
+                        <th>Kepala Program</th>
+                        <th>Tahun Ajaran</th>
                         <th>Opsi</th>
                     </tr>
                 </thead>
@@ -51,6 +53,7 @@
                     <tr>
                         <td>{{ $key + 1 }}</td>
                         <td>{{$komp->kompetensi_keahlian}}</td>
+                        <td>{{$komp->fguru->nama_guru}}</td>
 
                         {{-- <td>
                                         @if ($komp->kompetensi_keahlian)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\KompetensiExport;
 use App\Models\Kompetensi;
+use App\Models\Guru;
 use Illuminate\Http\Request;
 
 use App\Imports\KompetensiImport;
@@ -11,11 +12,13 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class KompetensiController extends Controller
 {
-    public function importViewSiswa(Request $request){
+    public function importViewSiswa(Request $request)
+    {
         return view('importFile');
     }
 
-    public function import(Request $request){
+    public function import(Request $request)
+    {
         Excel::import(new KompetensiImport, $request->file('file')->store('files'));
         return redirect()->back();
     }
@@ -24,7 +27,7 @@ class KompetensiController extends Controller
     {
         return Excel::download(new KompetensiExport, 'kompetensi_template.xlsx');
     }
-    
+
 
     public function index()
     {
@@ -37,7 +40,9 @@ class KompetensiController extends Controller
 
     public function create()
     {
-        return view('kompetensi.create');
+        return view('kompetensi.create', [
+            'guru' => Guru::all()
+        ]);
     }
 
     // public function store(Request $request)
@@ -64,12 +69,18 @@ class KompetensiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'kompetensi_keahlian' => 'required|unique:kompetensi_keahlian,kompetensi_keahlian'
+            'kompetensi_keahlian' => 'required|unique:kompetensi_keahlian,kompetensi_keahlian',
+            'guru_nip' => 'required',
+            'tahun_ajaran' => 'required'
         ]);
+
         $array = $request->only([
-            'kompetensi_keahlian'
+            'kompetensi_keahlian',
+            'guru_nip',
+            'tahun_ajaran'
         ]);
-        $kompetensi = kompetensi::create($array);
+
+        kompetensi::create($array);
         return redirect()->route('kompetensi.index')->with('success_message', 'Berhasil menambah Kompetensi Keahlian baru');
     }
 
@@ -81,7 +92,8 @@ class KompetensiController extends Controller
         if (!$kompetensi) return redirect()->route('kompetensi.index')
             ->with('error_message', 'Kompetensi Keahlian dengan id = ' . $id . ' tidak ditemukan');
         return view('kompetensi.edit', [
-            'kompetensi' => $kompetensi
+            'kompetensi' => $kompetensi,
+            'guru' => Guru::all()
         ]);
     }
     public function update(Request $request, $id)
@@ -93,6 +105,8 @@ class KompetensiController extends Controller
         ]);
         $kompetensi = kompetensi::find($id);
         $kompetensi->kompetensi_keahlian = $request->kompetensi_keahlian;
+        $kompetensi->guru_nip = $request->guru_nip;
+        $kompetensi->tahun_ajaran = $request->tahun_ajaran;
         $kompetensi->save();
         return redirect()->route('kompetensi.index')->with('success_message', 'Berhasil mengubah Kompetensi Keahlian');
     }

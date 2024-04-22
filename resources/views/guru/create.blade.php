@@ -1,10 +1,10 @@
 @extends('dashboard.master')
 @section('nav')
-    @include('dashboard.nav')
+@include('dashboard.nav')
 @endsection
 @section('page', 'Guru')
 @section('main')
-    @include('dashboard.main')
+@include('dashboard.main')
 <form action="{{ route('guru.store') }}" method="post">
     @csrf
 

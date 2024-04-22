@@ -13,6 +13,7 @@
 btn-primary mb-2">
                     Tambah
                 </a> -->
+                <h4 class="card-title">{{ $kelas }}</h4>
                 <table class="table table-hover table-bordered 
 table-stripped" id="example2">
                     <thead>
@@ -20,7 +21,7 @@ table-stripped" id="example2">
                             <th>No.</th>
                             <th>Kelas</th>
                             <th>NIS</th>
-                            <th>Nama Siswa</th>
+                        <th>Nama Siswa</th>
                             <th>Opsi</th>
                         </tr>
                     </thead>
@@ -32,20 +33,10 @@ table-stripped" id="example2">
                             <td>{{$dk->fsiswa->nis}}</td>
                             <td>{{$dk->fsiswa->nama_lengkap}}</td>
                             <td>
-                                <a href="{{route('dkelas.index', $dk)}}" class="btn btn-success btn-xs">
+                                <a href="{{route('kelas.index')}}" class="btn btn-success btn-xs">
                                     Back
                                 </a>
                             </td>
-                            <!-- <td>
-                                <a href="{{route('detail_penjualan.edit', 
-$detail_penjualan)}}" class="btn btn-primary btn-xs">
-                                    Edit
-                                </a>
-                                <a href="{{route('detail_penjualan.destroy', $detail_penjualan)}}" onclick="notificationBeforeDelete(ev
-ent, this, <?php echo $key + 1; ?>)" class="btn btn-danger btn-xs">
-                                    Delete
-                                </a>
-                            </td> -->
                         </tr>
                         @endforeach
                     </tbody>
