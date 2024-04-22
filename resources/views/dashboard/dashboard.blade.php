@@ -8,42 +8,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
+ 
+        <style>
+               body {
             font-family: Arial, sans-serif;
             padding: 20px;
         }
+    .widget-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Dua kolom dengan lebar yang sama */
+        gap: 30px; /* Jarak antar widget */
+        margin-top: 20px;
+    }
 
-        .widget-container {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-        }
+    .widget {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-        .widget {
-            width: 45%;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
 
-<body>
-    <h1>Dashboard</h1>
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
 
-    <div class="widget-container">
-        <div class="widget">
-            <h2>Grafik Presentase Sosial</h2>
-            <canvas id="chartPresentaseSosial"></canvas>
-        </div>
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
 
-        <div class="widget">
-            <h2>Grafik Status Kasus</h2>
-            <canvas id="chartStatusKasus"></canvas>
-        </div>
+<div class="widget-container">
+    <div class="widget">
+        <h2>Grafik Presentase Sosial</h2>
+        <canvas id="chartPresentaseSosial" style="width: 100%;"></canvas>
     </div>
+
+    <div class="widget">
+        <h2>Grafik Status Kasus</h2>
+        <canvas id="chartStatusKasus" style="width: 100%;"></canvas>
+    </div>
+</div>
+
+<div class="widget-container">
+    <div class="widget">
+        <h2>Data Struktur Organisasi</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>Jabatan</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($dataStrukturOrganisasi as $struktur)
+                <tr>
+                    <td>{{ $struktur->nama }}</td>
+                    <td>{{ $struktur->jabatan }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 
     <script>
         // Ambil data dari controller untuk grafik presentase sosial

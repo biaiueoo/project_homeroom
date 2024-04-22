@@ -72,7 +72,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('kelas', KelasController::class);
     Route::resource('walas', WalasController::class);
+    Route::get('/struktur/pdf', [StrukturController::class, 'downloadPDF'])->name('struktur.pdf');
     Route::resource('struktur', StrukturController::class);
+    Route::get('struktur/{id}', [StrukturController::class, 'show'])->name('struktur.show');
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'downloadPDF'])->name('catatankasus.pdf');
     Route::resource('siswakes', SiswakesController::class);
