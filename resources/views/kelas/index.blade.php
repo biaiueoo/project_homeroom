@@ -15,10 +15,10 @@
                         <a href="{{ route('kelas.create') }}" class="btn btn-primary">Tambah</a>
 
                         <!-- Tombol untuk memunculkan formulir import -->
-                        <button id="showImportForm" class="btn btn-primary mb-2">Import Kelas</button>
+                        <!-- <button id="showImportForm" class="btn btn-primary mb-2">Import Kelas</button> -->
 
                         <!-- Formulir untuk unggah file (awalnya tersembunyi) -->
-                        <form action="{{ route('kelas-import') }}" method="POST" enctype="multipart/form-data" id="importForm" style="display: none;">
+                        <!-- <form action="{{ route('kelas-import') }}" method="POST" enctype="multipart/form-data" id="importForm" style="display: none;">
                             @csrf
                             <div class="input-group">
                                 <div class="custom-file">
@@ -31,12 +31,12 @@
                             </div>
                         </form>
                     </div>
-                    <!-- Tombol Export Excel dan Download PDF -->
+                   
                     <div>
                         <a href="{{ route('export.kelas') }}" class="btn btn-info mr-2">Export Excel File</a>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <table class="table table-hover table-bordered 
 table-stripped" id="example2">

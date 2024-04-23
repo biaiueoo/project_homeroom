@@ -33,7 +33,7 @@
                     </div>
                     <!-- Tombol Export Excel dan Download PDF -->
                     <div>
-                        <a href="{{ route('export.siswa') }}" class="btn btn-info mr-2">Export Excel File</a>
+                        <a href="{{ route('export.siswa') }}" class="btn btn-info mr-2">Download Template</a>
                         <a href="{{ route('siswa.pdf') }}" class="btn btn-secondary">Download PDF</a>
                     </div>
                 </div>
