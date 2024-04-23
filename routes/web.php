@@ -237,6 +237,8 @@ Route::post('/selesai-pembinaan', [PembinaanBkController::class, 'selesai'])->na
 Route::middleware(['auth', 'role:operator'])->group(function () {
     Route::get('/siswa/pdf', [SiswaController::class, 'downloadPDF'])->name('siswa.pdf');
     Route::resource('siswa', SiswaController::class);
+    Route::resource('users', UserController::class);
+
 
     Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('siswa-import-view');
     Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa-import');

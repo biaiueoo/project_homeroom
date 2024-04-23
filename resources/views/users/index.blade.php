@@ -1,9 +1,10 @@
-@extends('adminlte::page')
-@section('title', 'List User')
-@section('content_header')
-    <h1 class="m-0 text-dark">List User</h1>
-@stop
-@section('content')
+@extends('dashboard.master')
+@section('nav')
+@include('dashboard.nav')
+@endsection
+@section('page', 'User')
+@section('main')
+@include('dashboard.main')
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -16,11 +17,12 @@ table-stripped" id="example2">
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>NIS/NIP/NUPTK</th>
+                                
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>Level</th>
-                                <th>Aktif</th>
+                                <th>Guru</th>
+                               
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -28,11 +30,12 @@ table-stripped" id="example2">
                             @foreach ($users as $key => $user)
                                 <tr>
                                     <td>{{ $key + 1 }}</td>
-                                    <td>{{ $user->nip }}</td>
+                                
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->level }}</td>
-                                    <td>{{ $user->aktif }}</td>
+                                    <td>{{ $user-> fguru->nama_guru}}</td>
+                                    
                                     <td>
                                         <a href="{{ route('users.edit', $user) }}" class="btn btn-primary btn-xs">
                                             Edit
