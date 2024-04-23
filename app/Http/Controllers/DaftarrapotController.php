@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\daftarrapot;
 use App\Models\Kelas;
+use App\Models\Kompetensi;
 use App\Models\Siswa;
 use App\Models\Lookup;
 use Dompdf\Dompdf;
@@ -15,12 +16,48 @@ class DaftarrapotController extends Controller
 {
     public function index()
     {
-        $daftarrapot = daftarrapot::all();
-        return view('daftarrapot.index', [
-            'daftarrapot' => $daftarrapot
-        ]);
-    }
+        $user = auth()->user();
+        $daftarrapot = null; 
+    
+        switch ($user->level) {
+            case 'admin':
+                $daftarrapot = daftarrapot::all();
+                break;
+    
+            case 'kakom':
+                $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
+                //dd($kompetensi);
+                
+                $daftarrapot = daftarrapot::where('kdkompetensi', $kompetensi->id)->get();
+                //  dd($siswa);
+                break;
+    
+            case 'walikelas':
+                $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+                // dd($kelas);
+                
+                $daftarrapot = daftarrapot::whereHas('fsiswa', function ($query) use ($kelas) {
+                    $query->where('kdkelas', $kelas->id)->where('kdkompetensi', $kelas->kdkompetensi);
 
+
+                })->get();
+                   
+                //dd($siswa);
+                break;
+
+    
+                case 'operator':
+                    $daftarrapot = daftarrapot::all();
+                    break;
+    
+            default:
+                return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+                break;
+        }
+    
+        return view('daftarrapot.index', ['daftarrapot' => $daftarrapot]);
+            
+    }
     public function show($id)
 {
     $dr = DaftarRapot::find($id); // Misalnya, mengambil data DaftarRapot berdasarkan ID

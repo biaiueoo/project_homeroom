@@ -43,7 +43,7 @@
                     <div class="form-group">
                         <label for="semester">Semester</label>
                         <select name="semester" id="semester" class="form-control">
-                            @foreach($semester as $semester)
+                            @foreach($semesters as $semester)
                             <option value="{{ $semester->keterangan }}">{{ $semester->keterangan }}</option>
                             @endforeach
                         </select>

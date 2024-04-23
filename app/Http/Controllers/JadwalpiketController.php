@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\jadwalpiket;
+use App\Models\Kelas;
+use App\Models\Kompetensi;
 use App\Models\Lookup;
 use App\Models\Siswa;
 use Dompdf\Dompdf;
@@ -14,27 +16,79 @@ class jadwalpiketController extends Controller
 {
     public function index()
     {
-        $jadwalpiket = jadwalpiket::all();
-        return view('jadwalpiket.index', [
-            'jadwalpiket' => $jadwalpiket
-        ]);
-    }
+        $user = auth()->user();
+        $jadwalpiket = null; 
+    
+        switch ($user->level) {
+            case 'admin':
+                $jadwalpiket = jadwalpiket::all();
+                break;
+    
+            case 'kakom':
+                $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
+                //dd($kompetensi);
+                
+                $jadwalpiket = jadwalpiket::where('kdkompetensi', $kompetensi->id)->get();
+                //  dd($siswa);
+                break;
+    
+            case 'walikelas':
+                $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+                // dd($kelas);
+                
+                $jadwalpiket = jadwalpiket::whereHas('fsiswa', function ($query) use ($kelas) {
+                    $query->where('kdkelas', $kelas->id)->where('kdkompetensi', $kelas->kdkompetensi);
 
-    public function create()
+
+                })->get();
+                   
+                //dd($siswa);
+                break;
+
+    
+                case 'operator':
+                    $jadwalpiket = jadwalpiket::all();
+                    break;
+    
+            default:
+                return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+                break;
+        }
+    
+        return view('jadwalpiket.index', ['jadwalpiket' => $jadwalpiket]);
+            
+    }
+        public function create()
     {
-        $semester = Lookup::where('jenis', 'semester')->get();
+        $semesters = Lookup::where('jenis', 'semester')->get();
         $hari = Lookup::where('jenis', 'hari')->get();
 
-        return view(
-            'jadwalpiket.create',
-            [
-                'siswa' => Siswa::all(),
-                'hari' => $hari,
-                'semester' => $semester,
+        $user = auth()->user();
+        
+        // Ambil kelas terkait dengan walikelas
+        $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
 
-            ]
-        );
-    }
+        // Pastikan kelas ditemukan dan memiliki kompetensi terkait
+        if (!$kelas) {
+            return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
+        }
+
+        // Ambil kompetensi dari kelas walikelas
+        $kompetensiId = $kelas->kdkompetensi;
+
+        // Ambil semua siswa yang terkait dengan kelas dan kompetensi walikelas
+        $siswa = Siswa::where('kdkelas', $kelas->id)
+                    ->where('kdkompetensi', $kompetensiId)
+                    ->get();
+
+        // Kemudian lemparkan data ke view
+        return view('jadwalpiket.create', [
+            'siswa' => $siswa,
+            'semesters' => $semesters, // Pastikan variabel $semesters sudah didefinisikan
+            'hari' => $hari // Pastikan variabel $rapor sudah didefinisikan
+        ]);
+}
+
 
     public function store(Request $request)
     {
