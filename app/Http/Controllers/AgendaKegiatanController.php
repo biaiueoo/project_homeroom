@@ -186,8 +186,7 @@ public function create()
     {
         //Menyimpan Data agenda
         $request->validate([
-            'kdkelas' => 'required',
-            'kdkompetensi' => 'required',
+           
             'tanggal' => 'required',
             'hari' => 'required',
             'semester' => 'required',
@@ -200,8 +199,7 @@ public function create()
 
         ]);
         $agenda = AgendaKegiatan::find($id);
-        $agenda->kdkelas = $request->kdkelas;
-        $agenda->kdkompetensi = $request->kdkompetensi;
+ 
         $agenda->tanggal = $request->tanggal;
         $agenda->keterangan = $request->keterangan;
         $agenda->semester = $request->semester;
