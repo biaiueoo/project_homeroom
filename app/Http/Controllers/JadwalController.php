@@ -16,32 +16,102 @@ use Dompdf\Options;
 class JadwalController extends Controller
 {
     public function index()
-    {
-        $jadwal = Jadwal::all();
-        return view('jadwal.index', [
-            'jadwal' => $jadwal
+{
+    $user = auth()->user();
+    // dd($user);
+   $jadwal = null;
+
+    switch ($user->level) {
+        case 'admin':
+            // Jika admin, ambil semua agenda kegiatan
+           $jadwal = Jadwal::all();
+            break;
+
+        case 'kakom':
+            // Jika kakom, ambil kompetensi keahlian yang terkait dengan guru yang sedang login
+            $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
+            if (!$kompetensi) {
+                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kompetensi terkait.');
+            }
+
+            // Ambil agenda kegiatan berdasarkan kompetensi keahlian
+           $jadwal = Jadwal::where('kdkompetensi', $kompetensi->id)->get();
+            break;
+
+        case 'walikelas':
+            // Jika walikelas, ambil kelas yang terkait dengan guru yang sedang login
+            $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+            // dd($kelas);
+
+            // Ambil agenda kegiatan berdasarkan kelas dan kompetensi keahlian walikelas
+           $jadwal = Jadwal::where('kdkelas', $kelas->id)
+                ->whereHas('fkompetensi', function ($query) use ($kelas) {
+                    $query->where('id', $kelas->kdkompetensi);
+                })
+                ->get();
+            break;
+
+        default:
+            return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+            break;
+    }
+
+    return view('jadwal.index', ['jadwal' =>$jadwal]);
+}
+
+public function create()
+{
+    $semester = Lookup::where('jenis', 'semester')->get();
+    $hari = Lookup::where('jenis', 'hari')->get();
+    $user = auth()->user();
+    $kelas = null;
+    $kompetensi = null;
+
+    switch ($user->level) {
+        case 'admin':
+            // Jika admin, ambil semua kelas dan kompetensi keahlian
+            $kelas = Kelas::all();
+            $kompetensi = Kompetensi::all();
+            break;
+
+        case 'kakom':
+            // Jika kakom, ambil kompetensi keahlian yang terkait dengan guru yang sedang login
+            $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->get();
+            if (!$kompetensi->isEmpty()) {
+                $kelas = Kelas::where('kdkompetensi', $kompetensi->first()->id)->get();
+            } else {
+                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kompetensi terkait.');
+            }
+            break;
+
+        case 'walikelas':
+            // Jika walikelas, ambil kelas yang terkait dengan guru yang sedang login
+            $kelas = Kelas::where('guru_nip', $user->guru_nip)->get();
+            if ($kelas->isNotEmpty()) {
+                $kompetensi = Kompetensi::where('id', $kelas->first()->kdkompetensi)->get();
+            } else {
+                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
+            }
+            break;
+
+        default:
+            return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+            break;
+    }
+    return view(
+        'jadwal.create',
+        [
+            'guru' => Guru::all(),
+            'kelas' => $kelas,
+            'kompetensi' => $kompetensi,
+            'mapel' => Mapel::all(),
+            'hari' => $hari,
+            'semester' => $semester,
+
         ]);
     }
 
-    public function create()
-    {
-        $semester = Lookup::where('jenis', 'semester')->get();
-        $hari = Lookup::where('jenis', 'hari')->get();
-
-        return view(
-            'jadwal.create',
-            [
-                'guru' => Guru::all(),
-                'kelas' => Kelas::all(),
-                'kompetensi' => Kompetensi::all(),
-                'mapel' => Mapel::all(),
-                'hari' => $hari,
-                'semester' => $semester,
-
-            ]
-        );
-    }
-
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -60,6 +130,8 @@ class JadwalController extends Controller
 
         return redirect()->route('jadwal.index')->with('success_message', 'Berhasil menambah data Jadwal baru');
     }
+
+    
 
     public function edit($id)
     {
@@ -91,8 +163,6 @@ class JadwalController extends Controller
         ]);
         $jadwal = Jadwal::find($id);
         $jadwal->kdguru = $request->kdguru;
-        $jadwal->kdkelas = $request->kdkelas;
-        $jadwal->kdkompetensi = $request->kdkompetensi;
         $jadwal->kdmapel = $request->kdmapel;
         $jadwal->tahun_ajaran = $request->tahun_ajaran;
         $jadwal->semester = $request->semester;
