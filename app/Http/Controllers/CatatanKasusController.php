@@ -274,11 +274,11 @@ class CatatanKasusController extends Controller
 
         // Validasi status yang diizinkan
         $request->validate([
-            'status' => 'required|in:baru,proses,selesai',
+            'status_kasus' => 'required|in:Penanganan Walas, Penanganan Kesiswaan, Kasus Selesai'
         ]);
 
         // Update status kasus
-        $catatanKasus->status_kasus = $request->status;
+        $catatanKasus->status_kasus = $request->status_kasus;
         $catatanKasus->save();
 
         return redirect()->back()->with('success_message', 'Status kasus berhasil diubah.');
@@ -286,21 +286,44 @@ class CatatanKasusController extends Controller
 
     public function naikkanKasus(Request $request)
     {
-        $id = $request->input('id');
+        // Validasi request
+        $request->validate([
+            'id' => 'required|integer', // Pastikan ID valid
+        ]);
 
-        try {
-            // Temukan data pembinaan berdasarkan ID
-            $kasus = CatatanKasus::findOrFail($id);
+        // Temukan catatan kasus berdasarkan ID
+        $catatanKasus = CatatanKasus::find($request->id);
 
-            // Ubah status pembinaan menjadi 'Dalam Pembinaan'
-            $kasus->status_kasus = 'Penaganan Kesiswaan';
-            $kasus->save();
-
-            // Kirim respons JSON sukses
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            // Jika terjadi kesalahan, kirim respons JSON dengan pesan kesalahan
-            return response()->json(['success' => false, 'message' => 'Gagal memulai pembinaan.'], 500);
+        if (!$catatanKasus) {
+            return response()->json(['success' => false, 'message' => 'Catatan Kasus tidak ditemukan'], 404);
         }
+
+        // Lakukan perubahan status kasus
+        $catatanKasus->status_kasus = 'Penanganan Kesiswaan';
+        $catatanKasus->save();
+
+        return response()->json(['success' => true, 'message' => 'Status Kasus berhasil diperbarui'], 200);
+    }
+
+
+    public function tutupKasus(Request $request)
+    {
+        // Validasi request
+        $request->validate([
+            'id' => 'required|integer', // Pastikan ID valid
+        ]);
+
+        // Temukan catatan kasus berdasarkan ID
+        $catatanKasus = CatatanKasus::find($request->id);
+
+        if (!$catatanKasus) {
+            return response()->json(['success' => false, 'message' => 'Catatan Kasus tidak ditemukan'], 404);
+        }
+
+        // Lakukan perubahan status kasus
+        $catatanKasus->status_kasus = 'Kasus Selesai';
+        $catatanKasus->save();
+
+        return response()->json(['success' => true, 'message' => 'Status Kasus berhasil diperbarui'], 200);
     }
 }
