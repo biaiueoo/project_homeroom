@@ -2,7 +2,7 @@
 @section('nav')
 @include('dashboard.nav')
 @endsection
-@section('page', 'Catatan Kasus')
+@section('page', 'Catatan Kasus')d
 @section('main')
 @include('dashboard.main')
 <div class="row">

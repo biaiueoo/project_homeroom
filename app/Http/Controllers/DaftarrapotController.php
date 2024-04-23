@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\daftarrapot;
+use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Lookup;
 use Dompdf\Dompdf;
@@ -28,18 +29,50 @@ class DaftarrapotController extends Controller
 
 
 
+    // public function create()
+    // {
+    //     $semesters = Lookup::where('jenis', 'semester')->get();
+    //     $rapor = Lookup::where('jenis', 'rapor')->get();
+
+
+    //     return view('daftarrapot.create', [
+    //         'semesters' => $semesters,
+    //         'rapor' => $rapor,
+    //         'siswa' => Siswa::all()
+    //     ]);
+    // }
+
     public function create()
-    {
-        $semesters = Lookup::where('jenis', 'semester')->get();
-        $rapor = Lookup::where('jenis', 'rapor')->get();
+{
+    $semesters = Lookup::where('jenis', 'semester')->get();
+    $rapor = Lookup::where('jenis', 'rapor')->get();
 
+    $user = auth()->user();
+    
+    // Ambil kelas terkait dengan walikelas
+    $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
 
-        return view('daftarrapot.create', [
-            'semesters' => $semesters,
-            'rapor' => $rapor,
-            'siswa' => Siswa::all()
-        ]);
+    // Pastikan kelas ditemukan dan memiliki kompetensi terkait
+    if (!$kelas) {
+        return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
     }
+
+    // Ambil kompetensi dari kelas walikelas
+    $kompetensiId = $kelas->kdkompetensi;
+
+    // Ambil semua siswa yang terkait dengan kelas dan kompetensi walikelas
+    $siswa = Siswa::where('kdkelas', $kelas->id)
+                  ->where('kdkompetensi', $kompetensiId)
+                  ->get();
+
+    // Kemudian lemparkan data ke view
+    return view('daftarrapot.create', [
+        'siswa' => $siswa,
+        'semesters' => $semesters, // Pastikan variabel $semesters sudah didefinisikan
+        'rapor' => $rapor // Pastikan variabel $rapor sudah didefinisikan
+    ]);
+}
+
 
     public function prosesPenyerahan(Request $request)
     {

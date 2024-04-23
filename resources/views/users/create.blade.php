@@ -135,4 +135,16 @@ danger">{{ $message }}</span>
         </div>
     </div>
     <!-- End Modal -->
+    <script>
+    $('#example2').DataTable({
+        "responsive": true,
+    });
+
+    function pilih1(nama_guru, nip) {
+        document.getElementById('guru_nip').value = nip; // Perbaiki variabel nip
+        document.getElementById('nama_guru').value = nama_guru;
+        $('#staticBackdrop1').modal('hide');
+    }
+</script>
     @stop
+
