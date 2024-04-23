@@ -13,6 +13,9 @@
 btn-primary mb-2">
                     Tambah
                 </a>
+                <a href="{{ route('catatankasus.pdf.sp') }}" class="btn btn-secondary mb-2">
+                    Template SP
+                </a>
 
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered 

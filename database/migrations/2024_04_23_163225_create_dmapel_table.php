@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('mata_pelajaran', function (Blueprint $table) {
+        Schema::create('dmapel', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('kdkompetensi')->default(0);
-            $table->foreign('kdkompetensi')->references('id')->on('kompetensi_keahlian')
+            $table->unsignedBigInteger('kdmapel');
+            $table->foreign('kdmapel')->references('id')->on('mata_pelajaran')
                 ->onDelete('cascade')->onUpdate('cascade');
+            $table->string('mapel');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mata_pelajaran');
+        Schema::dropIfExists('dmapel');
     }
 };
