@@ -8,6 +8,7 @@ use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\Kompetensi;
 use App\Models\CatatanKasus;
+use App\Models\KunjunganRumah;
 
 class KesiswaanController extends Controller
 {
@@ -80,6 +81,14 @@ class KesiswaanController extends Controller
         $catatankasus = CatatanKasus::where('status_kasus', 'Kasus Selesai')->get();
         return view('kesiswaan.kasus_selesai', [
             'catatankasus' => $catatankasus
+        ]);
+    }
+
+    public function homevisit()
+    {
+        $kunjunganrumah = KunjunganRumah::all();
+        return view('kesiswaan.homevisit', [
+            'kunjunganrumah' => $kunjunganrumah
         ]);
     }
 }
