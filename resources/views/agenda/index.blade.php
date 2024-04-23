@@ -50,8 +50,13 @@ table-stripped" id="example2">
                                 <td>{{ $a->nama_kegiatan }}</td>
                                 <td>{{ $a->waktu }}</td>
                                 <td>
-                                    <img src="{{ asset("storage/{$a->dokumentasi}") }}" alt="{{ $a->dokumentasi }} tidak tampil" class="img-thumbnail" width="200">
+                                    @if ($a->dokumentasi)
+                                        <img src="{{ asset("storage/{$a->dokumentasi}") }}" alt="Dokumentasi tidak tampil" class="img-thumbnail" width="200">
+                                    @else
+                                        <span>Tidak ada dokumentasi</span>
+                                    @endif
                                 </td>
+                                
                                 <td>{{ $a->keterangan }}</td>
 
                                 <td>
