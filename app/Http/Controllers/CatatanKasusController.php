@@ -15,42 +15,42 @@ use Illuminate\Http\Request;
 class CatatanKasusController extends Controller
 {
     public function index()
-{
-    $user = auth()->user();
-    $catatankasus = null; 
+    {
+        $user = auth()->user();
+        $catatankasus = null;
 
-    switch ($user->level) {
-        case 'admin':
-            $catatankasus = CatatanKasus::all();
-            break;
+        switch ($user->level) {
+            case 'admin':
+                $catatankasus = CatatanKasus::all();
+                break;
 
-        case 'kakom':
-            $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
-            if (!$kompetensi) {
-                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kompetensi terkait.');
-            }
-            $catatankasus = CatatanKasus::whereHas('fsiswa', function ($query) use ($kompetensi) {
-                $query->where('kdkompetensi', $kompetensi->id);
-            })->get();
-            break;
+            case 'kakom':
+                $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
+                if (!$kompetensi) {
+                    return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kompetensi terkait.');
+                }
+                $catatankasus = CatatanKasus::whereHas('fsiswa', function ($query) use ($kompetensi) {
+                    $query->where('kdkompetensi', $kompetensi->id);
+                })->get();
+                break;
 
-        case 'walikelas':
-            $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
-            if (!$kelas) {
-                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
-            }
-            $catatankasus = CatatanKasus::whereHas('fsiswa', function ($query) use ($kelas) {
-                $query->where('kdkelas', $kelas->id)->where('kdkompetensi', $kelas->kdkompetensi);
-            })->get();
-            break;
+            case 'walikelas':
+                $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+                if (!$kelas) {
+                    return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
+                }
+                $catatankasus = CatatanKasus::whereHas('fsiswa', function ($query) use ($kelas) {
+                    $query->where('kdkelas', $kelas->id)->where('kdkompetensi', $kelas->kdkompetensi);
+                })->get();
+                break;
 
-        default:
-            return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
-            break;
+            default:
+                return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+                break;
+        }
+
+        return view('catatankasus.index', ['catatankasus' => $catatankasus]);
     }
-
-    return view('catatankasus.index', ['catatankasus' => $catatankasus]);
-}
 
 
 
@@ -216,23 +216,23 @@ class CatatanKasusController extends Controller
     }
 
     public function pdfDownload()
-{
-    // Ambil data yang diperlukan untuk PDF
-    $catatankasus = CatatanKasus::all(); 
+    {
+        // Ambil data yang diperlukan untuk PDF
+        $catatankasus = CatatanKasus::all();
 
-    // Buat objek Dompdf
-    $dompdf = new Dompdf();
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
 
-    // Render view ke PDF
-    $html = view('pdf.catatankasus', compact('catatankasus'))->render();
-    $dompdf->loadHtml($html);
+        // Render view ke PDF
+        $html = view('pdf.catatankasus', compact('catatankasus'))->render();
+        $dompdf->loadHtml($html);
 
-    // Render PDF
-    $dompdf->render();
+        // Render PDF
+        $dompdf->render();
 
-    // Kembalikan respons dengan PDF untuk diunduh
-    return $dompdf->stream('catatan_kasus.pdf', ['Attachment' => false]);
-}
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream('catatan_kasus.pdf', ['Attachment' => false]);
+    }
 
 
     public function laporanKasusKakom(Request $request)
@@ -286,6 +286,23 @@ class CatatanKasusController extends Controller
         return redirect()->back()->with('success_message', 'Status kasus berhasil diubah.');
     }
 
-    
+    public function naikkanKasus(Request $request)
+    {
+        $id = $request->input('id');
 
+        try {
+            // Temukan data pembinaan berdasarkan ID
+            $kasus = CatatanKasus::findOrFail($id);
+
+            // Ubah status pembinaan menjadi 'Dalam Pembinaan'
+            $kasus->status_kasus = 'Penaganan Kesiswaan';
+            $kasus->save();
+
+            // Kirim respons JSON sukses
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            // Jika terjadi kesalahan, kirim respons JSON dengan pesan kesalahan
+            return response()->json(['success' => false, 'message' => 'Gagal memulai pembinaan.'], 500);
+        }
+    }
 }

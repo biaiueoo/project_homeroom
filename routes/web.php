@@ -21,6 +21,7 @@ use App\Http\Controllers\GuruExportController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KegiatanExportController;
 use App\Http\Controllers\KelasExportController;
+use App\Http\Controllers\KesiswaanController;
 use App\Http\Controllers\KompetensiExportController;
 use App\Http\Controllers\SiswakesController;
 use App\Http\Controllers\LaporankasusController;
@@ -34,6 +35,7 @@ use App\Models\KunjunganRumah;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SiswaExportController;
 use App\Http\Controllers\StrukturController;
+use App\Models\CatatanKasus;
 use App\Models\PembinaanBK;
 
 /*
@@ -77,6 +79,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('struktur/{id}', [StrukturController::class, 'show'])->name('struktur.show');
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'downloadPDF'])->name('catatankasus.pdf');
+    Route::post('/naikkan-kasus', [CatatanKasusController::class, 'naikkanKasus'])->name('naikkanKasus');
     Route::resource('siswakes', SiswakesController::class);
     Route::resource('presentase', PresentaseController::class);
     Route::resource('laporankasus', LaporankasusController::class);
@@ -153,6 +156,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::resource('dkelas', DKelasController::class);
     Route::get('dkelas/{id}/detail', [DKelasController::class, 'detail'])->name('dkelas.detail');
+
+    Route::resource('kesiswaan', KesiswaanController::class);
+    Route::get('/data-seluruh-siswa', [KesiswaanController::class, 'siswa'])->name('kesiswaan.siswa');
+    Route::get('/data-kasus-kesiswaan', [KesiswaanController::class, 'kasus'])->name('kesiswaan.kasus');
+    Route::post('/selesaikan-kasus', [PembinaanBkController::class, 'selesaikanKasus'])->name('selesaikanKasus');
+    Route::get('/kasus-selesai', [KesiswaanController::class, 'kasusSelesai'])->name('kesiswaan.kasusSelesai');
 });
 
 // ROLE WALI KELAS
@@ -186,9 +195,6 @@ Route::middleware(['auth', 'role:walikelas'])->group(function () {
     Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'downloadPDF'])->name('catatankasus.pdf');
-
-
-    
 });
 
 //ROLE KESISWAAN
@@ -201,7 +207,6 @@ Route::middleware(['auth', 'role:kesiswaan'])->group(function () {
     //  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
     Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('rencana.uploadFile');
     Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
-
 });
 
 //ROLE KAKOM
@@ -220,7 +225,6 @@ Route::middleware(['auth', 'role:kakom'])->group(function () {
     //  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
     Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('rencana.uploadFile');
     Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
-
 });
 
 
@@ -228,9 +232,7 @@ Route::middleware(['auth', 'role:kakom'])->group(function () {
 Route::middleware(['auth', 'role:bk'])->group(function () {
     Route::resource('laporankasus', LaporankasusController::class);
     Route::post('/mulai-pembinaan', [PembinaanBkController::class, 'mulaiPembinaan'])->name('mulaiPembinaan');
-Route::post('/selesai-pembinaan', [PembinaanBkController::class, 'selesai'])->name('selesaiPembinaan');
-
-
+    Route::post('/selesai-pembinaan', [PembinaanBkController::class, 'selesai'])->name('selesaiPembinaan');
 });
 
 //role operator
@@ -248,7 +250,7 @@ Route::middleware(['auth', 'role:operator'])->group(function () {
     });
     Route::resource('kompetensi', KompetensiController::class);
     Route::resource('kelas', KelasController::class);
-    
+
     Route::resource('dkelas', DKelasController::class);
     Route::get('dkelas/{id}/detail', [DKelasController::class, 'detail'])->name('dkelas.detail');
 
@@ -261,4 +263,3 @@ Route::middleware(['auth', 'role:operator'])->group(function () {
         Route::get('export/kegiatan', 'export')->name('export.kegiatan');
     });
 });
-
