@@ -131,20 +131,38 @@ class BukutamuController extends Controller
 
     public function edit($id)
     {
-
-        $semester = Lookup::where('jenis', 'semester')->get();
-        $bukutamu = Bukutamu::with('semesterLookup')->get();
-
-        //Menampilkan Form Edit
+        $semesters = Lookup::where('jenis', 'semester')->get();
+        $user = auth()->user();
+        
+        // Ambil kelas terkait dengan walikelas
+        $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+        
+        // Pastikan kelas ditemukan
+        if (!$kelas) {
+            return redirect()->route('bukutamu.index')
+                ->with('error_message', 'Anda tidak memiliki kelas terkait.');
+        }
+        
+        // Ambil kompetensi dari kelas walikelas
+        $kompetensi = $kelas->kdkompetensi;
+    
+        // Ambil semua siswa yang terkait dengan kelas dan kompetensi walikelas
+        $siswa = Siswa::where('kdkelas', $kelas->id)
+                      ->where('kdkompetensi', $kompetensi)
+                      ->get();
+    
+        // Menampilkan Form Edit
         $bukutamu = bukutamu::find($id);
-        if (!$bukutamu) return redirect()->route('bukutamu.index')
-            ->with('error_message', 'bukutamu dengan id' . $id . ' tidak ditemukan');
+        if (!$bukutamu) {
+            return redirect()->route('bukutamu.index')
+                ->with('error_message', 'Buku tamu dengan ID ' . $id . ' tidak ditemukan.');
+        }
+    
         return view('bukutamu.edit', [
-            'semester' => $semester,
+            'semester' => $semesters,
             'bukutamu' => $bukutamu,
             'dataEdit' => $bukutamu,
-            'siswa' => Siswa::all()
-
+            'siswa' => $siswa
         ]);
     }
 

@@ -163,25 +163,48 @@ class DaftarrapotController extends Controller
 }
 
 
-    public function edit($id)
-    {
-
-        $semester = Lookup::where('jenis', 'semester')->get();
-       
 
 
-        //Menampilkan Form Edit
-        $daftarrapot = daftarrapot::find($id);
-        if (!$daftarrapot) return redirect()->route('daftarrapot.index')
-            ->with('error_message', 'daftarrapot dengan id' . $id . ' tidak ditemukan');
-        return view('daftarrapot.edit', [
-            'semester' => $semester,
-           
-            'daftarrapot' => $daftarrapot,
-            'dataEdit' => $daftarrapot,
-            'siswa' => Siswa::all()
+public function edit($id)
+{
+    // Ambil data semester untuk ditampilkan di form edit
+    $semester = Lookup::where('jenis', 'semester')->get();
 
-        ]);
+    // Ambil user yang sedang login (guru)
+    $user = auth()->user();
+
+    // Ambil kelas terkait dengan guru yang sedang login
+    $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+
+    // Pastikan kelas ditemukan
+    if (!$kelas) {
+        return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
+    }
+
+    // Ambil kompetensi dari kelas walikelas
+    $kompetensiId = $kelas->kdkompetensi;
+
+    // Ambil data siswa yang terkait dengan kelas dan kompetensi walikelas
+    $siswa = Siswa::where('kdkelas', $kelas->id)
+                  ->where('kdkompetensi', $kompetensiId)
+                  ->get();
+
+    // Ambil data daftarrapot berdasarkan ID yang akan diedit
+    $daftarrapot = DaftarRapot::find($id);
+
+    // Periksa apakah daftarrapot ditemukan
+    if (!$daftarrapot) {
+        return redirect()->route('daftarrapot.index')
+            ->with('error_message', 'Daftar rapot dengan ID ' . $id . ' tidak ditemukan.');
+    }
+
+    // Kemudian lemparkan data ke view edit
+    return view('daftarrapot.edit', [
+        'semester' => $semester,
+        'daftarrapot' => $daftarrapot,
+        'siswa' => $siswa
+    ]);
+
     }
 
 
