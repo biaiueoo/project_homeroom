@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Imports\SiswaImport;
 use App\Exports\SiswaExport;
-use App\Imports\Guruimport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Siswa;
 use App\Models\Kelas;
@@ -29,7 +28,7 @@ class SiswaController extends Controller
 
     public function export()
     {
-        return Excel::download(new SiswaExport, 'Guru_template.xlsx');
+        return Excel::download(new SiswaExport, 'siswa_template.xlsx');
     }
 
     public function index()
@@ -41,7 +40,14 @@ class SiswaController extends Controller
     public function create()
     {
         return view(
-            'siswa.create'
+            'siswa.create',
+            [
+                'kelas' => Kelas::all()
+            ],
+            [
+                'kompetensi' => Kompetensi::all()
+            ]
+
         );
     }
 
@@ -59,8 +65,6 @@ class SiswaController extends Controller
             'no_hp',
             'email',
             'nisn',
-            'kdkelas',
-            'kdkompetensi',
             'tahun_masuk',
             'nama_ayah',
             'nama_ibu',
@@ -105,6 +109,10 @@ class SiswaController extends Controller
         ]);
         $siswa = Siswa::create($array);
 
+        // // Associate the student with the class and competency
+        // $siswa->fkelas()->associate($request->input('kdkelas'));
+        // $siswa->fkompetensi()->associate($request->input('kdkompetensi'));
+
         $siswa->save();
 
         return redirect()->route('siswa.index')->with('success_message', 'Berhasil menambah siswa baru');
@@ -117,7 +125,9 @@ class SiswaController extends Controller
         if (!$siswa) return redirect()->route('siswa.index')
             ->with('error_message', 'Siswa dengan id = ' . $id . ' tidak ditemukan');
         return view('siswa.edit', [
-            'siswa' => $siswa
+            'siswa' => $siswa,
+            'kelas' => Kelas::all(),
+            'kompetensi' => Kompetensi::all()
         ]);
     }
 
@@ -139,6 +149,8 @@ class SiswaController extends Controller
             'no_hp',
             'email',
             'nisn',
+            'kdkelas',
+            'kdkompetensi',
             'tahun_masuk',
             'nama_ayah',
             'nama_ibu',
@@ -166,6 +178,8 @@ class SiswaController extends Controller
             'no_hp',
             'email',
             'nisn',
+            'kdkelas',
+            'kdkompetensi',
             'tahun_masuk',
             'nama_ayah',
             'nama_ibu',
@@ -183,6 +197,9 @@ class SiswaController extends Controller
         ]);
 
         $siswa->update($array);
+
+        $siswa->fkelas()->associate($request->input('kdkelas'));
+        $siswa->fkompetensi()->associate($request->input('kdkompetensi'));
 
         $siswa->save();
 

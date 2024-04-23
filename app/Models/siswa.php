@@ -11,6 +11,8 @@ class Siswa extends Model
     protected $table = 'siswa';
     protected $fillable = [
         'nis',
+        'kdkelas',
+        'kdkompetensi',
         'nama_lengkap',
         'tempat_lahir',
         'tanggal_lahir',
@@ -35,4 +37,15 @@ class Siswa extends Model
         'ekstrakurikuler',
         'biografi'
     ];
+
+    public function fkelas()
+    {
+        return $this->belongsTo(Kelas::class, 'kdkelas', 'id');
+    }
+
+
+    public function fkompetensi()
+    {
+        return $this->belongsTo(Kompetensi::class, 'kdkompetensi', 'id');
+    }
 }
