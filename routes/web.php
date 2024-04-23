@@ -176,6 +176,16 @@ Route::middleware(['auth', 'role:walikelas'])->group(function () {
     Route::get('/struktur/pdf', [StrukturController::class, 'downloadPDF'])->name('struktur.pdf');
     Route::resource('struktur', StrukturController::class);
     Route::get('struktur/{id}', [StrukturController::class, 'show'])->name('struktur.show');
+    Route::get('/rencanakegiatan/pdf', [RencanakegiatanController::class, 'downloadPDF'])->name('rencanakegiatan.pdf');
+    Route::resource('rencanakegiatan', RencanakegiatanController::class);
+    Route::patch('/rencanakegiatan/{id}', [RencanakegiatanController::class, 'update'])->name('rencanakegiatan.update');
+    Route::resource('kunjunganrumah', KunjunganRumahController::class);
+    Route::get('/kunjunganrumah/pdf/{id}', [KunjunganRumahController::class, 'downloadPDF'])->name('kunjunganrumah.pdf');
+    //  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
+    Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('rencana.uploadFile');
+    Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
+
+
     
 });
 
@@ -184,11 +194,25 @@ Route::middleware(['auth', 'role:kesiswaan'])->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('siswakes', SiswakesController::class);
     Route::resource('laporankasus', LaporankasusController::class);
+    Route::resource('kunjunganrumah', KunjunganRumahController::class);
+    Route::get('/kunjunganrumah/pdf/{id}', [KunjunganRumahController::class, 'downloadPDF'])->name('kunjunganrumah.pdf');
+    //  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
+    Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('rencana.uploadFile');
+    Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
+
 });
 
 //ROLE KAKOM
 Route::middleware(['auth', 'role:kakom'])->group(function () {
     Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
+    Route::get('/siswa/pdf', [SiswaController::class, 'downloadPDF'])->name('siswa.pdf');
+    Route::resource('siswa', SiswaController::class);
+    Route::resource('kunjunganrumah', KunjunganRumahController::class);
+    Route::get('/kunjunganrumah/pdf/{id}', [KunjunganRumahController::class, 'downloadPDF'])->name('kunjunganrumah.pdf');
+    //  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
+    Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('rencana.uploadFile');
+    Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
+
 });
 
 
@@ -197,5 +221,6 @@ Route::middleware(['auth', 'role:bk'])->group(function () {
     Route::resource('laporankasus', LaporankasusController::class);
     Route::post('/mulai-pembinaan', [PembinaanBkController::class, 'mulaiPembinaan'])->name('mulaiPembinaan');
 Route::post('/selesai-pembinaan', [PembinaanBkController::class, 'selesai'])->name('selesaiPembinaan');
+
 
 });
