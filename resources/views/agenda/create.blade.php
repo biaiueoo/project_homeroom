@@ -14,17 +14,24 @@
 
 
 
-                    {{-- Input Kelas --}}
                     <div class="form-group">
                         <label for="kelas">Kelas</label>
-                        <input type="text" class="form-control" id="kelas" name="kelas" value="{{ $agenda->kdkelas }}" readonly>
+                        <select class="form-control" id="kelas" name="kdkelas">
+                            @foreach($kelas as $item)
+                                <option value="{{ $item->id }}">{{ $item->kelas }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
+                    {{-- Input Kompetensi Keahlian --}}
                     <div class="form-group">
-                        <label for="kdkompetensi">Kompetensi Keahlian</label>
-                        <input type="text" class="form-control" id="kompetensi_keahlian" name="kompetensi_keahlian" value="{{ $agenda->kdkompetensi}}" readonly>
+                        <label for="kompetensi_keahlian">Kompetensi Keahlian</label>
+                        <select class="form-control" id="kompetensi_keahlian" name="kdkompetensi">
+                            @foreach($kompetensi as $item)
+                                <option value="{{ $item->id }}">{{ $item->kompetensi_keahlian }}</option>
+                            @endforeach
+                        </select>
                     </div>
-
 
                     {{-- Input Tahun Ajaran --}}
                     <div class="form-group">
