@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Mapel extends Model
 {
-    use HasFactory; 
-protected $table = 'mata_pelajaran';
- protected $fillable = [ 
- 'mata_pelajaran'
- ];
+    use HasFactory;
+    protected $table = 'mata_pelajaran';
+    protected $fillable = [
+        'kdkompetensi'
+    ];
+
+    public function fkompetensi()
+    {
+        return $this->belongsTo(Kompetensi::class, 'kdkompetensi');
+    }
 }

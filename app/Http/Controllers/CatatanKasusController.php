@@ -213,23 +213,76 @@ class CatatanKasusController extends Controller
         ]);
     }
 
-    public function pdfDownload()
+    // public function pdfDownload()
+    // {
+    //     // Ambil data yang diperlukan untuk PDF
+    //     $catatankasus = CatatanKasus::all();
+
+    //     // Buat objek Dompdf
+    //     $dompdf = new Dompdf();
+
+    //     // Render view ke PDF
+    //     $html = view('pdf.catatankasus', compact('catatankasus'))->render();
+    //     $dompdf->loadHtml($html);
+
+    //     // Render PDF
+    //     $dompdf->render();
+
+    //     // Kembalikan respons dengan PDF untuk diunduh
+    //     return $dompdf->stream('catatan_kasus.pdf', ['Attachment' => false]);
+    // }
+
+    public function downloadPDF($id)
+    {
+        // Ambil data kunjungan rumah berdasarkan ID yang dipilih
+        $catatankasus = CatatanKasus::findOrFail($id);
+
+        // Buat objek Dompdf
+        $dompdf = new Dompdf();
+
+        // Render view ke PDF dengan data kunjungan rumah yang dipilih
+        $html = view('pdf.catatankasus', compact('catatankasus'))->render();
+        $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
+
+        // Render PDF
+        $dompdf->render();
+
+        // Tentukan nama file PDF berdasarkan ID yang dipilih
+        $fileName = 'BAP_' . $id . '.pdf';
+
+        // Kembalikan respons dengan PDF untuk diunduh
+        return $dompdf->stream($fileName);
+    }
+
+    public function pdfSP()
     {
         // Ambil data yang diperlukan untuk PDF
-        $catatankasus = CatatanKasus::all();
+        $catatanKasus = CatatanKasus::all(); // Atur ini sesuai dengan cara Anda mendapatkan data siswa
 
         // Buat objek Dompdf
         $dompdf = new Dompdf();
 
         // Render view ke PDF
-        $html = view('pdf.catatankasus', compact('catatankasus'))->render();
+        $html = view('pdf.sp', compact('catatankasus'))->render();
         $dompdf->loadHtml($html);
+
+        // (Opsional) Konfigurasi PDF sesuai kebutuhan Anda
+        $options = new Options();
+        $options->set('isHtml5ParserEnabled', true);
+        $options->set('isPhpEnabled', true);
+        $dompdf->setOptions($options);
 
         // Render PDF
         $dompdf->render();
 
         // Kembalikan respons dengan PDF untuk diunduh
-        return $dompdf->stream('catatan_kasus.pdf', ['Attachment' => false]);
+        return $dompdf->stream('sp.pdf');
     }
 
 

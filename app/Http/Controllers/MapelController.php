@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mapel;
+use App\Models\Kompetensi;
 use Illuminate\Http\Request;
 
 class MapelController extends Controller
@@ -12,24 +13,39 @@ class MapelController extends Controller
 
         $mapel = Mapel::all();
         return view('mapel.index', [
-            'mapel' => $mapel
+            'mapel' => $mapel,
+            'kompetensi' => Kompetensi::all(),
         ]);
     }
 
     public function create()
     {
-        return view('mapel.create');
+        return view('mapel.create', [
+            'kompetensi' => Kompetensi::all(),
+        ]);
     }
+
     public function store(Request $request)
     {
         $request->validate([
-            'mata_pelajaran' => 'required|unique:mata_pelajaran,mata_pelajaran'
+            'kdkompetensi' => 'nullable'
         ]);
+
         $array = $request->only([
-            'mata_pelajaran'
+            'kdkompetensi'
         ]);
-        $mapel = Mapel::create($array);
-        return redirect()->route('mapel.index')->with('success_message', 'Berhasil menambah mata pelajaran baru');
+
+        Mapel::create($array);
+
+        $cari_id = Mapel::where('id', '>', 0)->max('id');
+        $kdkomp = Mapel::where('id', $cari_id)->value('kdkompetensi');
+        $kompetensi = Kompetensi::where('id', $kdkomp)->value('kompetensi_keahlian');
+
+        return view('dmapel.create', [
+            'kompetensi' => $kompetensi,
+            'cari_id' => $cari_id,
+            'kdkomp' => $kdkomp
+        ]);
     }
 
 
@@ -59,9 +75,9 @@ class MapelController extends Controller
 
     public function destroy(Request $request, $id)
     {
-       
-       $mapel = Mapel::find($id);
-        if ($mapel)$mapel->delete();
-        return redirect()->route('mapel.index') ->with('success_message', 'Berhasil menghapus Mata Pelajaran');
+
+        $mapel = Mapel::find($id);
+        if ($mapel) $mapel->delete();
+        return redirect()->route('mapel.index')->with('success_message', 'Berhasil menghapus Mata Pelajaran');
     }
 }
