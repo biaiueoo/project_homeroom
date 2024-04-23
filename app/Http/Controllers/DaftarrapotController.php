@@ -167,7 +167,7 @@ class DaftarrapotController extends Controller
     {
 
         $semester = Lookup::where('jenis', 'semester')->get();
-        $rapor = Lookup::where('jenis', 'rapor')->get();
+       
 
 
         //Menampilkan Form Edit
@@ -176,7 +176,7 @@ class DaftarrapotController extends Controller
             ->with('error_message', 'daftarrapot dengan id' . $id . ' tidak ditemukan');
         return view('daftarrapot.edit', [
             'semester' => $semester,
-            'rapor' => $rapor,
+           
             'daftarrapot' => $daftarrapot,
             'dataEdit' => $daftarrapot,
             'siswa' => Siswa::all()
@@ -195,8 +195,7 @@ class DaftarrapotController extends Controller
             'tanggal' => 'required',
             'semester' => 'required',
             'tahun_ajaran' => 'required',
-            'rapor' => 'required',
-
+            
 
 
         ]);
@@ -204,7 +203,6 @@ class DaftarrapotController extends Controller
         // $daftarrapot->kdsiswa = $request->kdsiswa;
         $daftarrapot->tanggal = $request->tanggal;
         $daftarrapot->semester = $request->semester;
-        $daftarrapot->rapor = $request->rapor;
         $daftarrapot->tahun_ajaran = $request->tahun_ajaran;
         $daftarrapot->save();
         return redirect()->route('daftarrapot.index')
