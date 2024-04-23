@@ -160,9 +160,7 @@ class SiswaController extends Controller
         if (!$siswa) return redirect()->route('siswa.index')
             ->with('error_message', 'Siswa dengan id = ' . $id . ' tidak ditemukan');
         return view('siswa.edit', [
-            'siswa' => $siswa,
-            'kelas' => Kelas::all(),
-            'kompetensi' => Kompetensi::all()
+            'siswa' => $siswa
         ]);
     }
 
