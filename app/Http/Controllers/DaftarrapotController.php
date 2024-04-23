@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\daftarrapot;
 use App\Models\Kelas;
+use App\Models\Kompetensi;
 use App\Models\Siswa;
 use App\Models\Lookup;
 use Dompdf\Dompdf;
@@ -15,12 +16,48 @@ class DaftarrapotController extends Controller
 {
     public function index()
     {
-        $daftarrapot = daftarrapot::all();
-        return view('daftarrapot.index', [
-            'daftarrapot' => $daftarrapot
-        ]);
-    }
+        $user = auth()->user();
+        $daftarrapot = null; 
+    
+        switch ($user->level) {
+            case 'admin':
+                $daftarrapot = daftarrapot::all();
+                break;
+    
+            case 'kakom':
+                $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
+                //dd($kompetensi);
+                
+                $daftarrapot = daftarrapot::where('kdkompetensi', $kompetensi->id)->get();
+                //  dd($siswa);
+                break;
+    
+            case 'walikelas':
+                $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+                // dd($kelas);
+                
+                $daftarrapot = daftarrapot::whereHas('fsiswa', function ($query) use ($kelas) {
+                    $query->where('kdkelas', $kelas->id)->where('kdkompetensi', $kelas->kdkompetensi);
 
+
+                })->get();
+                   
+                //dd($siswa);
+                break;
+
+    
+                case 'operator':
+                    $daftarrapot = daftarrapot::all();
+                    break;
+    
+            default:
+                return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+                break;
+        }
+    
+        return view('daftarrapot.index', ['daftarrapot' => $daftarrapot]);
+            
+    }
     public function show($id)
 {
     $dr = DaftarRapot::find($id); // Misalnya, mengambil data DaftarRapot berdasarkan ID
@@ -126,25 +163,48 @@ class DaftarrapotController extends Controller
 }
 
 
-    public function edit($id)
-    {
-
-        $semester = Lookup::where('jenis', 'semester')->get();
-        $rapor = Lookup::where('jenis', 'rapor')->get();
 
 
-        //Menampilkan Form Edit
-        $daftarrapot = daftarrapot::find($id);
-        if (!$daftarrapot) return redirect()->route('daftarrapot.index')
-            ->with('error_message', 'daftarrapot dengan id' . $id . ' tidak ditemukan');
-        return view('daftarrapot.edit', [
-            'semester' => $semester,
-            'rapor' => $rapor,
-            'daftarrapot' => $daftarrapot,
-            'dataEdit' => $daftarrapot,
-            'siswa' => Siswa::all()
+public function edit($id)
+{
+    // Ambil data semester untuk ditampilkan di form edit
+    $semester = Lookup::where('jenis', 'semester')->get();
 
-        ]);
+    // Ambil user yang sedang login (guru)
+    $user = auth()->user();
+
+    // Ambil kelas terkait dengan guru yang sedang login
+    $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+
+    // Pastikan kelas ditemukan
+    if (!$kelas) {
+        return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
+    }
+
+    // Ambil kompetensi dari kelas walikelas
+    $kompetensiId = $kelas->kdkompetensi;
+
+    // Ambil data siswa yang terkait dengan kelas dan kompetensi walikelas
+    $siswa = Siswa::where('kdkelas', $kelas->id)
+                  ->where('kdkompetensi', $kompetensiId)
+                  ->get();
+
+    // Ambil data daftarrapot berdasarkan ID yang akan diedit
+    $daftarrapot = DaftarRapot::find($id);
+
+    // Periksa apakah daftarrapot ditemukan
+    if (!$daftarrapot) {
+        return redirect()->route('daftarrapot.index')
+            ->with('error_message', 'Daftar rapot dengan ID ' . $id . ' tidak ditemukan.');
+    }
+
+    // Kemudian lemparkan data ke view edit
+    return view('daftarrapot.edit', [
+        'semester' => $semester,
+        'daftarrapot' => $daftarrapot,
+        'siswa' => $siswa
+    ]);
+
     }
 
 
@@ -158,8 +218,7 @@ class DaftarrapotController extends Controller
             'tanggal' => 'required',
             'semester' => 'required',
             'tahun_ajaran' => 'required',
-            'rapor' => 'required',
-
+            
 
 
         ]);
@@ -167,7 +226,6 @@ class DaftarrapotController extends Controller
         // $daftarrapot->kdsiswa = $request->kdsiswa;
         $daftarrapot->tanggal = $request->tanggal;
         $daftarrapot->semester = $request->semester;
-        $daftarrapot->rapor = $request->rapor;
         $daftarrapot->tahun_ajaran = $request->tahun_ajaran;
         $daftarrapot->save();
         return redirect()->route('daftarrapot.index')

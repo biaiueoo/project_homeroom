@@ -71,26 +71,31 @@ public function create()
     $semester = Lookup::where('jenis', 'semester')->get();
     $hari = Lookup::where('jenis', 'hari')->get();
     $user = auth()->user();
+    $kelas = null;
+    $kompetensi = null;
 
     switch ($user->level) {
         case 'admin':
+            // Jika admin, ambil semua kelas dan kompetensi keahlian
             $kelas = Kelas::all();
             $kompetensi = Kompetensi::all();
             break;
 
         case 'kakom':
+            // Jika kakom, ambil kompetensi keahlian yang terkait dengan guru yang sedang login
             $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->get();
             if (!$kompetensi->isEmpty()) {
-                $kelas = $kompetensi->first()->kelas;
+                $kelas = Kelas::where('kdkompetensi', $kompetensi->first()->id)->get();
             } else {
                 return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kompetensi terkait.');
             }
             break;
 
         case 'walikelas':
+            // Jika walikelas, ambil kelas yang terkait dengan guru yang sedang login
             $kelas = Kelas::where('guru_nip', $user->guru_nip)->get();
-            if (!$kelas->isEmpty()) {
-                $kompetensi = $kelas->first()->kompetensi;
+            if ($kelas->isNotEmpty()) {
+                $kompetensi = Kompetensi::where('id', $kelas->first()->kdkompetensi)->get();
             } else {
                 return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
             }
@@ -108,6 +113,8 @@ public function create()
         'semester' => $semester,
     ]);
 }
+
+
 
 
     public function store(Request $request)
@@ -179,8 +186,7 @@ public function create()
     {
         //Menyimpan Data agenda
         $request->validate([
-            'kdkelas' => 'required',
-            'kdkompetensi' => 'required',
+           
             'tanggal' => 'required',
             'hari' => 'required',
             'semester' => 'required',
@@ -193,8 +199,7 @@ public function create()
 
         ]);
         $agenda = AgendaKegiatan::find($id);
-        $agenda->kdkelas = $request->kdkelas;
-        $agenda->kdkompetensi = $request->kdkompetensi;
+ 
         $agenda->tanggal = $request->tanggal;
         $agenda->keterangan = $request->keterangan;
         $agenda->semester = $request->semester;

@@ -2,25 +2,22 @@
 @section('nav')
 @include('dashboard.nav')
 @endsection
-@section('page', 'Catatan Kasus')d
+@section('page', 'Laporan Kasus BK')
 @section('main')
 @include('dashboard.main')
 <div class="row">
     <div class="col-12">
         <div class="card">
+            
             <div class="card-body">
                 <a href="{{ route('catatankasus.create') }}" class="btn 
 btn-primary mb-2">
                     Tambah
                 </a>
-                <a href="{{ route('catatankasus.pdf.sp') }}" class="btn btn-secondary mb-2">
-                    Template SP
-                </a>
-
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered 
-table-stripped" id="example2">
-                        <thead>
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered table-stripped" id="laporanKasusBKTable">
+                            <thead>
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Siswa</th>
@@ -57,51 +54,30 @@ table-stripped" id="example2">
                                 <td>{{ $ck->tanggal }}</td>
                                 <td>{{ $ck->dampingan_bk }}</td>
                                 <td>{{ $ck->tindak_lanjut }}</td>
-                                <td id="status" data-id="{{ $ck->id }}">{{ $ck->status_kasus }}</td>
-                                <td> <button id="btnStatus" type="button" class="btn btn-primary" onclick="prosesAksi('status')">Laporkan Kasus</button>
-                                </td>
-                                <td> <button id="btnStatus1" type="button" class="btn btn-primary" onclick="prosesAksi1('status')">Tutup Kasus</button>
-                                </td>
-                                <td>
-                                    <a href="{{ route('catatankasus.edit', $ck) }}" class="btn btn-primary btn-xs">
-                                        Edit
-                                    </a>
-                                    <a href="{{ route('catatankasus.destroy', $ck) }}" onclick="notificationBeforeDelete(event, this)" class="btn btn-danger btn-xs">
-                                        Delete
-                                    </a>
-                                    <a href="{{ route('catatankasus.pdf', ['id' => $ck->id]) }}" class="btn btn-secondary btn-xs">
-                                        Unduh BAP
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                                    <td id="status" data-id="{{ $ck->id }}">{{ $ck->status_kasus }}</td>
+                                    <td> <button id="btnStatus" type="button" class="btn btn-primary" onclick="prosesAksi('status')">Laporkan Kasus</button>
+                                    </td>
 
+                                    
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-@stop
+    @stop
 
-<form action="" id="delete-form" method="post">
-    @method('delete')
-    @csrf
-</form>
+    <form action="" id="delete-form" method="post">
+        @method('delete')
+        @csrf
+    </form>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
-    $('#example2').DataTable({
-        "responsive": true,
-    });
-
-    function notificationBeforeDelete(event, el) {
-        event.preventDefault();
-        if (confirm('Apakah anda yakin akan menghapus data ? ')) {
-            $("#delete-form").attr('action', $(el).attr('href'));
-            $("#delete-form").submit();
-        }
-    }
-
     function prosesAksi(aksi) {
         let id = document.getElementById('status').getAttribute('data-id');
         let url = '';
@@ -121,7 +97,7 @@ table-stripped" id="example2">
                         document.getElementById('btnStatus').remove();
 
                         // Simpan status aksi ke localStorage
-                        localStorage.setItem('kasusKesiswaan', true);
+                        localStorage.setItem('pembinaanDone', true);
                     }
                 })
                 .catch(error => {
@@ -129,11 +105,35 @@ table-stripped" id="example2">
                 });
         }
     }
+
+    // Saat halaman dimuat, periksa status aksi dari localStorage
     document.addEventListener('DOMContentLoaded', function() {
-        let kasusKesiswaan = localStorage.getItem('kasusKesiswaan');
-        if (kasusKesiswaan) {
+        let pembinaanDone = localStorage.getItem('pembinaanDone');
+        if (pembinaanDone) {
             // Jika pembinaan sudah dilakukan sebelumnya, sembunyikan tombol "Mulai Pembinaan"
             document.getElementById('btnStatus').style.display = 'none';
         }
     });
-</script>
+
+
+        $(document).ready(function() {
+            // Menyimpan nilai input nama_lengkap saat submit form
+            var namaLengkapValue = "{{ request('nama_lengkap') }}";
+            $('#nama_lengkap').val(namaLengkapValue);
+
+            // Submit form when competency field changes
+            $('#kompetensi_keahlian').change(function() {
+                $('#filter-form').submit();
+            });
+
+            // Submit form when class field changes
+            $('#kelas').change(function() {
+                $('#filter-form').submit();
+            });
+
+            // Submit form when nama_lengkap field value changes
+            $('#nama_lengkap').on('input', function() {
+                $('#filter-form').submit();
+            });
+        });
+    </script>

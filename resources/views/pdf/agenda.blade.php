@@ -112,7 +112,7 @@
                 <th>Hari/Tanggal</th>
                 <th>Nama Kegiatan</th>
                 <th>Waktu Didik</th>
-                <th>Dokumentasi</th>
+                
                 <th>Ket</th>
             </tr>
             <tr>
@@ -120,7 +120,7 @@
                 <th>2</th>
                 <th>3</th>
                 <th>4</th>
-                <th>5</th>
+               
                 <th>6</th>
             </tr>
         </thead>
@@ -132,10 +132,7 @@
                 <td class="b">{{ $a->hari }}, {{ $a->tanggal}}</td>
                 <td class="c">{{ $a->nama_kegiatan }}</td>
                 <td class="d">{{ $a->waktu }}</td>
-                <td class="d">
-                    <!-- {{ $a->dokumentasi }} -->
-                    dokumentasi
-                </td>
+               
                 <td class="d">{{ $a->keterangan }}</td>
             </tr>
             @php $counter++ @endphp

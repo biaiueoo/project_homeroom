@@ -15,10 +15,10 @@
                         <a href="{{ route('kompetensi.create') }}" class="btn btn-primary">Tambah</a>
 
                         <!-- Tombol untuk memunculkan formulir import -->
-                        <button id="showImportForm" class="btn btn-primary mb-2">Import kompotensi</button>
+                        <!-- <button id="showImportForm" class="btn btn-primary mb-2">Import kompotensi</button> -->
 
                         <!-- Formulir untuk unggah file (awalnya tersembunyi) -->
-                        <form action="{{ route('kompetensi-import') }}" method="POST" enctype="multipart/form-data" id="importForm" style="display: none;">
+                        <!-- <form action="{{ route('kompetensi-import') }}" method="POST" enctype="multipart/form-data" id="importForm" style="display: none;">
                             @csrf
                             <div class="input-group">
                                 <div class="custom-file">
@@ -30,11 +30,11 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    </div> -->
                     <!-- Tombol Export Excel dan Download PDF -->
-                    <div>
+                    <!-- <div>
                         <a href="{{ route('export.kompetensi') }}" class="btn btn-info mr-2">Export Excel File</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 

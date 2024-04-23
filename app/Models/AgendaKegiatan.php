@@ -22,11 +22,13 @@ class AgendaKegiatan extends Model
         'tahun_ajaran'
     ];
 
-    public function fkelas(){
+    public function fkelas()
+    {
         return $this->belongsTo(Kelas::class, 'kdkelas', 'id');
     }
 
-    public function fkompetensi(){
+    public function fkompetensi()
+    {
         return $this->belongsTo(Kompetensi::class, 'kdkompetensi', 'id');
     }
 }

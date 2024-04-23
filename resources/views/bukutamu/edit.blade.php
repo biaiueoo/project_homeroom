@@ -90,9 +90,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Siswa</th>
-                                <th>Kelas</th>
-                                <th>Kompetensi Keahlian</th>
-
+                               
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -101,12 +99,10 @@
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td id={{$key+1}}>{{$s->nama_lengkap}}</td>
-                                <td>{{ $s->fkelas->kelas }}</td>
-                                <td>{{ $s->fkompetensi->kompetensi_keahlian }}</td>
-
+                              
 
                                 <td>
-                                    <button type="button" class="btn btn-primary btn-xs" onclick="pilih('{{$s->id}}', '{{$s->nama_lengkap}}','{{ $s->fkelas->kelas }}', ' <td>{{ $s->fkompetensi->kompetensi_keahlian }}</td>')" data-bs-dismiss="modal">
+                                    <button type="button" class="btn btn-primary btn-xs" onclick="pilih('{{$s->id}}', '{{$s->nama_lengkap}}')" data-bs-dismiss="modal">
                                         Pilih
                                     </button>
                                 </td>

@@ -102,12 +102,10 @@
                             <tr>
                                 <td>{{$key+1}}</td>
                                 <td id={{$key+1}}>{{$s->nama_lengkap}}</td>
-                                <td>{{ $s->fkelas->kelas }}</td>
-                                <td>{{ $s->fkompetensi->kompetensi_keahlian }}</td>
-
+                                
 
                                 <td>
-                                    <button type="button" class="btn btn-primary btn-xs" onclick="pilih('{{$s->id}}', '{{$s->nama_lengkap}}','{{ $s->fkelas->kelas }}', ' <td>{{ $s->fkompetensi->kompetensi_keahlian }}</td>')" data-bs-dismiss="modal">
+                                    <button type="button" class="btn btn-primary btn-xs" onclick="pilih('{{$s->id}}', '{{$s->nama_lengkap}}' )" data-bs-dismiss="modal">
                                         Pilih
                                     </button>
                                 </td>
@@ -124,19 +122,5 @@
 </form>
 
 
-<script>
-    $('#example2').DataTable({
-        "responsive": true,
-    });
-    //Fungsi pilih untuk memilih data Kategori wisata dan mengirimkan data kategori wisata dari Modal ke form tambah
-
-    function pilih(id, nama_lengkap, kelas, kompetensi_keahlian) {
-        document.getElementById('kdsiswa').value = id
-        document.getElementById('nama_lengkap').value = nama_lengkap
-        document.getElementById('kelas').value = kelas
-        document.getElementById('kompetensi_keahlian').value = kompetensi_keahlian
-
-    }
-</script>
 
 @stop

@@ -24,26 +24,24 @@
                         </div>
                     </div>
 
-                    {{-- Input Kelas --}}
                     <div class="form-group">
                         <label for="kelas">Kelas</label>
-                        <div class="input-group">
-                            <input type="hidden" name="kdkelas" id="kdkelas" value="{{ old('kdkelas') }}">
-                            <input type="text" class="form-control @error('kelas') is-invalid @enderror" placeholder="Kelas" id="kelas" name="kelas" aria-label="Kelas" value="{{ old('kelas') }}" aria-describedby="cari" readonly>
-                            <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropKelas">
-                                Cari Kelas
-                            </a>
-                        </div>
+                        <select class="form-control" id="kelas" name="kdkelas">
+                            @foreach($kelas as $item)
+                                <option value="{{ $item->id }}">{{ $item->kelas }}</option>
+                            @endforeach
+                        </select>
                     </div>
 
+                    {{-- Input Kompetensi Keahlian --}}
                     <div class="form-group">
-                        <label for="kdkompetensi">Kompetensi Keahlian</label>
-                        <div class="input-group">
-                            <input type="hidden" name="kdkompetensi" id="kdkompetensi" value="{{ old('kdkompetensi') }}">
-                            <input type="text" class="form-control @error('kompetensi_keahlian') is-invalid @enderror" placeholder="Kompetensi Keahlian" id="kompetensi_keahlian" name="kompetensi_keahlian" aria-label="Kompetensi Keahlian" value="{{ old('kompetensi_keahlian') }}" aria-describedby="cari" readonly>
-                        </div>
+                        <label for="kompetensi_keahlian">Kompetensi Keahlian</label>
+                        <select class="form-control" id="kompetensi_keahlian" name="kdkompetensi">
+                            @foreach($kompetensi as $item)
+                                <option value="{{ $item->id }}">{{ $item->kompetensi_keahlian }}</option>
+                            @endforeach
+                        </select>
                     </div>
-
 
                     {{-- Input Tahun Ajaran --}}
                     <div class="form-group">
@@ -141,47 +139,6 @@
     </div>
     <!-- End Modal -->
 
-    <!-- Modal for Kode Kelas -->
-    <div class="modal fade" id="staticBackdropKelas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabelKelas" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable p-5">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="staticBackdropLabelKelas">Pencarian Kode Kelas</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-hover table-bordered table-stripped" id="exampleKelas">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Kode Kelas</th>
-                                <th>Kompetensi Keahlian</th>
-                                <th>Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($kelas as $key => $kelasItem)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td id="kdkelas{{ $key + 1 }}">{{ $kelasItem->kelas }}</td>
-                                <td id="kdkelas{{ $key + 1 }}">
-                                    {{ $kelasItem->fkompetensi->kompetensi_keahlian }}
-                                </td>
-                                <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="pilihKelas('{{ $kelasItem->id }}', '{{ $kelasItem->kelas }}', '{{ $kelasItem->fkompetensi->kompetensi_keahlian }}')">
-                                        Pilih
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End Modal for Kode Kelas -->
-
     <!-- Modal Mapel -->
     <div class="modal fade" id="staticBackdropMapel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropMapel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable p-5">
@@ -230,19 +187,6 @@
         document.getElementById('kdguru').value = id;
         document.getElementById('nama_guru').value = nama_guru;
         $('#staticBackdropGuru').modal('hide');
-    }
-
-    $('#exampleKelas').DataTable({
-        "responsive": true,
-    });
-
-    function pilihKelas(id, kelas, kompetensi_keahlian) {
-        document.getElementById('kdkelas').value = id;
-        document.getElementById('kelas').value = kelas;
-        document.getElementById('kdkompetensi').value = id; // Change this line according to your data structure
-        document.getElementById('kompetensi_keahlian').value =
-            kompetensi_keahlian; // Change this line according to your data structure
-        $('#staticBackdropKelas').modal('hide');
     }
 
     $('#carimapel').DataTable({

@@ -32,13 +32,13 @@ return new class extends Migration
             $table->string('nama_ibu', 50);
             $table->string('alamat_ortu', 300);
             $table->string('no_ortu', 20);
-            $table->string('nama_sekolah_asal', 15);
+            $table->string('nama_sekolah_asal', 100);
             $table->string('alamat_sekolah', 300);
             $table->string('tahun_lulus', 50);
             $table->string('riwayat_penyakit', 50);
             $table->string('alergi', 50);
-            $table->string('prestasi_akademik', 50);
-            $table->string('prestasi_non_akademik', 50);
+            $table->string('prestasi_akademik', 300);
+            $table->string('prestasi_non_akademik', 300);
             $table->string('ekstrakurikuler', 50);
             $table->string('biografi', 500);
             $table->timestamps();
