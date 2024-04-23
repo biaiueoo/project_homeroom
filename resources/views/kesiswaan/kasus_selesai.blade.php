@@ -9,14 +9,8 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <a href="{{ route('catatankasus.create') }}" class="btn 
-btn-primary mb-2">
-                    Tambah
-                </a>
-                
                 <div class="table-responsive">
-                    <table class="table table-hover table-bordered 
-table-stripped" id="example2">
+                    <table class="table table-hover table-bordered table-stripped" id="example2">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -31,7 +25,6 @@ table-stripped" id="example2">
                                 <th>Dampingan BK</th>
                                 <th>Tindak Lanjut</th>
                                 <th>Status Kasus</th>
-                                <th>Opsi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,19 +48,6 @@ table-stripped" id="example2">
                                 <td>{{ $ck->dampingan_bk }}</td>
                                 <td>{{ $ck->tindak_lanjut }}</td>
                                 <td id="status" data-id="{{ $ck->id }}">{{ $ck->status_kasus }}</td>
-                                <td> <button id="btnStatus" type="button" class="btn btn-primary" onclick="prosesAksi('status')">Kasus Selesai</button>
-                                </td>
-                                <td>
-                                    <a href="{{ route('catatankasus.edit', $ck) }}" class="btn btn-primary btn-xs">
-                                        Edit
-                                    </a>
-                                    <a href="{{ route('catatankasus.destroy', $ck) }}" onclick="notificationBeforeDelete(event, this)" class="btn btn-danger btn-xs">
-                                        Delete
-                                    </a>
-                                    <a href="{{ route('catatankasus.pdf', ['id' => $ck->id]) }}" class="btn btn-secondary btn-xs">
-                                        Unduh BAP
-                                    </a>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -96,39 +76,4 @@ table-stripped" id="example2">
             $("#delete-form").submit();
         }
     }
-
-    function prosesAksi(aksi) {
-        let id = document.getElementById('status').getAttribute('data-id');
-        let url = '';
-
-        if (aksi === 'status') { // Sesuaikan dengan aksi yang diberikan pada tombol HTML
-            url = '{{ route("naikkanKasus") }}';
-
-            // Kirim permintaan Ajax menggunakan Axios
-            axios.post(url, {
-                    id: id
-                })
-                .then(response => {
-                    if (response.data.success) {
-                        // Ubah tampilan tergantung pada hasil sukses dari server
-                        document.getElementById('status').textContent = 'Penanganan Kesiswaan';
-                        // Hapus tombol "Mulai Pembinaan" setelah berhasil
-                        document.getElementById('btnStatus').remove();
-
-                        // Simpan status aksi ke localStorage
-                        localStorage.setItem('kasusKesiswaan', true);
-                    }
-                })
-                .catch(error => {
-                    console.error('Terjadi kesalahan:', error);
-                });
-        }
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-        let kasusKesiswaan = localStorage.getItem('kasusKesiswaan');
-        if (kasusKesiswaan) {
-            // Jika pembinaan sudah dilakukan sebelumnya, sembunyikan tombol "Mulai Pembinaan"
-            document.getElementById('btnStatus').style.display = 'none';
-        }
-    });
 </script>
