@@ -79,7 +79,6 @@ class CatatanKasusController extends Controller
             'keterangan' => 'required|file|mimes:pdf|max:2048', // Sesuaikan dengan tipe file yang diizinkan
             'tanggal' => 'required',
             'tindak_lanjut' => 'required',
-            'status_kasus' => 'required',
             'dampingan_bk' => 'required',
         ]);
 
@@ -95,7 +94,6 @@ class CatatanKasusController extends Controller
             'keterangan' => $keteranganContents,
             'tanggal' => $request->tanggal,
             'tindak_lanjut' => $request->tindak_lanjut,
-            'status_kasus' => $request->status_kasus,
             'dampingan_bk' => $request->dampingan_bk,
             // 'user_bk' => $request->user_bk,
         ]);
