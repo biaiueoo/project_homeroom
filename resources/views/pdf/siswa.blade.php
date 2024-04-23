@@ -86,12 +86,7 @@
 <body>
     <h2 class="judul">DAFTAR PESERTA DIDIK</h2>
 
-    <p class="kp">Kelas : {{ $siswa[0]->fkelas->kelas }} </p>
-    <p class="k">Kompetensi : {{ $siswa[0]->fkompetensi->kompetensi_keahlian }}</p>
-
-    <p class="s">Semester : {{ $siswa[0]->semester }}</p>
-    <p class="tp">Tahun Pelajaran : {{ $siswa[0]->tahun_ajaran }}</p>
-
+   
     <table>
         <thead>
             <tr>
