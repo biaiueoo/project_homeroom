@@ -18,6 +18,7 @@ use App\Http\Controllers\JadwalpiketController;
 use App\Http\Controllers\DaftarrapotController;
 use App\Http\Controllers\DKelasController;
 use App\Http\Controllers\GuruExportController;
+use App\Http\Controllers\KakomController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KegiatanExportController;
 use App\Http\Controllers\KelasExportController;
@@ -158,10 +159,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('dkelas/{id}/detail', [DKelasController::class, 'detail'])->name('dkelas.detail');
 
     Route::resource('kesiswaan', KesiswaanController::class);
-    Route::get('/data-seluruh-siswa', [KesiswaanController::class, 'siswa'])->name('kesiswaan.siswa');
+    Route::get('/data-siswa', [KesiswaanController::class, 'siswa'])->name('kesiswaan.siswa');
     Route::get('/data-kasus-kesiswaan', [KesiswaanController::class, 'kasus'])->name('kesiswaan.kasus');
     Route::post('/selesaikan-kasus', [PembinaanBkController::class, 'selesaikanKasus'])->name('selesaikanKasus');
     Route::get('/kasus-selesai', [KesiswaanController::class, 'kasusSelesai'])->name('kesiswaan.kasusSelesai');
+    Route::get('/data-homevisit-kesiswaan', [KesiswaanController::class, 'homevisit'])->name('kesiswaan.homevisit');
+
+    Route::resource('kakom', KakomController::class);
+    Route::get('/data-seluruh-siswa', [KakomController::class, 'siswa'])->name('kakom.siswa');
+    Route::get('/data-kasus-kakom', [KakomController::class, 'kasus'])->name('kakom.kasus');
+    Route::get('/data-homevisit', [KakomController::class, 'homevisit'])->name('kakom.homevisit');
 });
 
 // ROLE WALI KELAS
