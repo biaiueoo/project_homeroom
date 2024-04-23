@@ -49,7 +49,7 @@
                                 <td>{{ $ck->dampingan_bk }}</td>
                                 <td>{{ $ck->tindak_lanjut }}</td>
                                 <td id="status" data-id="{{ $ck->id }}">{{ $ck->status_kasus }}</td>
-                                <td> <button id="btnStatus" type="button" class="btn btn-primary" onclick="prosesAksi('status')">Kasus Selesai</button>
+                                <td> <button id="btnStatus" type="button" class="btn btn-primary" onclick="prosesAksi('status')">Tutup Kasus</button>
                                 </td>
                             </tr>
                             @endforeach

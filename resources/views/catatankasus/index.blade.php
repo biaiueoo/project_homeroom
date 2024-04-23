@@ -13,7 +13,7 @@
 btn-primary mb-2">
                     Tambah
                 </a>
-                
+
                 <div class="table-responsive">
                     <table class="table table-hover table-bordered 
 table-stripped" id="example2">
@@ -55,7 +55,9 @@ table-stripped" id="example2">
                                 <td>{{ $ck->dampingan_bk }}</td>
                                 <td>{{ $ck->tindak_lanjut }}</td>
                                 <td id="status" data-id="{{ $ck->id }}">{{ $ck->status_kasus }}</td>
-                                <td> <button id="btnStatus" type="button" class="btn btn-primary" onclick="prosesAksi('status')">Kasus Selesai</button>
+                                <td> <button id="btnStatus" type="button" class="btn btn-primary" onclick="prosesAksi('status')">Laporkan Kasus</button>
+                                </td>
+                                <td> <button id="btnStatus1" type="button" class="btn btn-primary" onclick="prosesAksi1('status')">Tutup Kasus</button>
                                 </td>
                                 <td>
                                     <a href="{{ route('catatankasus.edit', $ck) }}" class="btn btn-primary btn-xs">
