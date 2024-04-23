@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('kasus', 50);
             $table->binary('keterangan')->length('longBlob');
             $table->string('tindak_lanjut', 50);
-            $table->string('status_kasus', 50);
+            $table->enum('status_kasus', ['Penanganan Walas', 'Penanganan Kesiswaan', 'Kasus Selesai'])->default('Penanganan Walas');
             $table->enum('dampingan_bk', ['Ya', 'Tidak']);
             $table->string('semester', 100);
             $table->string('tahun_ajaran', 30);

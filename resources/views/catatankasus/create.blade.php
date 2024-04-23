@@ -111,14 +111,6 @@
             </div>
 
             <div class="form-group">
-                <label for="status_kasus">Status Kasus</label>
-                <input type="text" class="form-control @error('status_kasus') is-invalid @enderror" id="status_kasus" placeholder="Status Kasus" name="status_kasus" value="{{ old('status_kasus') }}">
-                @error('status_kasus')
-                <span class="text danger">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="form-group">
                 <label for="dampingan_bk">Dampingan BK</label>
                 <select class="form-control @error('dampingan_bk') is-invalid @enderror" id="dampingan_bk" name="dampingan_bk">
                     <option value="Tidak" {{ old('dampingan_bk') == 'Tidak' ? 'selected' : '' }}>Tidak
