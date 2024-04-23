@@ -16,6 +16,10 @@ return new class extends Migration
         Schema::create('siswa', function (Blueprint $table) {
             $table->id();
             $table->string('nis')->unique();
+            $table->unsignedBigInteger('kdkelas')->nullable();
+            $table->foreign('kdkelas')->references('id')->on('kelas')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('kdkompetensi')->nullable();
             $table->string('nama_lengkap', 50);
             $table->string('tempat_lahir', 50);
             $table->date('tanggal_lahir');
