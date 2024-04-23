@@ -45,10 +45,10 @@ class SiswaController extends Controller
 
         case 'kakom':
             $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
-            // dd($kompetensi);
+            //dd($kompetensi);
             
             $siswa = Siswa::where('kdkompetensi', $kompetensi->id)->get();
-            // dd($siswa);
+            //  dd($siswa);
             break;
 
         case 'walikelas':
@@ -61,6 +61,10 @@ class SiswaController extends Controller
             //dd($siswa);
             break;
 
+            case 'operator':
+                $siswa = Siswa::all();
+                break;
+
         default:
             return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
             break;
@@ -68,6 +72,7 @@ class SiswaController extends Controller
 
     return view('siswa.index', ['siswa' => $siswa]);
 }
+
 
 
 

@@ -13,31 +13,102 @@ use Illuminate\Support\Facades\Log;
 
 class AgendaKegiatanController extends Controller
 {
+    // public function index()
+    // {
+    //     $agenda = AgendaKegiatan::all();
+    //     return view('agenda.index', [
+    //         'agenda' => $agenda
+    //     ]);
+    // }
+
     public function index()
-    {
-        $agenda = AgendaKegiatan::all();
-        return view('agenda.index', [
-            'agenda' => $agenda
-        ]);
+{
+    $user = auth()->user();
+    // dd($user);
+    $agenda = null;
+
+    switch ($user->level) {
+        case 'admin':
+            // Jika admin, ambil semua agenda kegiatan
+            $agenda = AgendaKegiatan::all();
+            break;
+
+        case 'kakom':
+            // Jika kakom, ambil kompetensi keahlian yang terkait dengan guru yang sedang login
+            $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->first();
+            if (!$kompetensi) {
+                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kompetensi terkait.');
+            }
+
+            // Ambil agenda kegiatan berdasarkan kompetensi keahlian
+            $agenda = AgendaKegiatan::where('kdkompetensi', $kompetensi->id)->get();
+            break;
+
+        case 'walikelas':
+            // Jika walikelas, ambil kelas yang terkait dengan guru yang sedang login
+            $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+            // dd($kelas);
+
+            // Ambil agenda kegiatan berdasarkan kelas dan kompetensi keahlian walikelas
+            $agenda = AgendaKegiatan::where('kdkelas', $kelas->id)
+                ->whereHas('fkompetensi', function ($query) use ($kelas) {
+                    $query->where('id', $kelas->kdkompetensi);
+                })
+                ->get();
+            break;
+
+        default:
+            return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+            break;
     }
 
-    public function create()
-    {
-        $semester = Lookup::where('jenis', 'semester')->get();
-        $hari = Lookup::where('jenis', 'hari')->get();
+    return view('agenda.index', ['agenda' => $agenda]);
+}
 
-        return view(
-            'agenda.create',
-            [
 
-                'kelas' => Kelas::all(),
-                'kompetensi' => Kompetensi::all(),
-                'hari' => $hari,
-                'semester' => $semester,
+public function create()
+{
+    $semester = Lookup::where('jenis', 'semester')->get();
+    $hari = Lookup::where('jenis', 'hari')->get();
+    $user = auth()->user();
 
-            ]
-        );
+    switch ($user->level) {
+        case 'admin':
+            $kelas = Kelas::all();
+            $kompetensi = Kompetensi::all();
+            break;
+
+        case 'kakom':
+            $kompetensi = Kompetensi::where('guru_nip', $user->guru_nip)->get();
+            if (!$kompetensi->isEmpty()) {
+                $kelas = $kompetensi->first()->kelas;
+            } else {
+                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kompetensi terkait.');
+            }
+            break;
+
+        case 'walikelas':
+            $kelas = Kelas::where('guru_nip', $user->guru_nip)->get();
+            if (!$kelas->isEmpty()) {
+                $kompetensi = $kelas->first()->kompetensi;
+            } else {
+                return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
+            }
+            break;
+
+        default:
+            return redirect()->route('dashboard')->with('error_message', 'Akses ditolak.');
+            break;
     }
+
+    return view('agenda.create', [
+        'kelas' => $kelas,
+        'kompetensi' => $kompetensi,
+        'hari' => $hari,
+        'semester' => $semester,
+    ]);
+}
+
 
     public function store(Request $request)
     {
