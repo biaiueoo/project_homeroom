@@ -18,7 +18,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('level'); // Kolom untuk menyimpan level pengguna
+            $table->enum('level', [
+                'admin', 'walikelas', 'kakom',
+                'kesiswaan', 'bk', 'operator'
+            ])->default('walikelas');
             $table->string('guru_nip')->nullable(); // Tambahkan kolom untuk menyimpan NIP guru
             $table->foreign('guru_nip')->references('nip')->on('guru')->onDelete('cascade');
             $table->rememberToken();
