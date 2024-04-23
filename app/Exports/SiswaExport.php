@@ -38,22 +38,20 @@ class SiswaExport implements FromCollection
         $sheet->setCellValue('H1', 'No. HP');
         $sheet->setCellValue('I1', 'Email');
         $sheet->setCellValue('J1', 'NISN');
-        $sheet->setCellValue('K1', 'Kode Kelas');
-        $sheet->setCellValue('L1', 'Kode Kompetensi');
-        $sheet->setCellValue('M1', 'Tahun Masuk');
-        $sheet->setCellValue('N1', 'Nama Ayah');
-        $sheet->setCellValue('O1', 'Nama Ibu');
-        $sheet->setCellValue('P1', 'Alamat Ortu');
-        $sheet->setCellValue('Q1', 'No. Ortu');
-        $sheet->setCellValue('R1', 'Nama Sekolah Asal');
-        $sheet->setCellValue('S1', 'Alamat Sekolah');
-        $sheet->setCellValue('T1', 'Tahun Lulus');
-        $sheet->setCellValue('U1', 'Riwayat Penyakit');
-        $sheet->setCellValue('V1', 'Alergi');
-        $sheet->setCellValue('W1', 'Prestasi Akademik');
-        $sheet->setCellValue('X1', 'Prestasi Non-Akademik');
-        $sheet->setCellValue('Y1', 'Ekstrakurikuler');
-        $sheet->setCellValue('Z1', 'Biografi');
+        $sheet->setCellValue('K1', 'Tahun Masuk');
+        $sheet->setCellValue('L1', 'Nama Ayah');
+        $sheet->setCellValue('M1', 'Nama Ibu');
+        $sheet->setCellValue('N1', 'Alamat Ortu');
+        $sheet->setCellValue('O1', 'No. Ortu');
+        $sheet->setCellValue('P1', 'Nama Sekolah Asal');
+        $sheet->setCellValue('Q1', 'Alamat Sekolah');
+        $sheet->setCellValue('R1', 'Tahun Lulus');
+        $sheet->setCellValue('S1', 'Riwayat Penyakit');
+        $sheet->setCellValue('T1', 'Alergi');
+        $sheet->setCellValue('U1', 'Prestasi Akademik');
+        $sheet->setCellValue('V1', 'Prestasi Non-Akademik');
+        $sheet->setCellValue('W1', 'Ekstrakurikuler');
+        $sheet->setCellValue('X1', 'Biografi');
 
         // Set data validasi untuk seluruh baris pada kolom agama (kolom F)
         for ($row = 2; $row <= 1000; $row++) { // Misalnya sampai baris ke-1000
