@@ -184,6 +184,8 @@ Route::middleware(['auth', 'role:walikelas'])->group(function () {
     //  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
     Route::post('/rencanakegiatan/upload-file', [RencanakegiatanController::class, 'uploadFile'])->name('rencana.uploadFile');
     Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('kunjungan.uploadFile');
+    Route::resource('catatankasus', CatatanKasusController::class);
+    Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'downloadPDF'])->name('catatankasus.pdf');
 
 
     
@@ -207,6 +209,12 @@ Route::middleware(['auth', 'role:kakom'])->group(function () {
     Route::get('/laporan-kasus-kakom', [CatatanKasusController::class, 'laporanKasusKakom'])->name('laporan.kasus.kakom');
     Route::get('/siswa/pdf', [SiswaController::class, 'downloadPDF'])->name('siswa.pdf');
     Route::resource('siswa', SiswaController::class);
+    Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('siswa-import-view');
+    Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa-import');
+    Route::controller(SiswaExportController::class)->group(function () {
+        Route::get('index', 'index');
+        Route::get('export/siswa', 'export')->name('export.siswa');
+    });
     Route::resource('kunjunganrumah', KunjunganRumahController::class);
     Route::get('/kunjunganrumah/pdf/{id}', [KunjunganRumahController::class, 'downloadPDF'])->name('kunjunganrumah.pdf');
     //  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');
@@ -224,3 +232,31 @@ Route::post('/selesai-pembinaan', [PembinaanBkController::class, 'selesai'])->na
 
 
 });
+
+//role operator
+Route::middleware(['auth', 'role:operator'])->group(function () {
+    Route::get('/siswa/pdf', [SiswaController::class, 'downloadPDF'])->name('siswa.pdf');
+    Route::resource('siswa', SiswaController::class);
+
+    Route::get('/siswa/file-import', [SiswaController::class, 'importView'])->name('siswa-import-view');
+    Route::post('/siswa/import', [SiswaController::class, 'import'])->name('siswa-import');
+    Route::controller(SiswaExportController::class)->group(function () {
+        Route::get('index', 'index');
+        Route::get('export/siswa', 'export')->name('export.siswa');
+    });
+    Route::resource('kompetensi', KompetensiController::class);
+    Route::resource('kelas', KelasController::class);
+    
+    Route::resource('dkelas', DKelasController::class);
+    Route::get('dkelas/{id}/detail', [DKelasController::class, 'detail'])->name('dkelas.detail');
+
+    Route::resource('mapel', MapelController::class);
+    Route::resource('kegiatan', KegiatanController::class);
+    Route::get('/kegiatan/file-import', [KegiatanController::class, 'importView'])->name('kegiatan-import-view');
+    Route::post('/kegiatan/import', [KegiatanController::class, 'import'])->name('kegiatan-import');
+    Route::controller(KegiatanExportController::class)->group(function () {
+        Route::get('index', 'index');
+        Route::get('export/kegiatan', 'export')->name('export.kegiatan');
+    });
+});
+
