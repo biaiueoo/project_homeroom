@@ -58,11 +58,29 @@ class CatatanKasusController extends Controller
     public function create()
     {
         $semester = Lookup::where('jenis', 'semester')->get();
-
+        $user = auth()->user();
+    
+        // Ambil kelas terkait dengan walikelas
+        $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+    
+        // Pastikan kelas ditemukan dan memiliki kompetensi terkait
+        if (!$kelas) {
+            return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
+        }
+    
+        // Ambil kompetensi dari kelas walikelas
+        $kompetensiId = $kelas->kdkompetensi;
+    
+        // Ambil semua siswa yang terkait dengan kelas dan kompetensi walikelas
+        $siswa = Siswa::where('kdkelas', $kelas->id)
+                      ->where('kdkompetensi', $kompetensiId)
+                      ->get();
+    
+    
         return view(
             'catatankasus.create',
             [
-                'siswa' => Siswa::all(),
+                'siswa' => $siswa,
                 'semester' => $semester,
             ]
         );
