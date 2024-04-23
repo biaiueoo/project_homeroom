@@ -81,6 +81,8 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'downloadPDF'])->name('catatankasus.pdf');
     Route::post('/naikkan-kasus', [CatatanKasusController::class, 'naikkanKasus'])->name('naikkanKasus');
+    Route::post('/tutup-kasus', [CatatanKasusController::class, 'tutupKasus'])->name('tutupKasus');
+
     Route::resource('siswakes', SiswakesController::class);
     Route::resource('presentase', PresentaseController::class);
     Route::resource('laporankasus', LaporankasusController::class);
@@ -189,6 +191,7 @@ Route::middleware(['auth', 'role:walikelas'])->group(function () {
     Route::resource('presentase', PresentaseController::class);
     Route::resource('catatankasus', CatatanKasusController::class);
     Route::get('/catatankasus/pdf', [CatatanKasusController::class, 'PDFdownload'])->name('ckpdf');
+    Route::post('/naikkan-kasus', [CatatanKasusController::class, 'naikkanKasus'])->name('naikkanKasus');
     Route::get('/struktur/pdf', [StrukturController::class, 'downloadPDF'])->name('struktur.pdf');
     Route::resource('struktur', StrukturController::class);
     Route::get('struktur/{id}', [StrukturController::class, 'show'])->name('struktur.show');
@@ -209,6 +212,8 @@ Route::middleware(['auth', 'role:kesiswaan'])->group(function () {
     Route::resource('dashboard', DashboardController::class);
     Route::resource('siswakes', SiswakesController::class);
     Route::resource('laporankasus', LaporankasusController::class);
+    Route::post('/tutup-kasus', [CatatanKasusController::class, 'tutupKasus'])->name('tutupKasus');
+
     Route::resource('kunjunganrumah', KunjunganRumahController::class);
     Route::get('/kunjunganrumah/pdf/{id}', [KunjunganRumahController::class, 'downloadPDF'])->name('kunjunganrumah.pdf');
     //  Route::post('/kunjunganrumah/upload-file', [KunjunganRumahController::class, 'uploadFile'])->name('uploadFile');

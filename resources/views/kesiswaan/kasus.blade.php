@@ -79,13 +79,17 @@
             $("#delete-form").submit();
         }
     }
+</script>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
     function prosesAksi(aksi) {
         let id = document.getElementById('status').getAttribute('data-id');
         let url = '';
 
         if (aksi === 'status') { // Sesuaikan dengan aksi yang diberikan pada tombol HTML
-            url = '{{ route("selesaikanKasus") }}';
+            url = '{{ route("tutupKasus") }}';
 
             // Kirim permintaan Ajax menggunakan Axios
             axios.post(url, {
@@ -99,7 +103,7 @@
                         document.getElementById('btnStatus').remove();
 
                         // Simpan status aksi ke localStorage
-                        localStorage.setItem('kasusDone', true);
+                        // localStorage.setItem('pembinaanDone', true);
                     }
                 })
                 .catch(error => {
@@ -109,11 +113,33 @@
     }
 
     // Saat halaman dimuat, periksa status aksi dari localStorage
-    document.addEventListener('DOMContentLoaded', function() {
-        let kasusDone = localStorage.getItem('kasusDone');
-        if (kasusDone) {
-            // Jika pembinaan sudah dilakukan sebelumnya, sembunyikan tombol "Mulai Pembinaan"
-            document.getElementById('btnStatus').style.display = 'none';
-        }
-    });
-</script>
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     let pembinaanDone = localStorage.getItem('pembinaanDone');
+    //     if (pembinaanDone) {
+    //         // Jika pembinaan sudah dilakukan sebelumnya, sembunyikan tombol "Mulai Pembinaan"
+    //         document.getElementById('btnStatus').style.display = 'none';
+    //     }
+    // });
+
+
+        $(document).ready(function() {
+            // Menyimpan nilai input nama_lengkap saat submit form
+            var namaLengkapValue = "{{ request('nama_lengkap') }}";
+            $('#nama_lengkap').val(namaLengkapValue);
+
+            // Submit form when competency field changes
+            $('#kompetensi_keahlian').change(function() {
+                $('#filter-form').submit();
+            });
+
+            // Submit form when class field changes
+            $('#kelas').change(function() {
+                $('#filter-form').submit();
+            });
+
+            // Submit form when nama_lengkap field value changes
+            $('#nama_lengkap').on('input', function() {
+                $('#filter-form').submit();
+            });
+        });
+    </script>
