@@ -34,16 +34,7 @@
                         @error('nama_ayah') <span class="invalid-feedback">{{ $message }}</span> @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="rapor">Laporan</label>
-                        <select name="rapor" id="rapor" class="form-control">
-                            @foreach($rapor as $r)
-                            <option value="{{ $r->keterangan }}" {{ old('rapor', $daftarrapot->rapor) == $r->keterangan ? 'selected' : '' }}>
-                                {{ $r->keterangan }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    
 
                     <div class="form-group">
                         <label for="tanggal">Tanggal</label>
