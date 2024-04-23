@@ -90,9 +90,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Siswa</th>
-                                <th>Kelas</th>
-                                <th>Kompetensi Keahlian</th>
-
+                               
                                 <th>Opsi</th>
                             </tr>
                         </thead>
