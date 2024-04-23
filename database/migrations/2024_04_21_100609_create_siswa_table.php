@@ -17,8 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('nis')->unique();
             $table->unsignedBigInteger('kdkelas')->nullable();
-            $table->foreign('kdkelas')->references('id')->on('kelas')
-                ->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('kdkompetensi')->nullable();
             $table->string('nama_lengkap', 50);
             $table->string('tempat_lahir', 50);

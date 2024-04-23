@@ -168,6 +168,8 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama Siswa</th>
+                                <th>Kelas</th>
+                                <th>Kompetensi Keahlian</th>
                                 <th>Opsi</th>
                             </tr>
                         </thead>
@@ -176,9 +178,11 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td id="kdsiswa{{ $key + 1 }}">{{ $s->nama_lengkap }}</td>
+                                <td id="kdsiswa{{ $key + 1 }}">{{ $s->fkelas->kelas }}</td>
+                                <td id="kdsiswa{{ $key + 1 }}">{{ $s->fkompetensi->kompetensi_keahlian }}
                                 </td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="pilih('{{ $s->id }}', '{{ $s->nama_lengkap }}')">
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="pilih('{{ $s->id }}', '{{ $s->nama_lengkap }}', '{{ $s->fkelas->kelas }}', '{{ $s->fkompetensi->kompetensi_keahlian }}')">
                                         Pilih
                                     </a>
                                 </td>
@@ -202,6 +206,8 @@
     function pilih(id, nama_lengkap, kdkelas, kdkompetensi) {
         document.getElementById('kdsiswa').value = id;
         document.getElementById('nama_lengkap').value = nama_lengkap;
+        document.getElementById('kelas').value = kdkelas;
+        document.getElementById('kompetensi_keahlian').value = kdkompetensi;
         $('#staticBackdrop').modal('hide');
     }
 </script>

@@ -40,8 +40,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="tahun_ajaran">tahun_ajaran</label>
-                    <input type="text" class="form-control @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran" placeholder="tahun_ajaran" name="tahun_ajaran" value="{{ old('tahun_ajaran') }}">
+                    <label for="tahun_ajaran">Tahun Ajaran</label>
+                    <input type="text" class="form-control @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran" placeholder="Tahun Ajaran" name="tahun_ajaran" value="{{ old('tahun_ajaran') }}">
                     @error('tahun_ajaran')
                     <span class="text danger">{{ $message }}</span>
                     @enderror
