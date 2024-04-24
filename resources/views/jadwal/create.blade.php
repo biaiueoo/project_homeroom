@@ -28,7 +28,7 @@
                         <label for="kelas">Kelas</label>
                         <select class="form-control" id="kelas" name="kdkelas">
                             @foreach($kelas as $item)
-                                <option value="{{ $item->id }}">{{ $item->kelas }}</option>
+                            <option value="{{ $item->id }}">{{ $item->kelas }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -38,7 +38,7 @@
                         <label for="kompetensi_keahlian">Kompetensi Keahlian</label>
                         <select class="form-control" id="kompetensi_keahlian" name="kdkompetensi">
                             @foreach($kompetensi as $item)
-                                <option value="{{ $item->id }}">{{ $item->kompetensi_keahlian }}</option>
+                            <option value="{{ $item->id }}">{{ $item->kompetensi_keahlian }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -67,7 +67,7 @@
                         <label for="kdmapel">Mata Pelajaran</label>
                         <div class="input-group">
                             <input type="hidden" name="kdmapel" id="kdmapel" value="{{ old('kdmapel') }}">
-                            <input type="text" class="form-control @error('mata_pelajaran') is-invalid @enderror" placeholder="Mata Pelajaran" id="mata_pelajaran" name="mata_pelajaran" aria-label="Mata Pelajaran" value="{{ old('mata_pelajaran') }}" aria-describedby="cari" readonly>
+                            <input type="text" class="form-control @error('mapel') is-invalid @enderror" placeholder="Mata Pelajaran" id="mapel" name="mata_pelajaran" aria-label="Mata Pelajaran" value="{{ old('mata_pelajaran') }}" aria-describedby="cari" readonly>
                             <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdropMapel">
                                 Cari Mata Pelajaran
                             </a>
@@ -157,12 +157,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($mapel as $key => $m)
+                            @foreach ($dmapel as $key => $m)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td id="kdmapel{{ $key + 1 }}">{{ $m->mata_pelajaran }}</td>
+                                <td id="kdmapel{{ $key + 1 }}">{{ $m->mapel }}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="pilihmapel('{{ $m->id }}', '{{ $m->mata_pelajaran }}')">
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="pilihmapel('{{ $m->id }}', '{{ $m->mapel }}')">
                                         Pilih
                                     </a>
                                 </td>
@@ -193,11 +193,11 @@
         "responsive": true,
     });
 
-    function pilihmapel(id, mata_pelajaran) {
+    function pilihmapel(id, mapel) {
         document.getElementById('kdmapel').value = id;
-        document.getElementById('mata_pelajaran').value = mata_pelajaran;
+        document.getElementById('mapel').value = mapel;
         $('#staticBackdropMapel').modal('hide');
     }
 </script>
 
-@stop 
+@stop

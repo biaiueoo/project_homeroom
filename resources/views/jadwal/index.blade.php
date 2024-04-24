@@ -13,8 +13,8 @@
 btn-primary mb-2">
                     Tambah
                 </a>
-                 <!-- Tombol download PDF -->
-                 <a href="{{ route('jadwal.pdf') }}" class="btn btn-secondary mb-2">
+                <!-- Tombol download PDF -->
+                <a href="{{ route('jadwal.pdf') }}" class="btn btn-secondary mb-2">
                     Download PDF
                 </a>
                 <div class="table-responsive">
@@ -45,7 +45,7 @@ table-stripped" id="example2">
                                 <td>{{ $j->fkompetensi->kompetensi_keahlian }}</td>
                                 <td>{{ $j->tahun_ajaran }}</td>
                                 <td>{{ $j->semester }}</td>
-                                <td>{{ $j->fmapel->mata_pelajaran }}</td>
+                                <td>{{ $dmapel[$key]->mapel }}</td>
                                 <td>{{ $j->jam }}</td>
                                 <td>{{ $j->hari }}</td>
                                 <td>

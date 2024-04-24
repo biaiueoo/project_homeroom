@@ -17,4 +17,5 @@ class Mapel extends Model
     {
         return $this->belongsTo(Kompetensi::class, 'kdkompetensi');
     }
+    
 }
