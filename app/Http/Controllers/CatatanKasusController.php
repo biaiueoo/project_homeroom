@@ -64,9 +64,7 @@ class CatatanKasusController extends Controller
         $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
     
         // Pastikan kelas ditemukan dan memiliki kompetensi terkait
-        if (!$kelas) {
-            return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
-        }
+       
     
         // Ambil kompetensi dari kelas walikelas
         $kompetensiId = $kelas->kdkompetensi;
