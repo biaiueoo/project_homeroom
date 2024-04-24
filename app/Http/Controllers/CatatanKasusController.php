@@ -36,9 +36,7 @@ class CatatanKasusController extends Controller
 
             case 'walikelas':
                 $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
-                if (!$kelas) {
-                    return redirect()->route('dashboard')->with('error_message', 'Anda tidak memiliki kelas terkait.');
-                }
+                
                 $catatankasus = CatatanKasus::whereHas('fsiswa', function ($query) use ($kelas) {
                     $query->where('kdkelas', $kelas->id)->where('kdkompetensi', $kelas->kdkompetensi);
                 })->get();
@@ -55,17 +53,36 @@ class CatatanKasusController extends Controller
 
 
 
-    public function create()
-    {
+    // public function create()
+    // {
+    //     $semester = Lookup::where('jenis', 'semester')->get();
+
+    //     return view(
+    //         'catatankasus.create',
+    //         [
+    //             'siswa' => Siswa::all(),
+    //             'semester' => $semester,
+    //         ]
+    //     );
+    // }
+
+    public function create(){
         $semester = Lookup::where('jenis', 'semester')->get();
+        $user = auth()->user();
+
+        $kelas = Kelas::where('guru_nip', $user->guru_nip)->first();
+
+        $kompetensiId = $kelas->kdkompetensi;
+
+        $siswa = Siswa::where('kdkelas', $kelas->id)->where('kdkompetensi', $kompetensiId)->get();
 
         return view(
             'catatankasus.create',
             [
-                'siswa' => Siswa::all(),
+                'siswa' => $siswa,
                 'semester' => $semester,
             ]
-        );
+            );
     }
 
     public function store(Request $request)
