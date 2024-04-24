@@ -13,41 +13,42 @@ use App\Models\KunjunganRumah;
 class KesiswaanController extends Controller
 {
     public function siswa(Request $request)
-    {
-        $siswa = Siswa::query();
-        $kompetensiKeahlianOptions = Kompetensi::all();
-        $kelasOptions = collect(); // Inisialisasi koleksi kosong untuk opsi kelas
+{
+    $siswa = Siswa::query();
+    $kompetensiKeahlianOptions = Kompetensi::all();
+    $kelasOptions = collect(); // Inisialisasi koleksi kosong untuk opsi kelas
 
-        // Filter berdasarkan kompetensi keahlian
-        if ($request->filled('kompetensi_keahlian')) {
-            $siswa->where('kdkompetensi', $request->kompetensi_keahlian);
-            // Ambil opsi kelas yang hanya berlaku untuk siswa dengan kompetensi keahlian yang dipilih
-            $kelasOptions = Kelas::where('kdkompetensi', $request->kompetensi_keahlian)->get();
-        } else {
-            // Jika filter kompetensi keahlian tidak diaplikasikan, ambil semua kelas
-            $kelasOptions = Kelas::all();
-        }
+    // Filter berdasarkan kompetensi keahlian
+    if ($request->filled('kompetensi_keahlian')) {
+        $kompetensiId = $request->kompetensi_keahlian;
+        $siswa->where('kdkompetensi', $kompetensiId);
 
-        // Filter berdasarkan kelas
-        if ($request->filled('kelas')) {
-            $siswa->where('kdkelas', $request->kelas);
-        }
-
-        // Filter berdasarkan nama lengkap
-        if ($request->filled('nama_lengkap')) {
-            $siswa->where('nama_lengkap', 'like', '%' . $request->nama_lengkap . '%');
-        }
-
-        // Ambil hasil akhir setelah penerapan semua filter
-        $filteredSiswa = $siswa->get();
-
-        return view('kesiswaan.siswa', [
-            'siswa' => $filteredSiswa,
-            'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
-            'kelasOptions' => $kelasOptions,
-        ]);
+        // Ambil opsi kelas yang hanya berlaku untuk siswa dengan kompetensi keahlian yang dipilih
+        $kelasOptions = Kelas::where('kdkompetensi', $kompetensiId)->get();
+    } else {
+        // Jika filter kompetensi keahlian tidak diaplikasikan, ambil semua kelas
+        $kelasOptions = Kelas::all();
     }
 
+    // Filter berdasarkan kelas jika kelasOptions tidak kosong
+    if (!$kelasOptions->isEmpty() && $request->filled('kelas')) {
+        $siswa->where('kdkelas', $request->kelas);
+    }
+
+    // Filter berdasarkan nama lengkap
+    if ($request->filled('nama_lengkap')) {
+        $siswa->where('nama_lengkap', 'like', '%' . $request->nama_lengkap . '%');
+    }
+
+    // Ambil hasil akhir setelah penerapan semua filter
+    $filteredSiswa = $siswa->get();
+
+    return view('kakom.siswa', [
+        'siswa' => $filteredSiswa,
+        'kompetensiKeahlianOptions' => $kompetensiKeahlianOptions,
+        'kelasOptions' => $kelasOptions,
+    ]);
+}
     public function kasus()
     {
         $catatankasus = CatatanKasus::where('status_kasus', 'Penanganan Kesiswaan')->get();
